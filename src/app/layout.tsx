@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import { DM_Sans } from 'next/font/google';
+import { twMerge } from 'tailwind-merge';
 
 import './globals.css';
 
-const inter = DM_Sans({
+const dmSans = DM_Sans({
 	subsets: ['latin'],
-	weight: ['400', '600']
+	weight: ['400', '600','900']
 });
 
 export const metadata: Metadata = {
@@ -20,7 +21,14 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en">
-			<body className={inter.className}>{children}</body>
+			<body
+				className={twMerge(
+					dmSans.className,
+					'text-gray-500'
+				)}
+			>
+				{children}
+			</body>
 		</html>
 	);
 }

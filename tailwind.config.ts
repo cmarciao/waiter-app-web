@@ -8,15 +8,15 @@ const config: Config = {
 	],
 	theme: {
 		fontSize: {
-			'font-small': ['0.875rem', {
+			'small': ['0.875rem', {
 				fontWeight: '400',
 				lineHeight: '150%',
 			}],
-			'font-medium': ['1rem', {
+			'medium': ['1rem', {
 				fontWeight: '400',
 				lineHeight: '150%',
 			}],
-			'font-large': ['1.125rem', {
+			'large': ['1.125rem', {
 				fontWeight: '400',
 				lineHeight: '150%',
 			}]
