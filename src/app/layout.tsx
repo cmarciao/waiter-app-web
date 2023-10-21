@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { DM_Sans } from 'next/font/google';
-import { twMerge } from 'tailwind-merge';
 
 import './globals.css';
 
@@ -10,7 +9,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-	title: 'Waiter',
+	title: 'Waiter App',
 	description: 'Dedicated page for restaurant orders control.',
 };
 
@@ -20,13 +19,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
 	return (
-		<html lang="en">
-			<body
-				className={twMerge(
-					dmSans.className,
-					'text-gray-500'
-				)}
-			>
+		<html lang="en" className='text-gray-500'>
+			<body className={dmSans.className}>
 				{children}
 			</body>
 		</html>
