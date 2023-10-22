@@ -4,10 +4,10 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from 'react-query';
-import { authService } from '@/app/services/authService';
-import { SignInParams } from '@/app/services/authService/signIn';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { SignInParams } from '@/services/authService/signIn';
+import { authService } from '@/services/authService';
 
 const loginSchema = z.object({
 	email: z.string().email('Invalid email.'),

@@ -2,10 +2,9 @@ import type { Metadata } from 'next';
 import { DM_Sans } from 'next/font/google';
 
 import { Toaster } from 'react-hot-toast';
-import { GlobalProviders } from './providers/GlobalProviders';
+import { GlobalProviders } from '../providers/GlobalProviders';
 
-
-import './globals.css';
+import '../styles/global.css';
 
 const dmSans = DM_Sans({
 	subsets: ['latin'],

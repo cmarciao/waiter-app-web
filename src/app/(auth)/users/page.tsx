@@ -5,7 +5,7 @@ import editImage from 'public/images/edit.svg';
 import trashImage from 'public/images/trash.svg';
 
 import { Table } from '@/components/Table';
-import { User } from '@/app/entities/User';
+import { User } from '@/entities/User';
 
 const users: User[] = [
 	{
