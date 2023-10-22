@@ -23,9 +23,9 @@ export function Button({
 			data-primary={isPrimary}
 			disabled={disabled || isLoading}
 			className={twMerge(
-				'data-[primary=true]:w-full enabled:bg-brand-red data-[primary=true]:text-white',
-				'h-11  text-brand-red font-semibold rounded-md',
+				'data-[primary=true]:w-full data-[primary=true]:text-white enabled:data-[primary=true]:bg-brand-red',
 				'disabled:cursor-not-allowed disabled:bg-gray-200',
+				'h-11  text-brand-red font-semibold rounded-md',
 				className
 			)}
 			{...props}

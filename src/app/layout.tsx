@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { DM_Sans } from 'next/font/google';
 
 import { Toaster } from 'react-hot-toast';
-import { GlobalProviders } from '../providers/GlobalProviders';
+import { GlobalProviders } from '../providers';
 
 import '../styles/global.css';
 

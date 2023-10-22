@@ -1,13 +1,12 @@
 'use client';
 
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+
 import { z } from 'zod';
+import toast from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from 'react-query';
-import toast from 'react-hot-toast';
-import axios from 'axios';
-import { SignInParams } from '@/services/authService/signIn';
-import { authService } from '@/services/authService';
 
 const loginSchema = z.object({
 	email: z.string().email('Invalid email.'),
@@ -20,30 +19,31 @@ type LoginSchema = {
 }
 
 export function useLoginController() {
-	const {register,  handleSubmit, formState: { errors, isValid}} = useForm<LoginSchema>({
+	const router = useRouter();
+
+	const {register,  handleSubmit, formState: { errors, isValid, isSubmitting: isLoading}} = useForm<LoginSchema>({
 		resolver: zodResolver(loginSchema)
 	});
 
-	const { isLoading, mutateAsync } = useMutation({
-		mutationFn: async (data: SignInParams) => {
-			return authService.signIn(data);
-		}
-	});
-
 	const handleLogin = handleSubmit(async (data: LoginSchema) => {
-		try {
-			const { accessToken } = await mutateAsync(data);
-			toast.success('Are you ready? Let\'s get to work! 🍕');
+		const response = await signIn('credentials', {
+			...data,
+			redirect: false
+		});
 
-			console.log(accessToken);
-		} catch(err) {
-			if(axios.isAxiosError(err)) {
-				const errorMessage = err.response?.data.message;
-				toast.error(errorMessage);
+
+		if(response?.error) {
+			if(response.status === 401) {
+				toast.error('Invalid e-mail or password.');
 			} else {
-				toast.error('Some error happened. 🙁');
+				toast.error(response?.error);
 			}
+
+			return;
 		}
+
+		toast.success('Are you ready? Let\'s get to work! 🍕');
+		router.replace('/users');
 	});
 
 	return {
