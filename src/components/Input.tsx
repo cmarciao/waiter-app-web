@@ -1,3 +1,5 @@
+'use client';
+
 import { ComponentProps, LegacyRef, forwardRef, useState } from 'react';
 import Image from 'next/image';
 import { twMerge } from 'tailwind-merge';

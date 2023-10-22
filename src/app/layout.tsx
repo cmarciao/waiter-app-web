@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
 import { DM_Sans } from 'next/font/google';
 
+import { Toaster } from 'react-hot-toast';
+import { GlobalProviders } from './providers/GlobalProviders';
+
+
 import './globals.css';
 
 const dmSans = DM_Sans({
@@ -21,7 +25,14 @@ export default function RootLayout({
 	return (
 		<html lang="en" className='text-gray-500'>
 			<body className={dmSans.className}>
-				{children}
+				<GlobalProviders>
+					{children}
+
+					<Toaster
+						position="top-right"
+						reverseOrder={false}
+					/>
+				</GlobalProviders>
 			</body>
 		</html>
 	);

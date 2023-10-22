@@ -2,7 +2,7 @@
 
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
-import { useLogin } from './useLogin';
+import { useLoginController } from './useLoginController';
 
 export default function Login() {
 	const {
@@ -11,7 +11,7 @@ export default function Login() {
 		register,
 		handleLogin,
 		errors
-	} = useLogin();
+	} = useLoginController();
 
 	return (
 		<section className="h-screen flex-center p-4">
@@ -48,7 +48,8 @@ export default function Login() {
 					<Button
 						type='submit'
 						className='mt-10'
-						disabled={!isValid || isLoading}
+						disabled={!isValid}
+						isLoading={isLoading}
 					>
 						Login
 					</Button>
