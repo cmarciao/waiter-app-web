@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 type TableBodyProps = {
 	className?: string;
@@ -7,7 +8,10 @@ type TableBodyProps = {
 
 export function TableBody({ className, children }: TableBodyProps) {
 	return (
-		<tbody className={className}>
+		<tbody className={twMerge(
+			'shadow-md rounded-ee-md rounded-es-md',
+			className
+		)}>
 			{children}
 		</tbody>
 	);

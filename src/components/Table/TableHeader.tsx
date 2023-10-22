@@ -1,6 +1,3 @@
-'use client';
-
-import { signOut } from 'next-auth/react';
 import { Button } from '../Button';
 
 type TableHeaderProps = {
@@ -15,7 +12,7 @@ export function TableHeader({ title, amount }: TableHeaderProps) {
 				{title} <span className='font-normal text-medium'>{amount}</span>
 			</span>
 
-			<Button variant='secondary' onClick={() => {signOut();}}>
+			<Button variant='secondary'>
 				New user
 			</Button>
 		</header>

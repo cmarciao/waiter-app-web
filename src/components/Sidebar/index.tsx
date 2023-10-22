@@ -1,11 +1,11 @@
-import { NavLink } from './NavLink';
+import { NavLink } from './SidebarLink';
+import { SignOutButton } from './SignOutButton';
 
 import homeImage from 'public/images/home.svg';
 import historyImage from 'public/images/history.svg';
 import menuImage from 'public/images/menu.svg';
 import usersImage from 'public/images/users.svg';
 import myProfileImage from 'public/images/my-profile.svg';
-import exitImage from 'public/images/exit.svg';
 
 import activedHomeImage from 'public/images/actived-home.svg';
 import activedHistoryImage from 'public/images/actived-history.svg';
@@ -64,13 +64,7 @@ export function Sidebar() {
 						activedIcon={activedMenuImage}
 					/>
 
-					<NavLink
-						label='Exit'
-						alt='Exit'
-						to='/exit'
-						icon={exitImage}
-						activedIcon={activedUsersImage}
-					/>
+					<SignOutButton />
 				</div>
 			</nav>
 		</aside>
