@@ -1,31 +1,11 @@
 import { Modal } from '@/components/Modal';
 import { Input } from '@/components/Input';
-import { User, UserType } from '@/entities/User';
+import { User } from '@/entities/User';
 import { ModalTitle } from '@/components/Modal/ModalTitle';
 import { Button } from '@/components/Button';
-import { useForm } from 'react-hook-form';
+
 import { InputRadio } from '@/components/Checkbox';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { useEffect } from 'react';
-
-const updateUserSchema = z.object({
-	name: z.string({required_error: 'Name is required.'}).trim(),
-	email: z.string().email('Invalid email.'),
-	password:
-		z.string()
-			.nullable()
-			.optional()
-			.transform((value) => value === '' ? null : value),
-	type: z.enum(['ADMIN', 'WAITER'])
-});
-
-type UpdateUserSchema = {
-	name: string;
-	email: string;
-	password: string;
-	type: UserType;
-}
+import { useUpdateUserModalController } from './useUpdateUserModalController';
 
 type UpdateUserModalProps = {
 	user: User;
@@ -46,41 +26,17 @@ export function UpdateUserModal({
 }: UpdateUserModalProps) {
 	if(!isOpen) return null;
 
-	const { watch, register, handleSubmit, formState: { errors, isValid }, reset, setError, clearErrors } = useForm<UpdateUserSchema>({
-		resolver: zodResolver(updateUserSchema)
+	const {
+		isValid,
+		register,
+		handleAddUser,
+		handleRemoveUser,
+		errors,
+	} = useUpdateUserModalController({
+		user,
+		onUpdateUser,
+		onRemoveUser
 	});
-	const watchPassword = watch('password');
-
-	useEffect(() => {
-		if(watchPassword?.length >= 1 && watchPassword?.length < 8) {
-			setError('password', {
-				message: 'Min 8 characters.'
-			});
-		} else if(errors?.password?.message) {
-			clearErrors('password');
-		}
-	}, [watchPassword]);
-
-	const handleAddUser = handleSubmit(async (data) => {
-		const updatedUser = {
-			name: data.name,
-			email: data.email,
-			type: data.type,
-		};
-
-		if(data?.password) {
-			Object.assign(updatedUser, {
-				passowrd: data.password
-			});
-		}
-
-		await onUpdateUser(user.id!, updatedUser);
-		reset();
-	});
-
-	function handleRemoveUser() {
-		onRemoveUser(user.id!);
-	}
 
 	return (
 		<Modal open={isOpen} onCloseModal={onCloseModal}>

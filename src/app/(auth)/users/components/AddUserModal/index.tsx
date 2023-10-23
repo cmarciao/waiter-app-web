@@ -1,26 +1,10 @@
 import { Modal } from '@/components/Modal';
 import { Input } from '@/components/Input';
-import { User, UserType } from '@/entities/User';
+import { User } from '@/entities/User';
 import { ModalTitle } from '@/components/Modal/ModalTitle';
 import { Button } from '@/components/Button';
-import { useForm } from 'react-hook-form';
 import { InputRadio } from '@/components/Checkbox';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-
-const addUserSchema = z.object({
-	name: z.string({required_error: 'Name is required.'}).trim(),
-	email: z.string().email('Invalid email.'),
-	password: z.string().min(8, { message: 'Min 8 characters.' }),
-	type: z.enum(['ADMIN', 'WAITER'])
-});
-
-type AddUserSchema = {
-	name: string;
-	email: string;
-	password: string;
-	type: UserType;
-}
+import { useAddUserModalController } from './useAddUserModalController';
 
 type AddUserModalProps = {
 	isOpen: boolean;
@@ -35,14 +19,14 @@ export function AddUserModal({
 	onAddUser,
 	onCloseModal
 }: AddUserModalProps) {
-	const { register, handleSubmit, formState: { errors, isValid }, reset } = useForm<AddUserSchema>({
-		resolver: zodResolver(addUserSchema)
-	});
+	if(!isOpen) return;
 
-	const handleAddUser = handleSubmit(async (data) => {
-		await onAddUser(data);
-		reset();
-	});
+	const {
+		isValid,
+		register,
+		errors,
+		handleAddUser
+	} = useAddUserModalController(onAddUser);
 
 	return (
 		<Modal open={isOpen} onCloseModal={onCloseModal}>
