@@ -10,10 +10,10 @@ import showPasswordImage from 'public/images/show-password.svg';
 
 type InputProps = ComponentProps<'input'> & {
 	label: string;
-	errorMessage: string | undefined;
+	errorMessage?: string | undefined;
 }
 
-function InputRef({ label, errorMessage, ...props }: InputProps, ref: LegacyRef<HTMLInputElement>) {
+function InputRef({ label, errorMessage = undefined, ...props }: InputProps, ref: LegacyRef<HTMLInputElement>) {
 	const [isShowPassword, setIsShowPassword] = useState(false);
 
 	function handleToggleShowPassword() {
@@ -27,7 +27,7 @@ function InputRef({ label, errorMessage, ...props }: InputProps, ref: LegacyRef<
 	const inputType = !isPasswordType ? props.type : isShowPassword ? 'text' : 'password';
 
 	return (
-		<div>
+		<div data-disabled={props.disabled} className='data-[disabled=true]:opacity-50'>
 			<div className='flex flex-col relative'>
 				<label htmlFor={props.id}>{label}</label>
 				<input

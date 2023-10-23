@@ -47,7 +47,7 @@ export default function Login() {
 
 					<Button
 						type='submit'
-						className='mt-10'
+						className='mt-10 w-full'
 						disabled={!isValid}
 						isLoading={isLoading}
 					>

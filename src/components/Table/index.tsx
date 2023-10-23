@@ -4,6 +4,7 @@ import { TableBody } from './TableBody';
 import { TableContent } from './TableContent';
 import { TableHead } from './TableHead';
 import { TableHeader } from './TableHeader';
+import { TableHeaderAction } from './TableHeaderAction';
 import { TableRoot } from './TableRoot';
 import { TableRow } from './TableRow';
 import { TableTHead } from './TableTHead';
@@ -14,10 +15,11 @@ export const Table = {
 	Header: TableHeader,
 	Head: TableHead,
 	Content: TableContent,
-	THead: TableTHead,
+	Th: TableTHead,
 	Row: TableRow,
 	Td: TableTd,
 	Body: TableBody,
 	Actions: TableActions,
-	Action: TableAction
+	Action: TableAction,
+	HeaderAction: TableHeaderAction
 };

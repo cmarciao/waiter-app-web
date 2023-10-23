@@ -1,12 +1,16 @@
-import { useQuery } from 'react-query';
-import { usersService } from '@/services/usersService';
+import { useGetAllUsers, useRemoveUser } from '@/hooks/users';
 
 export function useUsersController() {
-	const { data } = useQuery({
-		queryKey: ['users'],
-		queryFn: usersService.getAll
-	});
-	const users = data || [];
+	const { users } = useGetAllUsers();
+	const { removeUser, isDeletingUser } = useRemoveUser();
 
-	return {users};
+	async function handleRemoveUser(id: string) {
+		await removeUser(id);
+	}
+
+	return {
+		users,
+		handleRemoveUser,
+		isDeletingUser
+	};
 }

@@ -1,27 +1,42 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
+import { Table } from '@/components/Table';
+
+import { RemoveUserModal } from './RemoveUserModal';
+import { useUsersController } from '../useUsersController';
 
 import editImage from 'public/images/edit.svg';
 import trashImage from 'public/images/trash.svg';
-
-import { Table } from '@/components/Table';
-import { useUsersController } from '../useUsersController';
+import { User } from '@/entities/User';
 
 export function UsersTable() {
-	const {users} = useUsersController();
+	const {users, handleRemoveUser, isDeletingUser} = useUsersController();
+
+	const [isOpenModal, setIsOpenModal] = useState(false);
+	const [selectedUser, setSelectedUser] = useState<User>({} as User);
+
+	function handleOpenRemoveUserModal(user: User) {
+		setSelectedUser(user);
+		setIsOpenModal(true);
+	}
 
 	return (
 		<Table.Root className='mt-2'>
-			<Table.Header title='Users' amount={3} />
+			<Table.Header title='Users' amount={3}>
+				<Table.HeaderAction>
+					New user
+				</Table.HeaderAction>
+			</Table.Header>
 
 			<Table.Content>
 				<Table.Head>
 					<Table.Row>
-						<Table.THead>Name</Table.THead>
-						<Table.THead>Email</Table.THead>
-						<Table.THead>Role</Table.THead>
-						<Table.THead>Action</Table.THead>
+						<Table.Th>Name</Table.Th>
+						<Table.Th>Email</Table.Th>
+						<Table.Th>Role</Table.Th>
+						<Table.Th>Action</Table.Th>
 					</Table.Row>
 				</Table.Head>
 				<Table.Body>
@@ -37,6 +52,7 @@ export function UsersTable() {
 									/>
 									<Table.Action
 										icon={<Image src={trashImage} alt='Remove user'/>}
+										onClick={() => handleOpenRemoveUserModal(user)}
 									/>
 								</Table.Actions>
 							</Table.Td>
@@ -45,6 +61,13 @@ export function UsersTable() {
 				</Table.Body>
 			</Table.Content>
 
+			<RemoveUserModal
+				user={selectedUser}
+				isOpen={isOpenModal}
+				onRemoveUser={handleRemoveUser}
+				isDeletingUser={isDeletingUser}
+				onCloseModal={() => setIsOpenModal(false)}
+			/>
 		</Table.Root>
 	);
 }
