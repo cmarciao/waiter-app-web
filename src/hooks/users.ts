@@ -10,6 +10,22 @@ export function useGetAllUsers() {
 	return { users: users || [] };
 }
 
+export function useCreateUser() {
+	const queryClient = useQueryClient();
+
+	const { isLoading: isCreatingUser, mutateAsync: createUser } = useMutation({
+		mutationFn: usersService.create,
+		onSuccess: () => {
+			queryClient.invalidateQueries(['users']);
+		}
+	});
+
+	return {
+		isCreatingUser,
+		createUser
+	};
+}
+
 export function useRemoveUser() {
 	const queryClient = useQueryClient();
 

@@ -4,7 +4,6 @@ import { User } from '@/entities/User';
 import { ModalTitle } from '@/components/Modal/ModalTitle';
 import { ModalDescription } from '@/components/Modal/ModalDescription';
 import { Button } from '@/components/Button';
-import toast from 'react-hot-toast';
 
 type RemoveUserModalProps = {
 	user: User;
@@ -21,17 +20,6 @@ export function RemoveUserModal({
 	onRemoveUser,
 	onCloseModal
 }: RemoveUserModalProps) {
-	async function handleRemoveUser() {
-		try {
-			await onRemoveUser(user.id);
-
-			toast.success('User deleted successfulluy. ✔');
-			onCloseModal();
-		} catch {
-			toast.error('Error when deleting user.');
-		}
-	}
-
 	return (
 		<Modal open={isOpen} onCloseModal={onCloseModal}>
 			<ModalTitle>Remove user</ModalTitle>
@@ -62,7 +50,7 @@ export function RemoveUserModal({
 					Keep user
 				</Button>
 				<Button
-					onClick={handleRemoveUser}
+					onClick={() => onRemoveUser(user.id)}
 					isLoading={isDeletingUser}
 				>
 					Remove user

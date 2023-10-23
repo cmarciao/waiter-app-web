@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import { Table } from '@/components/Table';
 
@@ -9,23 +8,28 @@ import { useUsersController } from '../useUsersController';
 
 import editImage from 'public/images/edit.svg';
 import trashImage from 'public/images/trash.svg';
-import { User } from '@/entities/User';
+import { AddUserModal } from './AddUserModal';
 
 export function UsersTable() {
-	const {users, handleRemoveUser, isDeletingUser} = useUsersController();
-
-	const [isOpenModal, setIsOpenModal] = useState(false);
-	const [selectedUser, setSelectedUser] = useState<User>({} as User);
-
-	function handleOpenRemoveUserModal(user: User) {
-		setSelectedUser(user);
-		setIsOpenModal(true);
-	}
+	const {
+		users,
+		selectedUser,
+		isOpenAddUserModal,
+		isOpenRemoveUserModal,
+		isCreatingUser,
+		isDeletingUser,
+		handleOpenRemoveUserModal,
+		handleCloseRemoveUserModal,
+		handleOpenAddUserModal,
+		handleCloseAddUserModal,
+		handlAddUser,
+		handleRemoveUser,
+	} = useUsersController();
 
 	return (
 		<Table.Root className='mt-2'>
 			<Table.Header title='Users' amount={3}>
-				<Table.HeaderAction>
+				<Table.HeaderAction onClick={handleOpenAddUserModal}>
 					New user
 				</Table.HeaderAction>
 			</Table.Header>
@@ -61,12 +65,19 @@ export function UsersTable() {
 				</Table.Body>
 			</Table.Content>
 
+			<AddUserModal
+				isOpen={isOpenAddUserModal}
+				onAddUser={handlAddUser}
+				isAddinggUser={isCreatingUser}
+				onCloseModal={handleCloseAddUserModal}
+			/>
+
 			<RemoveUserModal
 				user={selectedUser}
-				isOpen={isOpenModal}
+				isOpen={isOpenRemoveUserModal}
 				onRemoveUser={handleRemoveUser}
 				isDeletingUser={isDeletingUser}
-				onCloseModal={() => setIsOpenModal(false)}
+				onCloseModal={handleCloseRemoveUserModal}
 			/>
 		</Table.Root>
 	);
