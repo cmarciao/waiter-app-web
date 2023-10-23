@@ -26,6 +26,22 @@ export function useCreateUser() {
 	};
 }
 
+export function useUpdateUser() {
+	const queryClient = useQueryClient();
+
+	const { isLoading: isUpdatingUser, mutateAsync: updateUser } = useMutation({
+		mutationFn: usersService.update,
+		onSuccess: () => {
+			queryClient.invalidateQueries(['users']);
+		}
+	});
+
+	return {
+		isUpdatingUser,
+		updateUser
+	};
+}
+
 export function useRemoveUser() {
 	const queryClient = useQueryClient();
 

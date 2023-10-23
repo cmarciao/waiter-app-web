@@ -9,20 +9,26 @@ import { useUsersController } from '../useUsersController';
 import editImage from 'public/images/edit.svg';
 import trashImage from 'public/images/trash.svg';
 import { AddUserModal } from './AddUserModal';
+import { UpdateUserModal } from './UpdateUserModal';
 
 export function UsersTable() {
 	const {
 		users,
 		selectedUser,
 		isOpenAddUserModal,
+		isOpenUpdateUserModal,
 		isOpenRemoveUserModal,
 		isCreatingUser,
+		isUpdatingUser,
 		isDeletingUser,
-		handleOpenRemoveUserModal,
-		handleCloseRemoveUserModal,
 		handleOpenAddUserModal,
 		handleCloseAddUserModal,
+		handleOpenUpdateUserModal,
+		handleCloseUpdateUserModal,
+		handleOpenRemoveUserModal,
+		handleCloseRemoveUserModal,
 		handlAddUser,
+		handlUpdateUser,
 		handleRemoveUser,
 	} = useUsersController();
 
@@ -53,6 +59,7 @@ export function UsersTable() {
 								<Table.Actions>
 									<Table.Action
 										icon={<Image src={editImage} alt='Edit user'/>}
+										onClick={() => handleOpenUpdateUserModal(user)}
 									/>
 									<Table.Action
 										icon={<Image src={trashImage} alt='Remove user'/>}
@@ -72,8 +79,17 @@ export function UsersTable() {
 				onCloseModal={handleCloseAddUserModal}
 			/>
 
+			<UpdateUserModal
+				user={selectedUser!}
+				isOpen={isOpenUpdateUserModal}
+				onUpdateUser={handlUpdateUser}
+				isUpdatingUser={isUpdatingUser}
+				onRemoveUser={handleRemoveUser}
+				onCloseModal={handleCloseUpdateUserModal}
+			/>
+
 			<RemoveUserModal
-				user={selectedUser}
+				user={selectedUser!}
 				isOpen={isOpenRemoveUserModal}
 				onRemoveUser={handleRemoveUser}
 				isDeletingUser={isDeletingUser}

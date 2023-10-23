@@ -20,6 +20,8 @@ export function RemoveUserModal({
 	onRemoveUser,
 	onCloseModal
 }: RemoveUserModalProps) {
+	if(!isOpen) return;
+
 	return (
 		<Modal open={isOpen} onCloseModal={onCloseModal}>
 			<ModalTitle>Remove user</ModalTitle>
@@ -50,7 +52,7 @@ export function RemoveUserModal({
 					Keep user
 				</Button>
 				<Button
-					onClick={() => onRemoveUser(user.id)}
+					onClick={() => onRemoveUser(user.id!)}
 					isLoading={isDeletingUser}
 				>
 					Remove user

@@ -77,7 +77,7 @@ export function AddUserModal({
 					<div className='flex gap-8'>
 						<InputRadio
 							{...register('type')}
-							value="WAITER"
+							value="ADMIN"
 							label='Admin'
 						/>
 						<InputRadio
