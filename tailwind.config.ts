@@ -7,6 +7,9 @@ const config: Config = {
 		'./src/app/**/*.{js,ts,jsx,tsx,mdx}',
 	],
 	theme: {
+		boxShadow: {
+			'equals': '0px 0px 1px 0px rgba(0, 0, 0, 0.3)',
+		},
 		fontSize: {
 			'small': ['0.875rem', {
 				fontWeight: '400',
