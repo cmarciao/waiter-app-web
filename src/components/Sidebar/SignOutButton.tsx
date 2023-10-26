@@ -1,9 +1,7 @@
 'use client';
 
-import Image from 'next/image';
 import { signOut } from 'next-auth/react';
-
-import exitImage from 'public/images/exit.svg';
+import { PowerIcon } from 'lucide-react';
 
 export function SignOutButton() {
 	return (
@@ -11,10 +9,7 @@ export function SignOutButton() {
 			className='w-full flex flex-col items-center pt-6 pb-8'
 			onClick={() => signOut()}
 		>
-			<Image
-				src={exitImage}
-				alt={'Exit'}
-			/>
+			<PowerIcon />
 			<span
 				className='text-gray-400'
 			>

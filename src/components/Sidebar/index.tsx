@@ -1,16 +1,15 @@
+'use client';
+
 import { NavLink } from './SidebarLink';
 import { SignOutButton } from './SignOutButton';
 
-import homeImage from 'public/images/home.svg';
-import historyImage from 'public/images/history.svg';
-import menuImage from 'public/images/menu.svg';
-import usersImage from 'public/images/users.svg';
-import myProfileImage from 'public/images/my-profile.svg';
-
-import activedHomeImage from 'public/images/actived-home.svg';
-import activedHistoryImage from 'public/images/actived-history.svg';
-import activedMenuImage from 'public/images/actived-menu.svg';
-import activedUsersImage from 'public/images/actived-users.svg';
+import {
+	HomeIcon,
+	HistoryIcon,
+	MenuIcon,
+	Users2Icon,
+	UserCircle2
+} from 'lucide-react';
 
 export function Sidebar() {
 	return (
@@ -24,44 +23,34 @@ export function Sidebar() {
 				<div>
 					<NavLink
 						label='Home'
-						alt='Home'
 						to='/home'
-						icon={homeImage}
-						activedIcon={activedHomeImage}
+						icon={HomeIcon}
 					/>
 
 					<NavLink
 						label='History'
-						alt='History'
 						to='/history'
-						icon={historyImage}
-						activedIcon={activedHistoryImage}
+						icon={HistoryIcon}
 					/>
 
 					<NavLink
 						label='Menu'
-						alt='Menu'
 						to='/menu'
-						icon={menuImage}
-						activedIcon={activedMenuImage}
+						icon={MenuIcon}
 					/>
 
 					<NavLink
 						label='Users'
-						alt='Users'
 						to='/users'
-						icon={usersImage}
-						activedIcon={activedUsersImage}
+						icon={UserCircle2}
 					/>
 				</div>
 
 				<div>
 					<NavLink
 						label='My Profile'
-						alt='My Profile'
 						to='/my-profile'
-						icon={myProfileImage}
-						activedIcon={activedMenuImage}
+						icon={Users2Icon}
 					/>
 
 					<SignOutButton />

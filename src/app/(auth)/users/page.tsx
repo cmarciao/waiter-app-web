@@ -1,6 +1,4 @@
-import Image from 'next/image';
-
-import usersImage from 'public/images/users.svg';
+import { UserIcon } from 'lucide-react';
 import { UsersTable } from './components/UsersTable';
 
 export default function Users() {
@@ -8,11 +6,9 @@ export default function Users() {
 		<div className="px-4 max-w-7xl m-auto">
 			<header className="pt-10">
 				<div className='flex items-center gap-4'>
-					<Image
+					<UserIcon
 						width={32}
 						height={32}
-						src={usersImage}
-						alt='Users'
 					/>
 
 					<h1>Users</h1>
