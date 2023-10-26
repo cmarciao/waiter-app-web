@@ -24,8 +24,6 @@ export function UpdateUserModal({
 	onRemoveUser,
 	onCloseModal
 }: UpdateUserModalProps) {
-	if(!isOpen) return null;
-
 	const {
 		isValid,
 		register,

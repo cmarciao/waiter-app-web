@@ -19,8 +19,6 @@ export function AddUserModal({
 	onAddUser,
 	onCloseModal
 }: AddUserModalProps) {
-	if(!isOpen) return;
-
 	const {
 		isValid,
 		register,

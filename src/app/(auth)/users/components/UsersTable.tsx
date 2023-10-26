@@ -1,15 +1,14 @@
 'use client';
 
-import Image from 'next/image';
 import { Table } from '@/components/Table';
 
 import { RemoveUserModal } from './RemoveUserModal';
 import { useUsersController } from '../useUsersController';
 
-import editImage from 'public/images/edit.svg';
-import trashImage from 'public/images/trash.svg';
 import { AddUserModal } from './AddUserModal';
 import { UpdateUserModal } from './UpdateUserModal';
+
+import { PencilIcon, Trash2Icon } from 'lucide-react';
 
 export function UsersTable() {
 	const {
@@ -34,7 +33,7 @@ export function UsersTable() {
 
 	return (
 		<Table.Root className='mt-2'>
-			<Table.Header title='Users' amount={3}>
+			<Table.Header title='Users' amount={users.length}>
 				<Table.HeaderAction onClick={handleOpenAddUserModal}>
 					New user
 				</Table.HeaderAction>
@@ -58,11 +57,11 @@ export function UsersTable() {
 							<Table.Td>
 								<Table.Actions>
 									<Table.Action
-										icon={<Image src={editImage} alt='Edit user'/>}
+										icon={<PencilIcon />}
 										onClick={() => handleOpenUpdateUserModal(user)}
 									/>
 									<Table.Action
-										icon={<Image src={trashImage} alt='Remove user'/>}
+										icon={<Trash2Icon color='#D73035'/>}
 										onClick={() => handleOpenRemoveUserModal(user)}
 									/>
 								</Table.Actions>
@@ -72,21 +71,26 @@ export function UsersTable() {
 				</Table.Body>
 			</Table.Content>
 
-			<AddUserModal
-				isOpen={isOpenAddUserModal}
-				onAddUser={handlAddUser}
-				isAddinggUser={isCreatingUser}
-				onCloseModal={handleCloseAddUserModal}
-			/>
+			{isOpenAddUserModal && (
+				<AddUserModal
+					isOpen={isOpenAddUserModal}
+					onAddUser={handlAddUser}
+					isAddinggUser={isCreatingUser}
+					onCloseModal={handleCloseAddUserModal}
+				/>
+			)}
 
-			<UpdateUserModal
-				user={selectedUser!}
-				isOpen={isOpenUpdateUserModal}
-				onUpdateUser={handlUpdateUser}
-				isUpdatingUser={isUpdatingUser}
-				onRemoveUser={handleRemoveUser}
-				onCloseModal={handleCloseUpdateUserModal}
-			/>
+			{isOpenUpdateUserModal && (
+				<UpdateUserModal
+					user={selectedUser!}
+					isOpen={isOpenUpdateUserModal}
+					onUpdateUser={handlUpdateUser}
+					isUpdatingUser={isUpdatingUser}
+					onRemoveUser={handleRemoveUser}
+					onCloseModal={handleCloseUpdateUserModal}
+				/>
+			)}
+
 
 			<RemoveUserModal
 				user={selectedUser!}
@@ -95,6 +99,7 @@ export function UsersTable() {
 				isDeletingUser={isDeletingUser}
 				onCloseModal={handleCloseRemoveUserModal}
 			/>
+
 		</Table.Root>
 	);
 }
