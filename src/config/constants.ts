@@ -5,5 +5,5 @@ export const UserType = {
 
 export const routesType = {
 	public: ['/signin'],
-	private: ['/users']
+	private: ['/users', '/menu']
 };
