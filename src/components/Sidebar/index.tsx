@@ -35,7 +35,7 @@ export function Sidebar() {
 
 					<NavLink
 						label='Menu'
-						to='/menu'
+						to='/menu?tab=products'
 						icon={MenuIcon}
 					/>
 

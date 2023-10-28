@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import NextAuth from 'next-auth';
+import NextAuth, { AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 import { authService } from '@/services/authService';
 
-export const authOptions = {
+export const authOptions: AuthOptions = {
 	providers: [
 		CredentialsProvider({
 			name: 'credentials',
@@ -21,13 +21,28 @@ export const authOptions = {
 				const { accessToken } = await authService.signIn(params);
 
 				if(accessToken) {
-					return accessToken as any;
+					return {
+						name: accessToken
+					} as any;
 				}
 
 				return null;
 			},
 		})
 	],
+	session: {
+		strategy: 'jwt'
+	},
+	secret: process.env.NEXTAUTH_SECRET,
+	callbacks: {
+		async session({ session, token }) {
+			session.user = {
+				name: token.name,
+			};
+
+			return session;
+		},
+	},
 	pages: {
 		signIn: '/signin'
 	}
