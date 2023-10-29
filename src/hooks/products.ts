@@ -1,5 +1,5 @@
 import { productsService } from '@/services/productsService';
-import { QueryClient, useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export function useGetAllProducts() {
 	const { data } = useQuery({
@@ -13,7 +13,7 @@ export function useGetAllProducts() {
 }
 
 export function useCreateProduct() {
-	const queryClient = new QueryClient();
+	const queryClient = useQueryClient();
 
 	const { isLoading: isCreatingProduct, mutateAsync: createProduct } = useMutation({
 		mutationFn: productsService.create,
@@ -26,6 +26,19 @@ export function useCreateProduct() {
 		isCreatingProduct,
 		createProduct
 	};
+}
+
+export function useUpdateProduct() {
+	const queryClient = useQueryClient();
+
+	const { isLoading: isUpdatingProduct, mutateAsync: updateProduct } = useMutation({
+		mutationFn: productsService.update,
+		onSuccess: () => {
+			queryClient.invalidateQueries(['products']);
+		}
+	});
+
+	return { isUpdatingProduct, updateProduct };
 }
 
 export function useRemoveProduct() {

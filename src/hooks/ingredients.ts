@@ -2,9 +2,13 @@ import { ingredientsService } from '@/services/ingredientsService';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export function useCreateIngredient() {
+	const queryClient = useQueryClient();
+
 	const { isLoading: isCreatingIngredient, mutateAsync: createIngredient } = useMutation({
-		mutationKey: ['ingredients'],
-		mutationFn: ingredientsService.create
+		mutationFn: ingredientsService.create,
+		onSuccess: () => {
+			queryClient.invalidateQueries(['ingredients']);
+		}
 	});
 
 	return {
@@ -14,13 +18,9 @@ export function useCreateIngredient() {
 }
 
 export function useGetAllIngredients() {
-	const queryClient = useQueryClient();
-
 	const { data: ingredients } = useQuery({
-		queryFn: ingredientsService.getAlll,
-		onSuccess: () => {
-			queryClient.invalidateQueries(['ingredients']);
-		}
+		queryKey: ['ingredients'],
+		queryFn: ingredientsService.getAlll
 	});
 
 	return {

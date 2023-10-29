@@ -1,9 +1,9 @@
+import { Ingredient } from '@/entities/Ingredient';
 import { httpClient } from '../httpClient';
-import { Product } from '@/entities/Product';
 
-type CreateProductParam = Product;
+export type CreateIngredientParam = Omit<Ingredient, 'id'>;
 
-export async function create(product: CreateProductParam) {
-	const { data } = await httpClient.post('/products', product);
+export async function create(ingredient: CreateIngredientParam) {
+	const { data } = await httpClient.post('/ingredients', ingredient);
 	return data;
 }

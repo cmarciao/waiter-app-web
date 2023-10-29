@@ -1,4 +1,4 @@
-import { CheckIcon, ImageDownIcon, ImageIcon, InfoIcon } from 'lucide-react';
+import { CheckIcon, ImageIcon, InfoIcon, Loader2 } from 'lucide-react';
 
 import { Modal } from '@/components/Modal';
 import { Input } from '@/components/Input';
@@ -8,22 +8,24 @@ import { ModalTitle } from '@/components/Modal/ModalTitle';
 import { useAddProductModalController } from './useAddProductModalController';
 import { twMerge } from 'tailwind-merge';
 import Image from 'next/image';
-import { CreateProductParams } from '@/services/productsService/create';
-import { AddIngredientModal } from '../AddIngredientModal';
+import { Product } from '@/entities/Product';
+import { UpdateProductParams } from '@/services/productsService/update';
 
-type AddProductModalProps = {
+type EditProductModalProps = {
+	product: Product;
 	isOpen: boolean;
-	isCreatingProduct: boolean;
+	isEditingProduct: boolean;
 	onCloseModal: () => void;
-	onCreateProduct: (product: CreateProductParams) => Promise<void>
+	onEditProduct: (product: UpdateProductParams) => Promise<void>
 }
 
-export function AddProductModal({
+export function EditProductModal({
+	product,
 	isOpen,
-	isCreatingProduct,
+	isEditingProduct,
 	onCloseModal,
-	onCreateProduct
-}: AddProductModalProps) {
+	onEditProduct
+}: EditProductModalProps) {
 	const {
 		register,
 		errors,
@@ -33,24 +35,11 @@ export function AddProductModal({
 		watchCategory,
 		watchIngredients,
 		imageUrlPreview,
-		handleAddProduct,
-		isOpenAddIngredientModal,
-		isCreatingIngredient,
-		handleOpenAddIngredientModal,
-		handleCloseAddIngredientModal,
-		handleAddIngredient,
-	} = useAddProductModalController(onCreateProduct);
+		handleAddProduct
+	} = useAddProductModalController(onEditProduct);
 
-	if(isOpenAddIngredientModal) {
-		return (
-			<AddIngredientModal
-				isOpen={isOpenAddIngredientModal}
-				isAddingIngredient={isCreatingIngredient}
-				onAddIngredient={handleAddIngredient}
-				onCloseModal={handleCloseAddIngredientModal}
-			/>
-		);
-	}
+	const isImageValid = imageUrlPreview !== 'data:application/octet-stream;base64,IA==' && imageUrlPreview != null;
+	const imageToShow = isImageValid ? imageUrlPreview : product.imageUrl;
 
 	return (
 		<Modal open={isOpen} onCloseModal={onCloseModal} className='max-w-[928px]'>
@@ -78,18 +67,15 @@ export function AddProductModal({
 								{...register('imageUrl')}
 							/>
 
-
-							{!imageUrlPreview && (
-								<>
-									<div className="flex items-center justify-center w-full h-[240px] transition-all cursor-pointer bg-gray-50 hover:bg-gray-200">
-										<ImageDownIcon color='#666'/>
-									</div>
-								</>
+							{!imageToShow && (
+								<div className="flex items-center justify-center w-full h-[240px] bg-gray-50 animate-spin">
+									<Loader2 color='#666'/>
+								</div>
 							)}
 
-							{imageUrlPreview && (
+							{imageToShow && (
 								<Image
-									src={imageUrlPreview.toString()}
+									src={`${imageToShow}`}
 									height={240}
 									width={416}
 									style={{
@@ -119,6 +105,7 @@ export function AddProductModal({
 							placeholder='Pepperoni Pizza'
 							{...register('name')}
 							errorMessage={errors?.name?.message}
+							defaultValue={product.name}
 						/>
 
 						<Input
@@ -128,6 +115,7 @@ export function AddProductModal({
 							placeholder='Pepperoni Pizza with tradicional borders'
 							{...register('description')}
 							errorMessage={errors?.description?.message}
+							defaultValue={product.description}
 						/>
 
 						<section className='mt-8'>
@@ -159,6 +147,7 @@ export function AddProductModal({
 											type="radio"
 											value={category.id}
 											{...register('category')}
+											defaultChecked={product.category.id === category.id}
 										/>
 
 										<span>{category.emoji}</span>
@@ -173,13 +162,6 @@ export function AddProductModal({
 						<header>
 							<div className='flex items-center justify-between'>
 								<h3>Ingredients</h3>
-								<Button
-									onClick={handleOpenAddIngredientModal}
-									variant='secondary'
-									type='button'
-								>
-									New ingredient
-								</Button>
 							</div>
 
 							{errors?.ingredients?.message && (
@@ -222,6 +204,7 @@ export function AddProductModal({
 										value={ingredient.id}
 										className='hidden'
 										{...register('ingredients')}
+										defaultChecked={product.ingredients.some(item => item.id === ingredient.id)}
 									/>
 								</div>
 							))}
@@ -237,6 +220,7 @@ export function AddProductModal({
 								valueAsNumber: true,
 							})}
 							errorMessage={errors?.price?.message}
+							defaultValue={product.price}
 						/>
 					</div>
 
@@ -246,7 +230,7 @@ export function AddProductModal({
 			<footer className='mt-12 flex justify-end'>
 				<Button
 					disabled={!isFormValid}
-					isLoading={isCreatingProduct}
+					isLoading={isEditingProduct}
 					onClick={handleAddProduct}
 				>
 					Save product

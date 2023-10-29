@@ -9,20 +9,26 @@ import { RemoveProductModal } from './RemoveProductModal';
 import { AddProductModal } from './AddProductModal';
 
 import { PencilIcon, Trash2Icon } from 'lucide-react';
+import { EditProductModal } from './EditProductModal';
 
 export function ProductsTable() {
 	const {
 		products,
 		selectedProduct,
 		isOpenCreateProductModal,
+		isOpenUpdateProductModal,
 		isOpenRemoveProductModal,
 		isCreatingProduct,
+		isUpdatingProduct,
 		isDeletingProduct,
 		handleOpenCreateProductModal,
 		handleCloseCreateProductModal,
+		handleOpenUpdateProductModal,
+		handleCloseUpdateProductModal,
 		handleOpenRemoveProductModal,
 		handleCloseRemoveProductModal,
 		handleCreateProduct,
+		handleUpdateProduct,
 		handleRemoveProduct,
 	} = useMenuController();
 
@@ -67,7 +73,7 @@ export function ProductsTable() {
 								<Table.Actions>
 									<Table.Action
 										icon={<PencilIcon />}
-										// onClick={() => handleOpenRemoveUserModal(user)}
+										onClick={() => handleOpenUpdateProductModal(product)}
 									/>
 									<Table.Action
 										icon={<Trash2Icon color='#D73035'/>}
@@ -87,14 +93,15 @@ export function ProductsTable() {
 				onCreateProduct={handleCreateProduct}
 			/>
 
-			{/* <UpdateProductModal
-				user={selectedUser!}
-				isOpen={isOpenUpdateUserModal}
-				onUpdateProduct={handlUpdateUser}
-				isUpdatingProduct={isUpdatingUser}
-				onRemoveProduct={handleRemoveUser}
-				onCloseModal={handleCloseUpdateUserModal}
-			/> */}
+			{isOpenUpdateProductModal && (
+				<EditProductModal
+					product={selectedProduct!}
+					isOpen={isOpenUpdateProductModal}
+					onEditProduct={handleUpdateProduct}
+					isEditingProduct={isUpdatingProduct}
+					onCloseModal={handleCloseUpdateProductModal}
+				/>
+			)}
 
 			<RemoveProductModal
 				product={selectedProduct!}
