@@ -13,7 +13,7 @@ type NavLinkProps = {
 
 export function NavLink({ to, icon: Icon, label }: NavLinkProps) {
 	const pathname = usePathname();
-	const isActiveLink = pathname === to;
+	const isActiveLink = to.includes(pathname);
 	const colorIcon = isActiveLink ? '#D73035' : '#666666';
 
 	return (
