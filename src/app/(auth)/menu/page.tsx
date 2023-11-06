@@ -1,4 +1,4 @@
-import { ProductsTable } from './components/ProductsTable';
+import { ProductsTable } from './components/products/ProductsTable';
 import { MenuIcon } from 'lucide-react';
 
 type MenuProps = {

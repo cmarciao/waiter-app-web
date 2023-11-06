@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Table } from '@/components/Table';
 
 import { formatPrice } from '@/utils/formatPrice';
-import { useMenuController } from '../useMenuController';
+import { useMenuController } from '../../useMenuController';
 import { RemoveProductModal } from './RemoveProductModal';
 import { AddProductModal } from './AddProductModal';
 
@@ -86,12 +86,14 @@ export function ProductsTable() {
 				</Table.Body>
 			</Table.Content>
 
-			<AddProductModal
-				isOpen={isOpenCreateProductModal}
-				isCreatingProduct={isCreatingProduct}
-				onCloseModal={handleCloseCreateProductModal}
-				onCreateProduct={handleCreateProduct}
-			/>
+			{isOpenCreateProductModal && (
+				<AddProductModal
+					isOpen={isOpenCreateProductModal}
+					isCreatingProduct={isCreatingProduct}
+					onCloseModal={handleCloseCreateProductModal}
+					onCreateProduct={handleCreateProduct}
+				/>
+			)}
 
 			{isOpenUpdateProductModal && (
 				<EditProductModal
