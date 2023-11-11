@@ -33,7 +33,7 @@ export function ProductsTable() {
 	} = useMenuController();
 
 	return (
-		<Table.Root className='mt-2'>
+		<Table.Root>
 			<Table.Header title='Products' amount={products.length}>
 				<Table.HeaderAction onClick={handleOpenCreateProductModal}>
 					New product
