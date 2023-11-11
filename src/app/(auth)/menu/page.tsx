@@ -1,6 +1,6 @@
 import { MenuIcon } from 'lucide-react';
 import { Navigation } from './components/Navigation';
-import { ProductsTable } from './components/products/ProductsTable';
+import { ProductsTable } from './components/Products/ProductsTable';
 import { CategoriesTable } from './components/Categories/CategoriesTable';
 import { IngredientsTable } from './components/Ingredients/IngredientsTable';
 
