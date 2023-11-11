@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 type TableHeaderProps = {
 	title: string;
 	amount: number;
-	children: ReactNode;
+	children?: ReactNode;
 }
 
 export function TableHeader({ title, amount, children }: TableHeaderProps) {
