@@ -15,8 +15,6 @@ export function CategoriesTable() {
 		isOpenEditCategoryModal,
 		isOpenRemoveCategoryModal,
 		isUpdatingCategory,
-		isRemovingCategory,
-		handleRemoveCategory,
 		handleUpdateCategory,
 		handleOpenCreateCategoryModal,
 		handleCloseCreateCategoryModal,
@@ -75,23 +73,19 @@ export function CategoriesTable() {
 				<UpdateCategoryModal
 					isOpenEditCategoryModal={isOpenEditCategoryModal}
 					handleCloseEdictCategoryModal={handleCloseEdictCategoryModal}
-					handleRemoveCategory={handleRemoveCategory}
+					handleRemoveCategory={() => {}}
 					handleUpdateCategory={handleUpdateCategory}
-					isRemovingCategory={isRemovingCategory}
+					isRemovingCategory={false}
 					isUpdatingCategory={isUpdatingCategory}
 					selectedCategory={selectedCategory!}
 				/>
 			)}
 
-			{isOpenRemoveCategoryModal && (
-				<RemoveCategoryModal
-					category={selectedCategory!}
-					isDeletingCategory={isRemovingCategory}
-					isOpen={isOpenRemoveCategoryModal}
-					onCloseModal={handleCloseRemoveCategoryModal}
-					onRemoveCategory={handleRemoveCategory}
-				/>
-			)}
+			<RemoveCategoryModal
+				category={selectedCategory!}
+				isOpen={isOpenRemoveCategoryModal}
+				onCloseModal={handleCloseRemoveCategoryModal}
+			/>
 		</>
 	);
 }

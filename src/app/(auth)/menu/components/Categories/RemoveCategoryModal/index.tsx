@@ -1,26 +1,27 @@
-import { Modal } from '@/components/Modal';
+import { Category } from '@/entities/Category';
+
 import { Input } from '@/components/Input';
+import { Button } from '@/components/Button';
+import { Modal } from '@/components/Modal';
 import { ModalTitle } from '@/components/Modal/ModalTitle';
 import { ModalDescription } from '@/components/Modal/ModalDescription';
-import { Button } from '@/components/Button';
-import { Category } from '@/entities/Category';
+
+import { useRemoveCategoryModal } from './useRemoveCategoryModal';
 
 type RemoveUserModalProps = {
 	category: Category;
 	isOpen: boolean;
-	isDeletingCategory: boolean;
-	onRemoveCategory: () => Promise<void>;
 	onCloseModal: () => void;
 }
 
 export function RemoveCategoryModal({
 	category,
 	isOpen,
-	isDeletingCategory,
-	onRemoveCategory,
 	onCloseModal
 }: RemoveUserModalProps) {
 	if(!isOpen) return;
+
+	const { isRemovingCategory, handleRemoveCategory } = useRemoveCategoryModal(category, onCloseModal);
 
 	return (
 		<Modal open={isOpen} onCloseModal={onCloseModal}>
@@ -47,13 +48,13 @@ export function RemoveCategoryModal({
 				<Button
 					variant='secondary'
 					onClick={onCloseModal}
-					isLoading={isDeletingCategory}
+					isLoading={isRemovingCategory}
 				>
 					Keep category
 				</Button>
 				<Button
-					onClick={onRemoveCategory}
-					isLoading={isDeletingCategory}
+					onClick={handleRemoveCategory}
+					isLoading={isRemovingCategory}
 				>
 					Remove category
 				</Button>

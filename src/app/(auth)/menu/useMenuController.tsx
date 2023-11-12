@@ -1,6 +1,6 @@
 import { Category } from '@/entities/Category';
 import { Product } from '@/entities/Product';
-import { useGetAllCategories, useRemoveCategory, useUpdateCategory } from '@/hooks/categories';
+import { useGetAllCategories, useUpdateCategory } from '@/hooks/categories';
 import { useCreateProduct, useGetAllProducts, useRemoveProduct, useUpdateProduct } from '@/hooks/products';
 import { CreateProductParams } from '@/services/productsService/create';
 import { UpdateProductParams } from '@/services/productsService/update';
@@ -30,7 +30,6 @@ export function useMenuController() {
 	// Categories API calls
 	const { categories } = useGetAllCategories();
 	const { isUpdatingCategory, updateCategory } = useUpdateCategory();
-	const { isRemovingCategory, removeCategory } = useRemoveCategory();
 
 	function handleOpenCreateProductModal() {
 		setIsOpenCreateProductModal(true);
@@ -149,26 +148,6 @@ export function useMenuController() {
 		setIsOpenRemoveCategoryModal(false);
 	}
 
-	async function handleRemoveCategory() {
-		try {
-			if(selectedCategory) {
-				await removeCategory({ id: selectedCategory.id });
-			}
-
-			toast.success('Category deleted successfulluy. ✔');
-
-			if(isOpenRemoveCategoryModal) handleCloseRemoveCategoryModal();
-			else handleCloseEdictCategoryModal();
-		} catch(err) {
-			if(axios.isAxiosError(err)) {
-				toast.error(err.response?.data.message);
-				return;
-			}
-
-			toast.error('Error when deleting category.');
-		}
-	}
-
 	function handleOpenCreateCategoryModal() {
 		setIsOpenCreateCategoryModal(true);
 	}
@@ -189,8 +168,6 @@ export function useMenuController() {
 		isOpenEditCategoryModal,
 		isOpenRemoveCategoryModal,
 		isUpdatingCategory,
-		isRemovingCategory,
-		handleRemoveCategory,
 		handleCreateProduct,
 		handleUpdateProduct,
 		handleRemoveProduct,
