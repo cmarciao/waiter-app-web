@@ -11,17 +11,14 @@ export function IngredientsTable() {
 	const {
 		ingredients,
 		selectedIngredient,
-		isUpdatingIngredient,
 		isOpenCreateIngredientModal,
 		isOpenUpdateIngredientModal,
 		isOpenRemoveIngredientModal,
-		handleUpdateIngredient,
 		handleOpenCreateIngredientModal,
 		handleCloseCreateIngredientModal,
 		handleOpenUpdateIngredientModal,
-		handleCloseUpdateIngredientModal,
 		handleOpenRemoveIngredientModal,
-		handleCloseRemoveIngredientModal
+		closeModalWhenRemoveIngredient
 	} = useIngredientsTableController();
 
 	return (
@@ -69,23 +66,16 @@ export function IngredientsTable() {
 				onCloseModal={handleCloseCreateIngredientModal}
 			/>
 
-			{isOpenUpdateIngredientModal && (
-				<UpdateIngredientModal
-					isOpen={isOpenUpdateIngredientModal}
-					handleCloseModal={handleCloseUpdateIngredientModal}
-					handleRemoveIngredient={() => {}}
-					handleUpdateIngredient={handleUpdateIngredient}
-					ingredient={selectedIngredient!}
-					isRemovingIngredient={false}
-					isUpdatingIngredient={isUpdatingIngredient}
-
-				/>
-			)}
+			<UpdateIngredientModal
+				ingredient={selectedIngredient!}
+				isOpen={isOpenUpdateIngredientModal}
+				onCloseModal={closeModalWhenRemoveIngredient}
+			/>
 
 			<RemoveIngredientModal
 				ingredient={selectedIngredient!}
 				isOpen={isOpenRemoveIngredientModal}
-				onCloseModal={handleCloseRemoveIngredientModal}
+				onCloseModal={closeModalWhenRemoveIngredient}
 			/>
 		</>
 	);
