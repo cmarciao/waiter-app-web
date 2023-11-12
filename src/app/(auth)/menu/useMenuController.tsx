@@ -1,6 +1,4 @@
-import { Category } from '@/entities/Category';
 import { Product } from '@/entities/Product';
-import { useGetAllCategories } from '@/hooks/categories';
 import { useCreateProduct, useGetAllProducts, useRemoveProduct, useUpdateProduct } from '@/hooks/products';
 import { CreateProductParams } from '@/services/productsService/create';
 import { UpdateProductParams } from '@/services/productsService/update';
@@ -15,20 +13,11 @@ export function useMenuController() {
 	const [isOpenUpdateProductModal, setIsOpenUpdateProductModal] = useState(false);
 	const [isOpenRemoveProductModal, setIsOpenRemoveProductModal] = useState(false);
 
-	// Categories states
-	const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
-	const [isOpenCreateCategoryModal, setIsOpenCreateCategoryModal] = useState(false);
-	const [isOpenEditCategoryModal, setIsOpenEditCategoryModal] = useState(false);
-	const [isOpenRemoveCategoryModal, setIsOpenRemoveCategoryModal] = useState(false);
-
 	// Products API calls
 	const { products } = useGetAllProducts();
 	const { isDeletingProduct, removeProduct } = useRemoveProduct();
 	const { isCreatingProduct, createProduct } = useCreateProduct();
 	const { isUpdatingProduct, updateProduct } = useUpdateProduct();
-
-	// Categories API calls
-	const { categories } = useGetAllCategories();
 
 	function handleOpenCreateProductModal() {
 		setIsOpenCreateProductModal(true);
@@ -112,62 +101,23 @@ export function useMenuController() {
 		}
 	}
 
-	// Categories functions
-	function handleOpenEdictCategoryModal(category: Category) {
-		setSelectedCategory(category);
-		setIsOpenEditCategoryModal(true);
-	}
-
-	function handleCloseEdictCategoryModal() {
-		setSelectedCategory(null);
-		setIsOpenEditCategoryModal(false);
-	}
-
-	function handleOpenRemoveCategoryModal(category: Category) {
-		setIsOpenRemoveCategoryModal(true);
-		setSelectedCategory(category);
-	}
-
-	function handleCloseRemoveCategoryModal() {
-		setIsOpenRemoveCategoryModal(false);
-	}
-
-	function handleOpenCreateCategoryModal() {
-		setIsOpenCreateCategoryModal(true);
-	}
-
-	function handleCloseCreateCategoryModal() {
-		setIsOpenCreateCategoryModal(false);
-	}
-
 	return {
 		products,
-		categories,
 		selectedProduct,
-		selectedCategory,
-		isOpenCreateCategoryModal,
 		isOpenCreateProductModal,
 		isOpenUpdateProductModal,
 		isOpenRemoveProductModal,
-		isOpenEditCategoryModal,
-		isOpenRemoveCategoryModal,
 		handleCreateProduct,
 		handleUpdateProduct,
 		handleRemoveProduct,
 		isCreatingProduct,
 		isUpdatingProduct,
 		isDeletingProduct,
-		handleOpenCreateCategoryModal,
-		handleCloseCreateCategoryModal,
 		handleOpenCreateProductModal,
 		handleCloseCreateProductModal,
 		handleOpenUpdateProductModal,
-		handleOpenEdictCategoryModal,
-		handleCloseEdictCategoryModal,
 		handleCloseUpdateProductModal,
 		handleOpenRemoveProductModal,
-		handleCloseRemoveProductModal,
-		handleOpenRemoveCategoryModal,
-		handleCloseRemoveCategoryModal,
+		handleCloseRemoveProductModal
 	};
 }

@@ -1,26 +1,27 @@
 'use client';
 
-import { Table } from '@/components/Table';
 import { PencilIcon, Trash2Icon } from 'lucide-react';
-import { useMenuController } from '../../useMenuController';
-import { UpdateCategoryModal } from './UpdateCategoryModal';
-import { RemoveCategoryModal } from './RemoveCategoryModal';
-import { CreateCategoryModal } from './CreateCategoryModal';
+
+import { Table } from '@/components/Table';
+import { UpdateCategoryModal } from '../UpdateCategoryModal';
+import { RemoveCategoryModal } from '../RemoveCategoryModal';
+import { CreateCategoryModal } from '../CreateCategoryModal';
+
+import { useCategoriesTable } from './useCategoriesTable';
 
 export function CategoriesTable() {
 	const {
 		categories,
 		selectedCategory,
 		isOpenCreateCategoryModal,
-		isOpenEditCategoryModal,
+		isOpenUpdateCategoryModal,
 		isOpenRemoveCategoryModal,
 		handleOpenCreateCategoryModal,
 		handleCloseCreateCategoryModal,
-		handleOpenEdictCategoryModal,
-		handleCloseEdictCategoryModal,
+		handleOpenUpdateCategoryModal,
 		handleOpenRemoveCategoryModal,
-		handleCloseRemoveCategoryModal
-	} = useMenuController();
+		closeModalWhenRemoveCategory
+	} = useCategoriesTable();
 
 	return (
 		<>
@@ -48,7 +49,7 @@ export function CategoriesTable() {
 									<Table.Actions>
 										<Table.Action
 											icon={<PencilIcon />}
-											onClick={() => handleOpenEdictCategoryModal(categroy)}
+											onClick={() => handleOpenUpdateCategoryModal(categroy)}
 										/>
 										<Table.Action
 											icon={<Trash2Icon color='#D73035'/>}
@@ -69,14 +70,14 @@ export function CategoriesTable() {
 
 			<UpdateCategoryModal
 				selectedCategory={selectedCategory!}
-				isOpen={isOpenEditCategoryModal}
-				handleCloseModal={handleCloseEdictCategoryModal}
+				isOpen={isOpenUpdateCategoryModal}
+				handleCloseModal={closeModalWhenRemoveCategory}
 			/>
 
 			<RemoveCategoryModal
 				category={selectedCategory!}
 				isOpen={isOpenRemoveCategoryModal}
-				onCloseModal={handleCloseRemoveCategoryModal}
+				onCloseModal={closeModalWhenRemoveCategory}
 			/>
 		</>
 	);
