@@ -5,7 +5,7 @@ import { Table } from '@/components/Table';
 import { RemoveUserModal } from './RemoveUserModal';
 import { useUsersController } from '../useUsersController';
 
-import { AddUserModal } from './AddUserModal';
+import { CreateUserModal } from './CreateUserModal';
 import { UpdateUserModal } from './UpdateUserModal';
 
 import { PencilIcon, Trash2Icon } from 'lucide-react';
@@ -14,19 +14,17 @@ export function UsersTable() {
 	const {
 		users,
 		selectedUser,
-		isOpenAddUserModal,
+		isOpenCreateUserModal,
 		isOpenUpdateUserModal,
 		isOpenRemoveUserModal,
-		isCreatingUser,
 		isUpdatingUser,
 		isDeletingUser,
-		handleOpenAddUserModal,
-		handleCloseAddUserModal,
+		handleOpenCreateUserModal,
+		handleCloseCreateUserModal,
 		handleOpenUpdateUserModal,
 		handleCloseUpdateUserModal,
 		handleOpenRemoveUserModal,
 		handleCloseRemoveUserModal,
-		handlAddUser,
 		handlUpdateUser,
 		handleRemoveUser,
 	} = useUsersController();
@@ -34,7 +32,7 @@ export function UsersTable() {
 	return (
 		<Table.Root className='mt-2'>
 			<Table.Header title='Users' amount={users.length}>
-				<Table.HeaderAction onClick={handleOpenAddUserModal}>
+				<Table.HeaderAction onClick={handleOpenCreateUserModal}>
 					New user
 				</Table.HeaderAction>
 			</Table.Header>
@@ -71,14 +69,10 @@ export function UsersTable() {
 				</Table.Body>
 			</Table.Content>
 
-			{isOpenAddUserModal && (
-				<AddUserModal
-					isOpen={isOpenAddUserModal}
-					onAddUser={handlAddUser}
-					isAddinggUser={isCreatingUser}
-					onCloseModal={handleCloseAddUserModal}
-				/>
-			)}
+			<CreateUserModal
+				isOpen={isOpenCreateUserModal}
+				onCloseModal={handleCloseCreateUserModal}
+			/>
 
 			{isOpenUpdateUserModal && (
 				<UpdateUserModal

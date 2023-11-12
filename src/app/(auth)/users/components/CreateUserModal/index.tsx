@@ -1,36 +1,34 @@
 import { Modal } from '@/components/Modal';
 import { Input } from '@/components/Input';
-import { User } from '@/entities/User';
 import { ModalTitle } from '@/components/Modal/ModalTitle';
 import { Button } from '@/components/Button';
 import { InputRadio } from '@/components/Checkbox';
-import { useAddUserModalController } from './useAddUserModalController';
+import { useCreateUserModal } from './useCreateUserModal';
 
-type AddUserModalProps = {
+type CreateUserModalProps = {
 	isOpen: boolean;
-	isAddinggUser: boolean;
-	onAddUser: (user: User) => Promise<void>;
 	onCloseModal: () => void;
 }
 
-export function AddUserModal({
+export function CreateUserModal({
 	isOpen,
-	isAddinggUser,
-	onAddUser,
 	onCloseModal
-}: AddUserModalProps) {
+}: CreateUserModalProps) {
+	if(!open) return;
+
 	const {
 		isValid,
+		isCreatingUser,
 		register,
 		errors,
-		handleAddUser
-	} = useAddUserModalController(onAddUser);
+		handleCreateUser
+	} = useCreateUserModal(onCloseModal);
 
 	return (
 		<Modal open={isOpen} onCloseModal={onCloseModal}>
 			<ModalTitle>New user</ModalTitle>
 
-			<form className='mt-6' onSubmit={handleAddUser}>
+			<form className='mt-6' onSubmit={handleCreateUser}>
 				<div className='flex flex-col gap-6'>
 					<Input
 						id='name'
@@ -73,7 +71,7 @@ export function AddUserModal({
 				<Button
 					type='submit'
 					className='w-full mt-12'
-					isLoading={isAddinggUser}
+					isLoading={isCreatingUser}
 					disabled={!isValid}
 				>
 					Register new user

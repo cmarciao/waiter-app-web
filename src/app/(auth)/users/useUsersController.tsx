@@ -2,26 +2,26 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { User } from '@/entities/User';
-import { useCreateUser, useGetAllUsers, useRemoveUser, useUpdateUser } from '@/hooks/users';
+import { useGetAllUsers, useRemoveUser, useUpdateUser } from '@/hooks/users';
 import axios from 'axios';
 
 export function useUsersController() {
 	const [selectedUser, setSelectedUser] = useState<User | null>(null);
-	const [isOpenAddUserModal, setIsOpenAddUserModal] = useState(false);
+	const [isOpenCreateUserModal, setIsOpenCreateUserModal] = useState(false);
 	const [isOpenUpdateUserModal, setIsOpenUpdateUserModal] = useState(false);
 	const [isOpenRemoveUserModal, setIsOpenRemoveUserModal] = useState(false);
 
 	const { users } = useGetAllUsers();
-	const { isCreatingUser, createUser } = useCreateUser();
+
 	const { isUpdatingUser, updateUser } = useUpdateUser();
 	const { isDeletingUser, removeUser } = useRemoveUser();
 
-	function handleOpenAddUserModal() {
-		setIsOpenAddUserModal(true);
+	function handleOpenCreateUserModal() {
+		setIsOpenCreateUserModal(true);
 	}
 
-	function handleCloseAddUserModal() {
-		setIsOpenAddUserModal(false);
+	function handleCloseCreateUserModal() {
+		setIsOpenCreateUserModal(false);
 	}
 
 	function handleOpenUpdateUserModal(user: User) {
@@ -42,22 +42,6 @@ export function useUsersController() {
 	function handleCloseRemoveUserModal() {
 		setSelectedUser(null);
 		setIsOpenRemoveUserModal(false);
-	}
-
-	async function handlAddUser(user: User) {
-		try {
-			await createUser(user);
-
-			toast.success('User created successfulluy. ✔');
-			handleCloseAddUserModal();
-		} catch(err) {
-			if(axios.isAxiosError(err)) {
-				toast.error(err.response?.data.message);
-				return;
-			}
-
-			toast.error('Error when creating user.');
-		}
 	}
 
 	async function handlUpdateUser(id: string, user: Partial<User>) {
@@ -97,19 +81,17 @@ export function useUsersController() {
 	return {
 		users,
 		selectedUser,
-		isOpenAddUserModal,
+		isOpenCreateUserModal,
 		isOpenUpdateUserModal,
 		isOpenRemoveUserModal,
-		isCreatingUser,
 		isUpdatingUser,
 		isDeletingUser,
-		handleOpenAddUserModal,
-		handleCloseAddUserModal,
+		handleOpenCreateUserModal,
+		handleCloseCreateUserModal,
 		handleOpenUpdateUserModal,
 		handleCloseUpdateUserModal,
 		handleOpenRemoveUserModal,
 		handleCloseRemoveUserModal,
-		handlAddUser,
 		handlUpdateUser,
 		handleRemoveUser
 	};
