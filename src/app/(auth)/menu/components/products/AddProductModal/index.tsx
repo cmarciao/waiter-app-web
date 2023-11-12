@@ -9,7 +9,7 @@ import { useAddProductModalController } from './useAddProductModalController';
 import { twMerge } from 'tailwind-merge';
 import Image from 'next/image';
 import { CreateProductParams } from '@/services/productsService/create';
-import { AddIngredientModal } from '../../Ingredients/AddIngredientModal';
+import { AddIngredientModal } from '../../Ingredients/CreateIngredientModal';
 
 type AddProductModalProps = {
 	isOpen: boolean;

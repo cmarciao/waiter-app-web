@@ -2,28 +2,26 @@ import { Modal } from '@/components/Modal';
 import { Input } from '@/components/Input';
 import { ModalTitle } from '@/components/Modal/ModalTitle';
 import { Button } from '@/components/Button';
-import { useAddIngredientModalController } from './useAddIngredientModalController';
-import { CreateIngredientParam } from '@/services/ingredientsService/create';
+import { useCreateIngredientModal } from './useCreateIngredientModal';
 
 type AddIngredientModalProps = {
 	isOpen: boolean;
-	isAddingIngredient: boolean;
-	onAddIngredient: (ingredient: CreateIngredientParam) => Promise<void>;
 	onCloseModal: () => void;
 }
 
 export function AddIngredientModal({
 	isOpen,
-	onAddIngredient,
-	isAddingIngredient,
 	onCloseModal
 }: AddIngredientModalProps) {
+	if(!isOpen) return;
+
 	const {
 		register,
 		errors,
-		handleAddIngredient,
 		isFormValid,
-	} = useAddIngredientModalController(onAddIngredient);
+		isCreatingIngredient,
+		handleCreateIngredient
+	} = useCreateIngredientModal(onCloseModal);
 
 	return (
 		<Modal open={isOpen} onCloseModal={onCloseModal}>
@@ -50,8 +48,8 @@ export function AddIngredientModal({
 			<footer className='mt-12 text-right'>
 				<Button
 					disabled={!isFormValid}
-					isLoading={isAddingIngredient}
-					onClick={handleAddIngredient}
+					isLoading={isCreatingIngredient}
+					onClick={handleCreateIngredient}
 				>
 					Create ingredient
 				</Button>

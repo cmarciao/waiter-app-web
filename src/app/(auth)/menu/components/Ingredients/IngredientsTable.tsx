@@ -3,7 +3,7 @@
 import { PencilIcon, Trash2Icon } from 'lucide-react';
 import { Table } from '@/components/Table';
 import { useIngredientsTableController } from './useIngredientsTableController';
-import { AddIngredientModal } from './AddIngredientModal';
+import { AddIngredientModal } from './CreateIngredientModal';
 import { RemoveIngredientModal } from './RemoveIngredientModal';
 import { UpdateIngredientModal } from './UpdateIngredientModal';
 
@@ -11,13 +11,11 @@ export function IngredientsTable() {
 	const {
 		ingredients,
 		selectedIngredient,
-		isCreatingIngredient,
 		isUpdatingIngredient,
 		isRemovingIngredient,
 		isOpenCreateIngredientModal,
 		isOpenUpdateIngredientModal,
 		isOpenRemoveIngredientModal,
-		handleCreateIngredient,
 		handleUpdateIngredient,
 		handleRemoveIngredient,
 		handleOpenCreateIngredientModal,
@@ -68,14 +66,10 @@ export function IngredientsTable() {
 				</Table.Content>
 			</Table.Root>
 
-			{isOpenCreateIngredientModal && (
-				<AddIngredientModal
-					isOpen={isOpenCreateIngredientModal}
-					isAddingIngredient={isCreatingIngredient}
-					onAddIngredient={handleCreateIngredient}
-					onCloseModal={handleCloseCreateIngredientModal}
-				/>
-			)}
+			<AddIngredientModal
+				isOpen={isOpenCreateIngredientModal}
+				onCloseModal={handleCloseCreateIngredientModal}
+			/>
 
 			{isOpenUpdateIngredientModal && (
 				<UpdateIngredientModal
