@@ -7,7 +7,7 @@ import { CreateUserModal } from './CreateUserModal';
 import { UpdateUserModal } from './UpdateUserModal';
 import { RemoveUserModal } from './RemoveUserModal';
 
-import { useUsersController } from '../useUsersController';
+import { useUsers } from '../useUsers';
 
 export function UsersTable() {
 	const {
@@ -21,7 +21,7 @@ export function UsersTable() {
 		handleOpenUpdateUserModal,
 		handleOpenRemoveUserModal,
 		closeModalWhenRemoveUser,
-	} = useUsersController();
+	} = useUsers();
 
 	return (
 		<Table.Root className='mt-2'>
