@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { User } from '@/entities/User';
 import { useGetAllUsers } from '@/hooks/users';
 
-export function useUsers() {
+export function useUsersTable() {
 	const [selectedUser, setSelectedUser] = useState<User | null>(null);
 	const [isOpenCreateUserModal, setIsOpenCreateUserModal] = useState(false);
 	const [isOpenUpdateUserModal, setIsOpenUpdateUserModal] = useState(false);
@@ -55,7 +55,6 @@ export function useUsers() {
 		handleOpenUpdateUserModal,
 		handleCloseUpdateUserModal,
 		handleOpenRemoveUserModal,
-		handleCloseRemoveUserModal,
 		closeModalWhenRemoveUser
 	};
 }

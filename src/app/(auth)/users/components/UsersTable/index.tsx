@@ -3,11 +3,11 @@
 import { PencilIcon, Trash2Icon } from 'lucide-react';
 
 import { Table } from '@/components/Table';
-import { CreateUserModal } from './CreateUserModal';
-import { UpdateUserModal } from './UpdateUserModal';
-import { RemoveUserModal } from './RemoveUserModal';
+import { CreateUserModal } from '../CreateUserModal';
+import { UpdateUserModal } from '../UpdateUserModal';
+import { RemoveUserModal } from '../RemoveUserModal';
 
-import { useUsers } from '../useUsers';
+import { useUsersTable } from './useUsersTable';
 
 export function UsersTable() {
 	const {
@@ -21,7 +21,7 @@ export function UsersTable() {
 		handleOpenUpdateUserModal,
 		handleOpenRemoveUserModal,
 		closeModalWhenRemoveUser,
-	} = useUsers();
+	} = useUsersTable();
 
 	return (
 		<Table.Root className='mt-2'>
