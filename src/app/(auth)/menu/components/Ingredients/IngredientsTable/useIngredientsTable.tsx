@@ -39,7 +39,7 @@ export function useIngredientsTable() {
 
 	function closeModalWhenRemoveIngredient() {
 		if(isOpenUpdateIngredientModal) handleCloseUpdateIngredientModal();
-		handleCloseRemoveIngredientModal();
+		else handleCloseRemoveIngredientModal();
 	}
 
 	return {

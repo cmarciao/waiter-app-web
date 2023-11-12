@@ -19,6 +19,8 @@ export function CreateProductModal({
 	isOpen,
 	onCloseModal,
 }: AddProductModalProps) {
+	if(!isOpen) return;
+
 	const {
 		register,
 		errors,

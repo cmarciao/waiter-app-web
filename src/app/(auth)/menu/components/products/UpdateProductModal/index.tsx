@@ -21,6 +21,8 @@ export function UpdateProductModal({
 	isOpen,
 	onCloseModal,
 }: UpdateProductModalProps) {
+	if(!isOpen) return;
+
 	const {
 		register,
 		errors,
@@ -41,7 +43,7 @@ export function UpdateProductModal({
 
 	return (
 		<Modal open={isOpen} onCloseModal={onCloseModal} className='max-w-[928px]'>
-			<ModalTitle>New product</ModalTitle>
+			<ModalTitle>Update product</ModalTitle>
 
 			<section>
 				<form className='mt-12 flex gap-8'>

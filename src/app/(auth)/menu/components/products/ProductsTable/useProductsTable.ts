@@ -2,14 +2,12 @@ import { useState } from 'react';
 import { Product } from '@/entities/Product';
 import { useGetAllProducts } from '@/hooks/products';
 
-export function useMenuController() {
-	// Products states
+export function useProductsTable() {
 	const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 	const [isOpenCreateProductModal, setIsOpenCreateProductModal] = useState(false);
 	const [isOpenUpdateProductModal, setIsOpenUpdateProductModal] = useState(false);
 	const [isOpenRemoveProductModal, setIsOpenRemoveProductModal] = useState(false);
 
-	// Products API calls
 	const { products } = useGetAllProducts();
 
 	function handleOpenCreateProductModal() {
@@ -39,6 +37,11 @@ export function useMenuController() {
 		setIsOpenUpdateProductModal(false);
 	}
 
+	function closeModalWhenRemoveProduct() {
+		if(isOpenUpdateProductModal) handleCloseUpdateProductModal();
+		else handleCloseRemoveProductModal();
+	}
+
 	return {
 		products,
 		selectedProduct,
@@ -48,8 +51,7 @@ export function useMenuController() {
 		handleOpenCreateProductModal,
 		handleCloseCreateProductModal,
 		handleOpenUpdateProductModal,
-		handleCloseUpdateProductModal,
 		handleOpenRemoveProductModal,
-		handleCloseRemoveProductModal
+		closeModalWhenRemoveProduct
 	};
 }

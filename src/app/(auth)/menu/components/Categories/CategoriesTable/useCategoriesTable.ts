@@ -39,7 +39,7 @@ export function useCategoriesTable() {
 
 	function closeModalWhenRemoveCategory() {
 		if(isOpenUpdateCategoryModal) handleCloseUpdateCategoryModal();
-		handleCloseRemoveCategoryModal();
+		else handleCloseRemoveCategoryModal();
 	}
 
 	return {

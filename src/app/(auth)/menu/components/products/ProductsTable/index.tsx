@@ -4,12 +4,12 @@ import Image from 'next/image';
 import { Table } from '@/components/Table';
 
 import { formatPrice } from '@/utils/formatPrice';
-import { useMenuController } from '../../useMenuController';
-import { RemoveProductModal } from './RemoveProductModal';
-import { CreateProductModal } from './CreateProductModal';
+import { useProductsTable } from './useProductsTable';
+import { RemoveProductModal } from '../RemoveProductModal';
+import { CreateProductModal } from '../CreateProductModal';
 
 import { PencilIcon, Trash2Icon } from 'lucide-react';
-import { UpdateProductModal } from './UpdateProductModal';
+import { UpdateProductModal } from '../UpdateProductModal';
 
 export function ProductsTable() {
 	const {
@@ -21,10 +21,9 @@ export function ProductsTable() {
 		handleOpenCreateProductModal,
 		handleCloseCreateProductModal,
 		handleOpenUpdateProductModal,
-		handleCloseUpdateProductModal,
 		handleOpenRemoveProductModal,
-		handleCloseRemoveProductModal,
-	} = useMenuController();
+		closeModalWhenRemoveProduct
+	} = useProductsTable();
 
 	return (
 		<Table.Root>
@@ -80,25 +79,21 @@ export function ProductsTable() {
 				</Table.Body>
 			</Table.Content>
 
-			{isOpenCreateProductModal && (
-				<CreateProductModal
-					isOpen={isOpenCreateProductModal}
-					onCloseModal={handleCloseCreateProductModal}
-				/>
-			)}
+			<CreateProductModal
+				isOpen={isOpenCreateProductModal}
+				onCloseModal={handleCloseCreateProductModal}
+			/>
 
-			{isOpenUpdateProductModal && (
-				<UpdateProductModal
-					product={selectedProduct!}
-					isOpen={isOpenUpdateProductModal}
-					onCloseModal={handleCloseUpdateProductModal}
-				/>
-			)}
+			<UpdateProductModal
+				product={selectedProduct!}
+				isOpen={isOpenUpdateProductModal}
+				onCloseModal={closeModalWhenRemoveProduct}
+			/>
 
 			<RemoveProductModal
 				product={selectedProduct!}
 				isOpen={isOpenRemoveProductModal}
-				onCloseModal={handleCloseRemoveProductModal}
+				onCloseModal={closeModalWhenRemoveProduct}
 			/>
 		</Table.Root>
 	);

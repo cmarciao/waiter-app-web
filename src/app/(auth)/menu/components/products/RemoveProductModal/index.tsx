@@ -28,7 +28,7 @@ export function RemoveProductModal({
 	return (
 		<Modal open={isOpen} onCloseModal={onCloseModal}>
 			<ModalTitle>Remove product</ModalTitle>
-			<ModalDescription>Are you sure you want to delete the product?</ModalDescription>
+			<ModalDescription>Are you sure you want to delete this product?</ModalDescription>
 
 			<section className='mt-6 flex justify-center h-[123px]'>
 				<Image
