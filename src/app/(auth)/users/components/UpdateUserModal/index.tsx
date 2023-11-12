@@ -11,28 +11,26 @@ type UpdateUserModalProps = {
 	user: User;
 	isOpen: boolean;
 	onCloseModal: () => void;
-	onRemoveUser: (id: string) => Promise<void>;
 }
 
 export function UpdateUserModal({
 	user,
 	isOpen,
-	onRemoveUser,
 	onCloseModal
 }: UpdateUserModalProps) {
 	if(!isOpen) return;
 
 	const {
 		isValid,
+		isRemovingUser,
 		isUpdatingUser,
+		errors,
 		register,
 		handlUpdateUser,
-		handleRemoveUser,
-		errors,
+		handleRemoveUser
 	} = useUpdateUserModal(
 		user,
 		onCloseModal,
-		onRemoveUser
 	);
 
 	return (
@@ -88,7 +86,7 @@ export function UpdateUserModal({
 					<Button
 						type='button'
 						variant='secondary'
-						isLoading={isUpdatingUser}
+						isLoading={isUpdatingUser || isRemovingUser}
 						onClick={handleRemoveUser}
 					>
 						Remove user
@@ -96,7 +94,7 @@ export function UpdateUserModal({
 
 					<Button
 						type='submit'
-						isLoading={isUpdatingUser}
+						isLoading={isUpdatingUser || isRemovingUser}
 						disabled={!isValid}
 					>
 						Save changes

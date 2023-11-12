@@ -45,12 +45,12 @@ export function useUpdateUser() {
 export function useRemoveUser() {
 	const queryClient = useQueryClient();
 
-	const { isLoading: isDeletingUser, mutateAsync: removeUser } = useMutation({
+	const { isLoading: isRemovingUser, mutateAsync: removeUser } = useMutation({
 		mutationFn: usersService.remove,
 		onSuccess: () => {
 			queryClient.invalidateQueries(['users']);
 		}
 	});
 
-	return { isDeletingUser, removeUser };
+	return { isRemovingUser, removeUser };
 }

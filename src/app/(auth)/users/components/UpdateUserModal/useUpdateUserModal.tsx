@@ -1,10 +1,12 @@
+import axios from 'axios';
+import toast from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+
 import { User } from '@/entities/User';
 import { useUpdateUser } from '@/hooks/users';
-import toast from 'react-hot-toast';
-import axios from 'axios';
+import { useRemoveUserModal } from '../RemoveUserModal/useRemoveUserModal';
 
 const updateUserSchema = z.object({
 	name: z.string({required_error: 'Name is required.'}).trim(),
@@ -23,10 +25,11 @@ type UpdateUserSchema = z.infer<typeof updateUserSchema>;
 
 export function useUpdateUserModal(
 	user: User,
-	handleCloseUpdateUserModal: () => void,
-	onRemoveUser: (id: string) => Promise<void>
+	handleCloseModal: () => void
 ) {
 	const { isUpdatingUser, updateUser } = useUpdateUser();
+	const { isRemovingUser, handleRemoveUser: onRemoveUser } = useRemoveUserModal(handleCloseModal);
+
 	const { register, handleSubmit, formState: { errors, isValid } } = useForm<UpdateUserSchema>({
 		resolver: zodResolver(updateUserSchema)
 	});
@@ -43,7 +46,7 @@ export function useUpdateUserModal(
 			await updateUser({id: user.id!, user: updatedUser});
 
 			toast.success('User update successfulluy. ✔');
-			handleCloseUpdateUserModal();
+			handleCloseModal();
 		} catch(err) {
 			if(axios.isAxiosError(err)) {
 				toast.error(err.response?.data.message);
@@ -61,6 +64,7 @@ export function useUpdateUserModal(
 	return {
 		isValid,
 		isUpdatingUser,
+		isRemovingUser,
 		register,
 		handlUpdateUser,
 		handleRemoveUser,

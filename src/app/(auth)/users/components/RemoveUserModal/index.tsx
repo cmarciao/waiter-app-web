@@ -4,23 +4,25 @@ import { User } from '@/entities/User';
 import { ModalTitle } from '@/components/Modal/ModalTitle';
 import { ModalDescription } from '@/components/Modal/ModalDescription';
 import { Button } from '@/components/Button';
+import { useRemoveUserModal } from './useRemoveUserModal';
 
 type RemoveUserModalProps = {
 	user: User;
 	isOpen: boolean;
-	isDeletingUser: boolean;
-	onRemoveUser: (id: string) => Promise<void>;
 	onCloseModal: () => void;
 }
 
 export function RemoveUserModal({
 	user,
 	isOpen,
-	isDeletingUser,
-	onRemoveUser,
 	onCloseModal
 }: RemoveUserModalProps) {
 	if(!isOpen) return;
+
+	const {
+		isRemovingUser,
+		handleRemoveUser
+	} = useRemoveUserModal(onCloseModal);
 
 	return (
 		<Modal open={isOpen} onCloseModal={onCloseModal}>
@@ -47,13 +49,13 @@ export function RemoveUserModal({
 				<Button
 					variant='secondary'
 					onClick={onCloseModal}
-					isLoading={isDeletingUser}
+					isLoading={isRemovingUser}
 				>
 					Keep user
 				</Button>
 				<Button
-					onClick={() => onRemoveUser(user.id!)}
-					isLoading={isDeletingUser}
+					onClick={() => handleRemoveUser(user.id!)}
+					isLoading={isRemovingUser}
 				>
 					Remove user
 				</Button>

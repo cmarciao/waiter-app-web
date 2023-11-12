@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import toast from 'react-hot-toast';
 
 import { User } from '@/entities/User';
-import { useGetAllUsers, useRemoveUser } from '@/hooks/users';
-import axios from 'axios';
+import { useGetAllUsers } from '@/hooks/users';
 
 export function useUsersController() {
 	const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -12,9 +10,6 @@ export function useUsersController() {
 	const [isOpenRemoveUserModal, setIsOpenRemoveUserModal] = useState(false);
 
 	const { users } = useGetAllUsers();
-
-
-	const { isDeletingUser, removeUser } = useRemoveUser();
 
 	function handleOpenCreateUserModal() {
 		setIsOpenCreateUserModal(true);
@@ -44,22 +39,9 @@ export function useUsersController() {
 		setIsOpenRemoveUserModal(false);
 	}
 
-	async function handleRemoveUser(id: string) {
-		try {
-			await removeUser(id);
-
-			toast.success('User deleted successfulluy. ✔');
-
-			if(isOpenRemoveUserModal) handleCloseRemoveUserModal();
-			else handleCloseUpdateUserModal();
-		} catch(err) {
-			if(axios.isAxiosError(err)) {
-				toast.error(err.response?.data.message);
-				return;
-			}
-
-			toast.error('Error when deleting user.');
-		}
+	function closeModalWhenRemoveUser() {
+		if(isOpenUpdateUserModal) handleCloseUpdateUserModal();
+		handleCloseRemoveUserModal();
 	}
 
 	return {
@@ -68,13 +50,12 @@ export function useUsersController() {
 		isOpenCreateUserModal,
 		isOpenUpdateUserModal,
 		isOpenRemoveUserModal,
-		isDeletingUser,
 		handleOpenCreateUserModal,
 		handleCloseCreateUserModal,
 		handleOpenUpdateUserModal,
 		handleCloseUpdateUserModal,
 		handleOpenRemoveUserModal,
 		handleCloseRemoveUserModal,
-		handleRemoveUser
+		closeModalWhenRemoveUser
 	};
 }

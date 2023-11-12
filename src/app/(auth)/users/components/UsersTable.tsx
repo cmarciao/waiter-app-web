@@ -1,14 +1,13 @@
 'use client';
 
+import { PencilIcon, Trash2Icon } from 'lucide-react';
+
 import { Table } from '@/components/Table';
-
-import { RemoveUserModal } from './RemoveUserModal';
-import { useUsersController } from '../useUsersController';
-
 import { CreateUserModal } from './CreateUserModal';
 import { UpdateUserModal } from './UpdateUserModal';
+import { RemoveUserModal } from './RemoveUserModal';
 
-import { PencilIcon, Trash2Icon } from 'lucide-react';
+import { useUsersController } from '../useUsersController';
 
 export function UsersTable() {
 	const {
@@ -17,14 +16,11 @@ export function UsersTable() {
 		isOpenCreateUserModal,
 		isOpenUpdateUserModal,
 		isOpenRemoveUserModal,
-		isDeletingUser,
 		handleOpenCreateUserModal,
 		handleCloseCreateUserModal,
 		handleOpenUpdateUserModal,
-		handleCloseUpdateUserModal,
 		handleOpenRemoveUserModal,
-		handleCloseRemoveUserModal,
-		handleRemoveUser,
+		closeModalWhenRemoveUser,
 	} = useUsersController();
 
 	return (
@@ -75,16 +71,13 @@ export function UsersTable() {
 			<UpdateUserModal
 				user={selectedUser!}
 				isOpen={isOpenUpdateUserModal}
-				onRemoveUser={handleRemoveUser}
-				onCloseModal={handleCloseUpdateUserModal}
+				onCloseModal={closeModalWhenRemoveUser}
 			/>
 
 			<RemoveUserModal
 				user={selectedUser!}
 				isOpen={isOpenRemoveUserModal}
-				onRemoveUser={handleRemoveUser}
-				isDeletingUser={isDeletingUser}
-				onCloseModal={handleCloseRemoveUserModal}
+				onCloseModal={closeModalWhenRemoveUser}
 			/>
 
 		</Table.Root>
