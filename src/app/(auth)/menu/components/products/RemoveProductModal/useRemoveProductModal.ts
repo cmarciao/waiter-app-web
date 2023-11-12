@@ -4,7 +4,7 @@ import { Product } from '@/entities/Product';
 import { useRemoveProduct } from '@/hooks/products';
 
 export function useRemoveProductModal(selectedProduct: Product, onCloseModal: () => void) {
-	const { isDeletingProduct, removeProduct } = useRemoveProduct();
+	const { isRemovingProduct, removeProduct } = useRemoveProduct();
 
 	async function handleRemoveProduct() {
 		try {
@@ -24,7 +24,7 @@ export function useRemoveProductModal(selectedProduct: Product, onCloseModal: ()
 	}
 
 	return {
-		isDeletingProduct,
+		isRemovingProduct,
 		handleRemoveProduct
 	};
 }

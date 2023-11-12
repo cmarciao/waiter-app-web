@@ -5,27 +5,22 @@ import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
 import { ModalTitle } from '@/components/Modal/ModalTitle';
 
-import { useAddProductModalController } from './useAddProductModalController';
+import { useUpdateProductModal } from './useUpdateProductModal';
 import { twMerge } from 'tailwind-merge';
 import Image from 'next/image';
 import { Product } from '@/entities/Product';
-import { UpdateProductParams } from '@/services/productsService/update';
 
-type EditProductModalProps = {
+type UpdateProductModalProps = {
 	product: Product;
 	isOpen: boolean;
-	isEditingProduct: boolean;
 	onCloseModal: () => void;
-	onEditProduct: (product: UpdateProductParams) => Promise<void>
 }
 
-export function EditProductModal({
+export function UpdateProductModal({
 	product,
 	isOpen,
-	isEditingProduct,
 	onCloseModal,
-	onEditProduct
-}: EditProductModalProps) {
+}: UpdateProductModalProps) {
 	const {
 		register,
 		errors,
@@ -35,8 +30,11 @@ export function EditProductModal({
 		watchCategory,
 		watchIngredients,
 		imageUrlPreview,
-		handleAddProduct
-	} = useAddProductModalController(onEditProduct);
+		handleUpdateProduct,
+		handleRemoveProduct,
+		isUpdatingProduct,
+		isRemovingProduct
+	} = useUpdateProductModal(product, onCloseModal);
 
 	const isImageValid = imageUrlPreview !== 'data:application/octet-stream;base64,IA==' && imageUrlPreview != null;
 	const imageToShow = isImageValid ? imageUrlPreview : product.imageUrl;
@@ -227,11 +225,20 @@ export function EditProductModal({
 				</form>
 			</section>
 
-			<footer className='mt-12 flex justify-end'>
+			<footer className='mt-12 flex justify-between'>
+				<Button
+					type='button'
+					variant='secondary'
+					isLoading={isUpdatingProduct || isRemovingProduct}
+					onClick={handleRemoveProduct}
+				>
+					Remove product
+				</Button>
+
 				<Button
 					disabled={!isFormValid}
-					isLoading={isEditingProduct}
-					onClick={handleAddProduct}
+					isLoading={isUpdatingProduct || isRemovingProduct}
+					onClick={handleUpdateProduct}
 				>
 					Save product
 				</Button>

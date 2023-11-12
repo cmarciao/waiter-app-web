@@ -1,9 +1,6 @@
-import { Product } from '@/entities/Product';
-import { useGetAllProducts, useUpdateProduct } from '@/hooks/products';
-import { UpdateProductParams } from '@/services/productsService/update';
-import axios from 'axios';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
+import { Product } from '@/entities/Product';
+import { useGetAllProducts } from '@/hooks/products';
 
 export function useMenuController() {
 	// Products states
@@ -14,7 +11,6 @@ export function useMenuController() {
 
 	// Products API calls
 	const { products } = useGetAllProducts();
-	const { isUpdatingProduct, updateProduct } = useUpdateProduct();
 
 	function handleOpenCreateProductModal() {
 		setIsOpenCreateProductModal(true);
@@ -43,34 +39,12 @@ export function useMenuController() {
 		setIsOpenUpdateProductModal(false);
 	}
 
-	async function handleUpdateProduct(product: UpdateProductParams) {
-		try {
-			await updateProduct({
-				id: selectedProduct?.id,
-				...product
-			});
-
-			toast.success('Product updated successfulluy. ✔');
-
-			handleCloseUpdateProductModal();
-		} catch(err) {
-			if(axios.isAxiosError(err)) {
-				toast.error(err.response?.data.message);
-				return;
-			}
-
-			toast.error('Error when updating product.');
-		}
-	}
-
 	return {
 		products,
 		selectedProduct,
 		isOpenCreateProductModal,
 		isOpenUpdateProductModal,
 		isOpenRemoveProductModal,
-		handleUpdateProduct,
-		isUpdatingProduct,
 		handleOpenCreateProductModal,
 		handleCloseCreateProductModal,
 		handleOpenUpdateProductModal,

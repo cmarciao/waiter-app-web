@@ -44,7 +44,7 @@ export function useUpdateProduct() {
 export function useRemoveProduct() {
 	const queryClient = useQueryClient();
 
-	const { isLoading: isDeletingProduct, mutateAsync: removeProduct } = useMutation({
+	const { isLoading: isRemovingProduct, mutateAsync: removeProduct } = useMutation({
 		mutationFn: productsService.remove,
 		onSuccess: () => {
 			queryClient.invalidateQueries(['products']);
@@ -52,7 +52,7 @@ export function useRemoveProduct() {
 	});
 
 	return {
-		isDeletingProduct,
+		isRemovingProduct,
 		removeProduct
 	};
 }

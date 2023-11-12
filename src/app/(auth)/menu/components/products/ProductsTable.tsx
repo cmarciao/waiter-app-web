@@ -9,7 +9,7 @@ import { RemoveProductModal } from './RemoveProductModal';
 import { CreateProductModal } from './CreateProductModal';
 
 import { PencilIcon, Trash2Icon } from 'lucide-react';
-import { EditProductModal } from './EditProductModal';
+import { UpdateProductModal } from './UpdateProductModal';
 
 export function ProductsTable() {
 	const {
@@ -18,14 +18,12 @@ export function ProductsTable() {
 		isOpenCreateProductModal,
 		isOpenUpdateProductModal,
 		isOpenRemoveProductModal,
-		isUpdatingProduct,
 		handleOpenCreateProductModal,
 		handleCloseCreateProductModal,
 		handleOpenUpdateProductModal,
 		handleCloseUpdateProductModal,
 		handleOpenRemoveProductModal,
 		handleCloseRemoveProductModal,
-		handleUpdateProduct,
 	} = useMenuController();
 
 	return (
@@ -90,11 +88,9 @@ export function ProductsTable() {
 			)}
 
 			{isOpenUpdateProductModal && (
-				<EditProductModal
+				<UpdateProductModal
 					product={selectedProduct!}
 					isOpen={isOpenUpdateProductModal}
-					onEditProduct={handleUpdateProduct}
-					isEditingProduct={isUpdatingProduct}
 					onCloseModal={handleCloseUpdateProductModal}
 				/>
 			)}

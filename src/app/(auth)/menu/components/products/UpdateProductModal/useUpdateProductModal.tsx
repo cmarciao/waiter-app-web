@@ -5,7 +5,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useGetAllCategories } from '@/hooks/categories';
 import { useGetAllIngredients } from '@/hooks/ingredients';
 import { useEffect, useState } from 'react';
-import { UpdateProductParams } from '@/services/productsService/update';
+import { useUpdateProduct } from '@/hooks/products';
+import toast from 'react-hot-toast';
+import axios from 'axios';
+import { Product } from '@/entities/Product';
+import { useRemoveProductModal } from '../RemoveProductModal/useRemoveProductModal';
 
 const addProductSchema = z.object({
 	imageUrl: z.any(),
@@ -20,9 +24,11 @@ const addProductSchema = z.object({
 
 type AddProductSchema = z.infer<typeof addProductSchema>;
 
-export function useAddProductModalController(onAddProduct: (product: UpdateProductParams) => Promise<void>) {
+export function useUpdateProductModal(selectedProduct: Product, onCloseModal: () => void) {
 	const { categories } = useGetAllCategories();
 	const { ingredients } = useGetAllIngredients();
+	const { isUpdatingProduct, updateProduct } = useUpdateProduct();
+	const { isRemovingProduct, handleRemoveProduct: onRemoveProduct } = useRemoveProductModal(selectedProduct, onCloseModal);
 
 	const [imageUrlPreview, setImageUrlPreview] = useState<string | ArrayBuffer | null | undefined>(null);
 
@@ -52,21 +58,41 @@ export function useAddProductModalController(onAddProduct: (product: UpdateProdu
 		}
 	}, [watchImageUrl]);
 
-	const handleAddProduct = handleSubmit(async (data) => {
-		const product = {
-			name: data.name,
-			description: data.description,
-			price: data.price,
-			categoryId: data.category,
-			ingredientIds: data.ingredients,
-		};
+	const handleUpdateProduct = handleSubmit(async (data) => {
+		try {
+			const product = {
+				name: data.name,
+				description: data.description,
+				price: data.price,
+				categoryId: data.category,
+				ingredientIds: data.ingredients,
+			};
 
-		if(watchImageUrl[0]) {
-			Object.assign(product, { image: watchImageUrl[0] });
+			if(watchImageUrl[0]) {
+				Object.assign(product, { image: watchImageUrl[0] });
+			}
+
+			await updateProduct({
+				id: selectedProduct.id,
+				...product
+			});
+
+			toast.success('Product updated successfulluy. ✔');
+
+			onCloseModal();
+		} catch(err) {
+			if(axios.isAxiosError(err)) {
+				toast.error(err.response?.data.message);
+				return;
+			}
+
+			toast.error('Error when updating product.');
 		}
-
-		await onAddProduct(product);
 	});
+
+	async function handleRemoveProduct() {
+		await onRemoveProduct();
+	}
 
 	return {
 		errors,
@@ -77,6 +103,9 @@ export function useAddProductModalController(onAddProduct: (product: UpdateProdu
 		imageUrlPreview,
 		register,
 		isFormValid: isValid,
-		handleAddProduct,
+		handleUpdateProduct,
+		handleRemoveProduct,
+		isUpdatingProduct,
+		isRemovingProduct
 	};
 }

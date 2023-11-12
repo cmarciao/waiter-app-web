@@ -21,7 +21,7 @@ export function RemoveProductModal({
 	if(!isOpen) return;
 
 	const {
-		isDeletingProduct,
+		isRemovingProduct,
 		handleRemoveProduct
 	} = useRemoveProductModal(product, onCloseModal);
 
@@ -51,7 +51,7 @@ export function RemoveProductModal({
 					Keep product
 				</Button>
 
-				<Button isLoading={isDeletingProduct} onClick={handleRemoveProduct}>
+				<Button isLoading={isRemovingProduct} onClick={handleRemoveProduct}>
 					Remove product
 				</Button>
 			</footer>
