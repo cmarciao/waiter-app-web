@@ -1,8 +1,7 @@
 import { Category } from '@/entities/Category';
 import { Product } from '@/entities/Product';
-import { useCreateCategory, useGetAllCategories, useRemoveCategory, useUpdateCategory } from '@/hooks/categories';
+import { useGetAllCategories, useRemoveCategory, useUpdateCategory } from '@/hooks/categories';
 import { useCreateProduct, useGetAllProducts, useRemoveProduct, useUpdateProduct } from '@/hooks/products';
-import { CreateCategoryParams } from '@/services/categoriesService/create';
 import { CreateProductParams } from '@/services/productsService/create';
 import { UpdateProductParams } from '@/services/productsService/update';
 import axios from 'axios';
@@ -30,7 +29,6 @@ export function useMenuController() {
 
 	// Categories API calls
 	const { categories } = useGetAllCategories();
-	const { isCreatingCategory, createCategory } = useCreateCategory();
 	const { isUpdatingCategory, updateCategory } = useUpdateCategory();
 	const { isRemovingCategory, removeCategory } = useRemoveCategory();
 
@@ -179,23 +177,6 @@ export function useMenuController() {
 		setIsOpenCreateCategoryModal(false);
 	}
 
-	async function handleCreateCategory(category: CreateCategoryParams) {
-		try {
-			await createCategory(category);
-
-			toast.success('Category created successfulluy. ✔');
-
-			handleCloseCreateCategoryModal();
-		} catch(err) {
-			if(axios.isAxiosError(err)) {
-				toast.error(err.response?.data.message);
-				return;
-			}
-
-			toast.error('Error when creating category.');
-		}
-	}
-
 	return {
 		products,
 		categories,
@@ -207,10 +188,8 @@ export function useMenuController() {
 		isOpenRemoveProductModal,
 		isOpenEditCategoryModal,
 		isOpenRemoveCategoryModal,
-		isCreatingCategory,
 		isUpdatingCategory,
 		isRemovingCategory,
-		handleCreateCategory,
 		handleRemoveCategory,
 		handleCreateProduct,
 		handleUpdateProduct,

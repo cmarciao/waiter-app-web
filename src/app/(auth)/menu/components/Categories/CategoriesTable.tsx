@@ -14,10 +14,8 @@ export function CategoriesTable() {
 		isOpenCreateCategoryModal,
 		isOpenEditCategoryModal,
 		isOpenRemoveCategoryModal,
-		isCreatingCategory,
 		isUpdatingCategory,
 		isRemovingCategory,
-		handleCreateCategory,
 		handleRemoveCategory,
 		handleUpdateCategory,
 		handleOpenCreateCategoryModal,
@@ -68,14 +66,10 @@ export function CategoriesTable() {
 				</Table.Content>
 			</Table.Root>
 
-			{isOpenCreateCategoryModal && (
-				<CreateCategoryModal
-					isOpen={isOpenCreateCategoryModal}
-					isCreatingIngredient={isCreatingCategory}
-					onAddCategory={handleCreateCategory}
-					onCloseModal={handleCloseCreateCategoryModal}
-				/>
-			)}
+			<CreateCategoryModal
+				isOpen={isOpenCreateCategoryModal}
+				onCloseModal={handleCloseCreateCategoryModal}
+			/>
 
 			{isOpenEditCategoryModal && (
 				<UpdateCategoryModal

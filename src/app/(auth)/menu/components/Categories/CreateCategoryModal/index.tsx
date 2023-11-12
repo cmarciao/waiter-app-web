@@ -2,28 +2,26 @@ import { Modal } from '@/components/Modal';
 import { Input } from '@/components/Input';
 import { ModalTitle } from '@/components/Modal/ModalTitle';
 import { Button } from '@/components/Button';
-import { CreateCategoryParams } from '@/services/categoriesService/create';
-import { useCategoryIngredientModalController } from './useAddIngredientModalController';
+import { useCreateCategoryModal } from './useCreateCategoryModal';
 
 type AddCategoryModalProps = {
 	isOpen: boolean;
-	isCreatingIngredient: boolean;
-	onAddCategory: (ingredient: CreateCategoryParams) => Promise<void>;
 	onCloseModal: () => void;
 }
 
 export function CreateCategoryModal({
 	isOpen,
-	onAddCategory,
-	isCreatingIngredient,
 	onCloseModal
 }: AddCategoryModalProps) {
+	if(!isOpen) return;
+
 	const {
 		register,
-		errors,
-		handleCreateCategory,
 		isFormValid,
-	} = useCategoryIngredientModalController(onAddCategory);
+		errors,
+		isCreatingCategory,
+		handleCreateCategory,
+	} = useCreateCategoryModal(onCloseModal);
 
 	return (
 		<Modal open={isOpen} onCloseModal={onCloseModal}>
@@ -50,7 +48,7 @@ export function CreateCategoryModal({
 			<footer className='mt-12 text-right'>
 				<Button
 					disabled={!isFormValid}
-					isLoading={isCreatingIngredient}
+					isLoading={isCreatingCategory}
 					onClick={handleCreateCategory}
 				>
 					Create ingredient
