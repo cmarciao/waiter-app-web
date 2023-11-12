@@ -14,7 +14,7 @@ export function CreateUserModal({
 	isOpen,
 	onCloseModal
 }: CreateUserModalProps) {
-	if(!open) return;
+	if(!isOpen) return;
 
 	const {
 		isValid,

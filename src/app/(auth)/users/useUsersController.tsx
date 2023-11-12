@@ -2,7 +2,7 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { User } from '@/entities/User';
-import { useGetAllUsers, useRemoveUser, useUpdateUser } from '@/hooks/users';
+import { useGetAllUsers, useRemoveUser } from '@/hooks/users';
 import axios from 'axios';
 
 export function useUsersController() {
@@ -13,7 +13,7 @@ export function useUsersController() {
 
 	const { users } = useGetAllUsers();
 
-	const { isUpdatingUser, updateUser } = useUpdateUser();
+
 	const { isDeletingUser, removeUser } = useRemoveUser();
 
 	function handleOpenCreateUserModal() {
@@ -44,22 +44,6 @@ export function useUsersController() {
 		setIsOpenRemoveUserModal(false);
 	}
 
-	async function handlUpdateUser(id: string, user: Partial<User>) {
-		try {
-			await updateUser({id, user});
-
-			toast.success('User update successfulluy. ✔');
-			handleCloseUpdateUserModal();
-		} catch(err) {
-			if(axios.isAxiosError(err)) {
-				toast.error(err.response?.data.message);
-				return;
-			}
-
-			toast.error('Error when creating user.');
-		}
-	}
-
 	async function handleRemoveUser(id: string) {
 		try {
 			await removeUser(id);
@@ -84,7 +68,6 @@ export function useUsersController() {
 		isOpenCreateUserModal,
 		isOpenUpdateUserModal,
 		isOpenRemoveUserModal,
-		isUpdatingUser,
 		isDeletingUser,
 		handleOpenCreateUserModal,
 		handleCloseCreateUserModal,
@@ -92,7 +75,6 @@ export function useUsersController() {
 		handleCloseUpdateUserModal,
 		handleOpenRemoveUserModal,
 		handleCloseRemoveUserModal,
-		handlUpdateUser,
 		handleRemoveUser
 	};
 }

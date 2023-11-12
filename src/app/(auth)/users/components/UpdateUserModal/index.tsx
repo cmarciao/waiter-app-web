@@ -5,42 +5,41 @@ import { ModalTitle } from '@/components/Modal/ModalTitle';
 import { Button } from '@/components/Button';
 
 import { InputRadio } from '@/components/Checkbox';
-import { useUpdateUserModalController } from './useUpdateUserModalController';
+import { useUpdateUserModal } from './useUpdateUserModal';
 
 type UpdateUserModalProps = {
 	user: User;
 	isOpen: boolean;
-	isUpdatingUser: boolean;
-	onUpdateUser: (id: string, user: User) => Promise<void>;
-	onRemoveUser: (id: string) => Promise<void>;
 	onCloseModal: () => void;
+	onRemoveUser: (id: string) => Promise<void>;
 }
 
 export function UpdateUserModal({
 	user,
 	isOpen,
-	isUpdatingUser,
-	onUpdateUser,
 	onRemoveUser,
 	onCloseModal
 }: UpdateUserModalProps) {
+	if(!isOpen) return;
+
 	const {
 		isValid,
+		isUpdatingUser,
 		register,
-		handleAddUser,
+		handlUpdateUser,
 		handleRemoveUser,
 		errors,
-	} = useUpdateUserModalController({
+	} = useUpdateUserModal(
 		user,
-		onUpdateUser,
+		onCloseModal,
 		onRemoveUser
-	});
+	);
 
 	return (
 		<Modal open={isOpen} onCloseModal={onCloseModal}>
 			<ModalTitle>Update user</ModalTitle>
 
-			<form className='mt-6' onSubmit={handleAddUser}>
+			<form className='mt-6' onSubmit={handlUpdateUser}>
 				<div className='flex flex-col gap-6'>
 					<Input
 						id='name'

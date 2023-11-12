@@ -17,7 +17,6 @@ export function UsersTable() {
 		isOpenCreateUserModal,
 		isOpenUpdateUserModal,
 		isOpenRemoveUserModal,
-		isUpdatingUser,
 		isDeletingUser,
 		handleOpenCreateUserModal,
 		handleCloseCreateUserModal,
@@ -25,7 +24,6 @@ export function UsersTable() {
 		handleCloseUpdateUserModal,
 		handleOpenRemoveUserModal,
 		handleCloseRemoveUserModal,
-		handlUpdateUser,
 		handleRemoveUser,
 	} = useUsersController();
 
@@ -74,17 +72,12 @@ export function UsersTable() {
 				onCloseModal={handleCloseCreateUserModal}
 			/>
 
-			{isOpenUpdateUserModal && (
-				<UpdateUserModal
-					user={selectedUser!}
-					isOpen={isOpenUpdateUserModal}
-					onUpdateUser={handlUpdateUser}
-					isUpdatingUser={isUpdatingUser}
-					onRemoveUser={handleRemoveUser}
-					onCloseModal={handleCloseUpdateUserModal}
-				/>
-			)}
-
+			<UpdateUserModal
+				user={selectedUser!}
+				isOpen={isOpenUpdateUserModal}
+				onRemoveUser={handleRemoveUser}
+				onCloseModal={handleCloseUpdateUserModal}
+			/>
 
 			<RemoveUserModal
 				user={selectedUser!}
