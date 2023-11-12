@@ -5,24 +5,19 @@ import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
 import { ModalTitle } from '@/components/Modal/ModalTitle';
 
-import { useAddProductModalController } from './useAddProductModalController';
+import { useCreateProductModal } from './useCreateProductModal';
 import { twMerge } from 'tailwind-merge';
 import Image from 'next/image';
-import { CreateProductParams } from '@/services/productsService/create';
-import { AddIngredientModal } from '../../Ingredients/CreateIngredientModal';
+import { CreateIngredientModal } from '../../Ingredients/CreateIngredientModal';
 
 type AddProductModalProps = {
 	isOpen: boolean;
-	isCreatingProduct: boolean;
 	onCloseModal: () => void;
-	onCreateProduct: (product: CreateProductParams) => Promise<void>
 }
 
-export function AddProductModal({
+export function CreateProductModal({
 	isOpen,
-	isCreatingProduct,
 	onCloseModal,
-	onCreateProduct
 }: AddProductModalProps) {
 	const {
 		register,
@@ -33,21 +28,18 @@ export function AddProductModal({
 		watchCategory,
 		watchIngredients,
 		imageUrlPreview,
-		handleAddProduct,
-		isOpenAddIngredientModal,
-		isCreatingIngredient,
-		handleOpenAddIngredientModal,
-		handleCloseAddIngredientModal,
-		handleAddIngredient,
-	} = useAddProductModalController(onCreateProduct);
+		isCreatingProduct,
+		handleCreateProduct,
+		isOpenCreateIngredientModal,
+		handleOpenCreateIngredientModal,
+		handleCloseCreateIngredientModal,
+	} = useCreateProductModal(onCloseModal);
 
-	if(isOpenAddIngredientModal) {
+	if(isOpenCreateIngredientModal) {
 		return (
-			<AddIngredientModal
-				isOpen={isOpenAddIngredientModal}
-				isAddingIngredient={isCreatingIngredient}
-				onAddIngredient={handleAddIngredient}
-				onCloseModal={handleCloseAddIngredientModal}
+			<CreateIngredientModal
+				isOpen={isOpenCreateIngredientModal}
+				onCloseModal={handleCloseCreateIngredientModal}
 			/>
 		);
 	}
@@ -112,7 +104,6 @@ export function AddProductModal({
 							</div>
 						</label>
 
-
 						<Input
 							className='mt-8'
 							label='Product name'
@@ -174,7 +165,7 @@ export function AddProductModal({
 							<div className='flex items-center justify-between'>
 								<h3>Ingredients</h3>
 								<Button
-									onClick={handleOpenAddIngredientModal}
+									onClick={handleOpenCreateIngredientModal}
 									variant='secondary'
 									type='button'
 								>
@@ -247,7 +238,7 @@ export function AddProductModal({
 				<Button
 					disabled={!isFormValid}
 					isLoading={isCreatingProduct}
-					onClick={handleAddProduct}
+					onClick={handleCreateProduct}
 				>
 					Save product
 				</Button>

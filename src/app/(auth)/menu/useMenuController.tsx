@@ -1,6 +1,5 @@
 import { Product } from '@/entities/Product';
-import { useCreateProduct, useGetAllProducts, useRemoveProduct, useUpdateProduct } from '@/hooks/products';
-import { CreateProductParams } from '@/services/productsService/create';
+import { useGetAllProducts, useRemoveProduct, useUpdateProduct } from '@/hooks/products';
 import { UpdateProductParams } from '@/services/productsService/update';
 import axios from 'axios';
 import { useState } from 'react';
@@ -16,7 +15,6 @@ export function useMenuController() {
 	// Products API calls
 	const { products } = useGetAllProducts();
 	const { isDeletingProduct, removeProduct } = useRemoveProduct();
-	const { isCreatingProduct, createProduct } = useCreateProduct();
 	const { isUpdatingProduct, updateProduct } = useUpdateProduct();
 
 	function handleOpenCreateProductModal() {
@@ -25,23 +23,6 @@ export function useMenuController() {
 
 	function handleCloseCreateProductModal() {
 		setIsOpenCreateProductModal(false);
-	}
-
-	async function handleCreateProduct(product: CreateProductParams) {
-		try {
-			await createProduct(product);
-
-			toast.success('Product created successfulluy. ✔');
-
-			handleCloseCreateProductModal();
-		} catch(err) {
-			if(axios.isAxiosError(err)) {
-				toast.error(err.response?.data.message);
-				return;
-			}
-
-			toast.error('Error when deleting product.');
-		}
 	}
 
 	function handleOpenRemoveProductModal(product: Product) {
@@ -107,10 +88,8 @@ export function useMenuController() {
 		isOpenCreateProductModal,
 		isOpenUpdateProductModal,
 		isOpenRemoveProductModal,
-		handleCreateProduct,
 		handleUpdateProduct,
 		handleRemoveProduct,
-		isCreatingProduct,
 		isUpdatingProduct,
 		isDeletingProduct,
 		handleOpenCreateProductModal,

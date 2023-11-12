@@ -3,14 +3,13 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useGetAllCategories } from '@/hooks/categories';
-import { useCreateIngredient, useGetAllIngredients } from '@/hooks/ingredients';
+import { useGetAllIngredients } from '@/hooks/ingredients';
 import { useEffect, useState } from 'react';
-import { CreateProductParams } from '@/services/productsService/create';
-import { CreateIngredientParam } from '@/services/ingredientsService/create';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { useCreateProduct } from '@/hooks/products';
 
-const addProductSchema = z.object({
+const createProductSchema = z.object({
 	imageUrl: z.any().refine((files) => files?.length == 1, 'File is required.'),
 	name: z.string().trim().min(1, { message: 'Name is required.'}),
 	description: z.string().trim().min(1, { message: 'Description is required.' }),
@@ -21,22 +20,23 @@ const addProductSchema = z.object({
 	ingredients: z.string({ invalid_type_error: 'At least one ingredient must be selected' }).array().min(1, { message: 'At least one ingredient must be selected' }),
 });
 
-type AddProductSchema = z.infer<typeof addProductSchema>;
+type CreateProductSchema = z.infer<typeof createProductSchema>;
 
-export function useAddProductModalController(onAddProduct: (product: CreateProductParams) => Promise<void>) {
+export function useCreateProductModal(onCloseModal: () => void) {
 	const { categories } = useGetAllCategories();
 	const { ingredients } = useGetAllIngredients();
-	const { isCreatingIngredient, createIngredient } = useCreateIngredient();
 
-	const [isOpenAddIngredientModal, setIsOpenAddIngredientModal] = useState(false);
+	const [isOpenCreateIngredientModal, setIsOpenCreateIngredientModal] = useState(false);
 	const [imageUrlPreview, setImageUrlPreview] = useState<string | ArrayBuffer | null | undefined>(null);
 
-	const {watch, register, handleSubmit, formState: { errors, isValid }} = useForm<AddProductSchema>({
-		resolver: zodResolver(addProductSchema)
+	const {watch, register, handleSubmit, formState: { errors, isValid }} = useForm<CreateProductSchema>({
+		resolver: zodResolver(createProductSchema)
 	});
 	const watchImageUrl = watch('imageUrl');
 	const watchCategory = watch('category');
 	const watchIngredients = watch('ingredients');
+
+	const { isCreatingProduct, createProduct } = useCreateProduct();
 
 	useEffect(() => {
 		const fileReader = new FileReader();
@@ -54,41 +54,38 @@ export function useAddProductModalController(onAddProduct: (product: CreateProdu
 		}
 	}, [watchImageUrl]);
 
-	const handleAddProduct = handleSubmit(async (data) => {
-		const product = {
-			name: data.name,
-			description: data.description,
-			image: watchImageUrl[0],
-			price: data.price,
-			categoryId: data.category,
-			ingredientIds: data.ingredients,
-		};
-
-		await onAddProduct(product);
-	});
-
-	function handleOpenAddIngredientModal() {
-		setIsOpenAddIngredientModal(true);
-	}
-
-	function handleCloseAddIngredientModal() {
-		setIsOpenAddIngredientModal(false);
-	}
-
-	async function handleAddIngredient(ingredient: CreateIngredientParam) {
+	const handleCreateProduct = handleSubmit(async (data) => {
 		try {
-			await createIngredient(ingredient);
+			const product = {
+				name: data.name,
+				description: data.description,
+				image: watchImageUrl[0],
+				price: data.price,
+				categoryId: data.category,
+				ingredientIds: data.ingredients,
+			};
 
-			toast.success('Ingredient created successfulluy. ✔');
-			handleCloseAddIngredientModal();
+			await createProduct(product);
+
+			toast.success('Product created successfulluy. ✔');
+
+			onCloseModal();
 		} catch(err) {
 			if(axios.isAxiosError(err)) {
 				toast.error(err.response?.data.message);
 				return;
 			}
 
-			toast.error('Error when creating ingredient.');
+			toast.error('Error when creating product.');
 		}
+	});
+
+	function handleOpenCreateIngredientModal() {
+		setIsOpenCreateIngredientModal(true);
+	}
+
+	function handleCloseCreateIngredientModal() {
+		setIsOpenCreateIngredientModal(false);
 	}
 
 	return {
@@ -98,13 +95,12 @@ export function useAddProductModalController(onAddProduct: (product: CreateProdu
 		watchCategory,
 		watchIngredients,
 		imageUrlPreview,
-		isOpenAddIngredientModal,
-		isCreatingIngredient,
-		handleOpenAddIngredientModal,
-		handleCloseAddIngredientModal,
+		isOpenCreateIngredientModal,
+		isCreatingProduct,
+		handleOpenCreateIngredientModal,
+		handleCloseCreateIngredientModal,
 		register,
 		isFormValid: isValid,
-		handleAddProduct,
-		handleAddIngredient
+		handleCreateProduct,
 	};
 }

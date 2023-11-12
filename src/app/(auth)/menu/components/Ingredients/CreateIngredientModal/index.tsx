@@ -4,15 +4,15 @@ import { ModalTitle } from '@/components/Modal/ModalTitle';
 import { Button } from '@/components/Button';
 import { useCreateIngredientModal } from './useCreateIngredientModal';
 
-type AddIngredientModalProps = {
+type CreateIngredientModalProps = {
 	isOpen: boolean;
 	onCloseModal: () => void;
 }
 
-export function AddIngredientModal({
+export function CreateIngredientModal({
 	isOpen,
 	onCloseModal
-}: AddIngredientModalProps) {
+}: CreateIngredientModalProps) {
 	if(!isOpen) return;
 
 	const {

@@ -6,7 +6,7 @@ import { Table } from '@/components/Table';
 import { formatPrice } from '@/utils/formatPrice';
 import { useMenuController } from '../../useMenuController';
 import { RemoveProductModal } from './RemoveProductModal';
-import { AddProductModal } from './AddProductModal';
+import { CreateProductModal } from './CreateProductModal';
 
 import { PencilIcon, Trash2Icon } from 'lucide-react';
 import { EditProductModal } from './EditProductModal';
@@ -18,7 +18,6 @@ export function ProductsTable() {
 		isOpenCreateProductModal,
 		isOpenUpdateProductModal,
 		isOpenRemoveProductModal,
-		isCreatingProduct,
 		isUpdatingProduct,
 		isDeletingProduct,
 		handleOpenCreateProductModal,
@@ -27,7 +26,6 @@ export function ProductsTable() {
 		handleCloseUpdateProductModal,
 		handleOpenRemoveProductModal,
 		handleCloseRemoveProductModal,
-		handleCreateProduct,
 		handleUpdateProduct,
 		handleRemoveProduct,
 	} = useMenuController();
@@ -87,11 +85,9 @@ export function ProductsTable() {
 			</Table.Content>
 
 			{isOpenCreateProductModal && (
-				<AddProductModal
+				<CreateProductModal
 					isOpen={isOpenCreateProductModal}
-					isCreatingProduct={isCreatingProduct}
 					onCloseModal={handleCloseCreateProductModal}
-					onCreateProduct={handleCreateProduct}
 				/>
 			)}
 
