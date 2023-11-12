@@ -2,10 +2,10 @@
 
 import { PencilIcon, Trash2Icon } from 'lucide-react';
 import { Table } from '@/components/Table';
-import { useIngredientsTableController } from './useIngredientsTableController';
-import { AddIngredientModal } from './CreateIngredientModal';
-import { RemoveIngredientModal } from './RemoveIngredientModal';
-import { UpdateIngredientModal } from './UpdateIngredientModal';
+import { useIngredientsTable } from './useIngredientsTable';
+import { AddIngredientModal } from '../CreateIngredientModal';
+import { RemoveIngredientModal } from '../RemoveIngredientModal';
+import { UpdateIngredientModal } from '../UpdateIngredientModal';
 
 export function IngredientsTable() {
 	const {
@@ -19,7 +19,7 @@ export function IngredientsTable() {
 		handleOpenUpdateIngredientModal,
 		handleOpenRemoveIngredientModal,
 		closeModalWhenRemoveIngredient
-	} = useIngredientsTableController();
+	} = useIngredientsTable();
 
 	return (
 		<>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Ingredient } from '@/entities/Ingredient';
 import { useGetAllIngredients } from '@/hooks/ingredients';
 
-export function useIngredientsTableController() {
+export function useIngredientsTable() {
 	const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | null>(null);
 	const [isOpenCreateIngredientModal, setIsOpenCreateIngredientModal] = useState(false);
 	const [isOpenUpdateIngredientModal, setIsOpenUpdateIngredientModal] = useState(false);
