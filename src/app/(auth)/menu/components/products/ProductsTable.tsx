@@ -19,7 +19,6 @@ export function ProductsTable() {
 		isOpenUpdateProductModal,
 		isOpenRemoveProductModal,
 		isUpdatingProduct,
-		isDeletingProduct,
 		handleOpenCreateProductModal,
 		handleCloseCreateProductModal,
 		handleOpenUpdateProductModal,
@@ -27,7 +26,6 @@ export function ProductsTable() {
 		handleOpenRemoveProductModal,
 		handleCloseRemoveProductModal,
 		handleUpdateProduct,
-		handleRemoveProduct,
 	} = useMenuController();
 
 	return (
@@ -104,8 +102,6 @@ export function ProductsTable() {
 			<RemoveProductModal
 				product={selectedProduct!}
 				isOpen={isOpenRemoveProductModal}
-				onRemoveProduct={handleRemoveProduct}
-				isDeletingProduct={isDeletingProduct}
 				onCloseModal={handleCloseRemoveProductModal}
 			/>
 		</Table.Root>

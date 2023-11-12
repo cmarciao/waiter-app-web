@@ -5,23 +5,25 @@ import { ModalTitle } from '@/components/Modal/ModalTitle';
 import { Product } from '@/entities/Product';
 import { formatPrice } from '@/utils/formatPrice';
 import Image from 'next/image';
+import { useRemoveProductModal } from './useRemoveProductModal';
 
 type RemoveUserModalProps = {
 	product: Product;
 	isOpen: boolean;
-	isDeletingProduct: boolean;
 	onCloseModal: () => void;
-	onRemoveProduct: () => void;
 }
 
 export function RemoveProductModal({
 	product,
 	isOpen,
-	isDeletingProduct,
 	onCloseModal,
-	onRemoveProduct
 }: RemoveUserModalProps) {
 	if(!isOpen) return;
+
+	const {
+		isDeletingProduct,
+		handleRemoveProduct
+	} = useRemoveProductModal(product, onCloseModal);
 
 	return (
 		<Modal open={isOpen} onCloseModal={onCloseModal}>
@@ -49,7 +51,7 @@ export function RemoveProductModal({
 					Keep product
 				</Button>
 
-				<Button isLoading={isDeletingProduct} onClick={onRemoveProduct}>
+				<Button isLoading={isDeletingProduct} onClick={handleRemoveProduct}>
 					Remove product
 				</Button>
 			</footer>
