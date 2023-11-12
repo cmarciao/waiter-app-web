@@ -2,40 +2,37 @@ import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { Modal } from '@/components/Modal';
 import { ModalTitle } from '@/components/Modal/ModalTitle';
-import { useUpdateCategoryModalController } from './useUpdateCategoryModalController';
+import { useUpdateCategoryModal } from './useUpdateCategoryModal';
 import { Category } from '@/entities/Category';
 
 type UpdateCategoryModalProps = {
 	selectedCategory: Category;
-	isOpenEditCategoryModal: boolean;
-	handleUpdateCategory: (category: Category) => void
-	handleCloseEdictCategoryModal: () => void;
-	isUpdatingCategory: boolean;
-	isRemovingCategory: boolean;
-	handleRemoveCategory: () => void;
+	isOpen: boolean;
+	handleCloseModal: () => void;
 }
 
 export function UpdateCategoryModal({
 	selectedCategory,
-	handleUpdateCategory,
-	isOpenEditCategoryModal,
-	handleCloseEdictCategoryModal,
-	handleRemoveCategory,
-	isRemovingCategory,
-	isUpdatingCategory
+	isOpen,
+	handleCloseModal
 }: UpdateCategoryModalProps) {
+	if(!isOpen) return;
+
 	const {
-		onUpdateCategory,
 		isValid,
 		register,
-		errors
-	} = useUpdateCategoryModalController(selectedCategory, handleUpdateCategory);
+		errors,
+		isUpdatingCategory,
+		isRemovingCategory,
+		handleUpdateCategory,
+		handleRemoveCategory
+	} = useUpdateCategoryModal(selectedCategory, handleCloseModal);
 
 	return (
-		<Modal open={isOpenEditCategoryModal} onCloseModal={handleCloseEdictCategoryModal}>
+		<Modal open={isOpen} onCloseModal={handleCloseModal}>
 			<ModalTitle>Edit category</ModalTitle>
 
-			<form className='mt-6' onSubmit={onUpdateCategory}>
+			<form className='mt-6' onSubmit={handleUpdateCategory}>
 				<div className='flex flex-col gap-6'>
 					<Input
 						id='emoji'

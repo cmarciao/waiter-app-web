@@ -1,6 +1,6 @@
 import { Category } from '@/entities/Category';
 import { Product } from '@/entities/Product';
-import { useGetAllCategories, useUpdateCategory } from '@/hooks/categories';
+import { useGetAllCategories } from '@/hooks/categories';
 import { useCreateProduct, useGetAllProducts, useRemoveProduct, useUpdateProduct } from '@/hooks/products';
 import { CreateProductParams } from '@/services/productsService/create';
 import { UpdateProductParams } from '@/services/productsService/update';
@@ -29,7 +29,6 @@ export function useMenuController() {
 
 	// Categories API calls
 	const { categories } = useGetAllCategories();
-	const { isUpdatingCategory, updateCategory } = useUpdateCategory();
 
 	function handleOpenCreateProductModal() {
 		setIsOpenCreateProductModal(true);
@@ -124,21 +123,6 @@ export function useMenuController() {
 		setIsOpenEditCategoryModal(false);
 	}
 
-	async function handleUpdateCategory(category: Category) {
-		try {
-			await updateCategory(category);
-
-			toast.success('User updated successfulluy. ✔');
-		} catch(err) {
-			if(axios.isAxiosError(err)) {
-				toast.error(err.response?.data.message);
-				return;
-			}
-
-			toast.error('Error when updating user.');
-		}
-	}
-
 	function handleOpenRemoveCategoryModal(category: Category) {
 		setIsOpenRemoveCategoryModal(true);
 		setSelectedCategory(category);
@@ -167,11 +151,9 @@ export function useMenuController() {
 		isOpenRemoveProductModal,
 		isOpenEditCategoryModal,
 		isOpenRemoveCategoryModal,
-		isUpdatingCategory,
 		handleCreateProduct,
 		handleUpdateProduct,
 		handleRemoveProduct,
-		handleUpdateCategory,
 		isCreatingProduct,
 		isUpdatingProduct,
 		isDeletingProduct,
