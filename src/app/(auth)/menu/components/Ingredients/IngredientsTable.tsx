@@ -12,12 +12,10 @@ export function IngredientsTable() {
 		ingredients,
 		selectedIngredient,
 		isUpdatingIngredient,
-		isRemovingIngredient,
 		isOpenCreateIngredientModal,
 		isOpenUpdateIngredientModal,
 		isOpenRemoveIngredientModal,
 		handleUpdateIngredient,
-		handleRemoveIngredient,
 		handleOpenCreateIngredientModal,
 		handleCloseCreateIngredientModal,
 		handleOpenUpdateIngredientModal,
@@ -75,24 +73,20 @@ export function IngredientsTable() {
 				<UpdateIngredientModal
 					isOpen={isOpenUpdateIngredientModal}
 					handleCloseModal={handleCloseUpdateIngredientModal}
-					handleRemoveIngredient={handleRemoveIngredient}
+					handleRemoveIngredient={() => {}}
 					handleUpdateIngredient={handleUpdateIngredient}
 					ingredient={selectedIngredient!}
-					isRemovingIngredient={isRemovingIngredient}
+					isRemovingIngredient={false}
 					isUpdatingIngredient={isUpdatingIngredient}
 
 				/>
 			)}
 
-			{isOpenRemoveIngredientModal && (
-				<RemoveIngredientModal
-					ingredient={selectedIngredient!}
-					isOpen={isOpenRemoveIngredientModal}
-					onCloseModal={handleCloseRemoveIngredientModal}
-					onRemoveIngredient={handleRemoveIngredient}
-					isDeletingIngredient={isRemovingIngredient}
-				/>
-			)}
+			<RemoveIngredientModal
+				ingredient={selectedIngredient!}
+				isOpen={isOpenRemoveIngredientModal}
+				onCloseModal={handleCloseRemoveIngredientModal}
+			/>
 		</>
 	);
 }

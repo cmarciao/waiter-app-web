@@ -1,5 +1,5 @@
 import { Ingredient } from '@/entities/Ingredient';
-import { useGetAllIngredients, useRemoveIngredient, useUpdateIngredient } from '@/hooks/ingredients';
+import { useGetAllIngredients, useUpdateIngredient } from '@/hooks/ingredients';
 import axios from 'axios';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -12,7 +12,6 @@ export function useIngredientsTableController() {
 
 	const { ingredients } = useGetAllIngredients();
 	const { isUpdatingIngredient, updateIngredient } = useUpdateIngredient();
-	const { isRemovingIngredient, removeIngredient } = useRemoveIngredient();
 
 	function handleOpenCreateIngredientModal() {
 		setIsOpenCreateIngredientModal(true);
@@ -30,24 +29,6 @@ export function useIngredientsTableController() {
 	function handleCloseRemoveIngredientModal() {
 		setIsOpenRemoveIngredientModal(false);
 		setSelectedIngredient(null);
-	}
-
-	async function handleRemoveIngredient() {
-		try {
-			await removeIngredient(selectedIngredient!.id);
-
-			toast.success('Ingredient deleted successfulluy. ✔');
-
-			if(isOpenRemoveIngredientModal) handleCloseRemoveIngredientModal();
-			else handleCloseUpdateIngredientModal();
-		} catch(err) {
-			if(axios.isAxiosError(err)) {
-				toast.error(err.response?.data.message);
-				return;
-			}
-
-			toast.error('Error when deleting ingredient.');
-		}
 	}
 
 	function handleOpenUpdateIngredientModal(ingredient: Ingredient) {
@@ -79,12 +60,10 @@ export function useIngredientsTableController() {
 		ingredients,
 		selectedIngredient,
 		isUpdatingIngredient,
-		isRemovingIngredient,
 		isOpenCreateIngredientModal,
 		isOpenUpdateIngredientModal,
 		isOpenRemoveIngredientModal,
 		handleUpdateIngredient,
-		handleRemoveIngredient,
 		handleOpenCreateIngredientModal,
 		handleCloseCreateIngredientModal,
 		handleOpenUpdateIngredientModal,

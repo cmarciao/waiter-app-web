@@ -4,23 +4,25 @@ import { ModalTitle } from '@/components/Modal/ModalTitle';
 import { ModalDescription } from '@/components/Modal/ModalDescription';
 import { Button } from '@/components/Button';
 import { Ingredient } from '@/entities/Ingredient';
+import { useRemoveIngredientModal } from './useRemoveIngredientModal';
 
 type RemoveIngredientModalProps = {
 	ingredient: Ingredient;
 	isOpen: boolean;
-	isDeletingIngredient: boolean;
-	onRemoveIngredient: () => Promise<void>;
 	onCloseModal: () => void;
 }
 
 export function RemoveIngredientModal({
 	ingredient,
 	isOpen,
-	isDeletingIngredient,
-	onRemoveIngredient,
 	onCloseModal
 }: RemoveIngredientModalProps) {
 	if(!isOpen) return;
+
+	const {
+		isRemovingIngredient,
+		handleRemoveIngredient
+	} = useRemoveIngredientModal(ingredient, onCloseModal);
 
 	return (
 		<Modal open={isOpen} onCloseModal={onCloseModal}>
@@ -47,13 +49,13 @@ export function RemoveIngredientModal({
 				<Button
 					variant='secondary'
 					onClick={onCloseModal}
-					isLoading={isDeletingIngredient}
+					isLoading={isRemovingIngredient}
 				>
 					Keep ingredient
 				</Button>
 				<Button
-					onClick={onRemoveIngredient}
-					isLoading={isDeletingIngredient}
+					onClick={handleRemoveIngredient}
+					isLoading={isRemovingIngredient}
 				>
 					Remove ingredient
 				</Button>
