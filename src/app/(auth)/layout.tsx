@@ -2,14 +2,14 @@ import { ReactNode } from 'react';
 import { redirect } from 'next/navigation';
 
 import { Sidebar } from '@/components/Sidebar';
-import { me } from '@/services/me';
+import { meService } from '@/services/me';
 
 type AuthLayoutProps = {
 	children : ReactNode
 }
 
 export default async function AuthLayout({ children }: AuthLayoutProps) {
-	const session = await me();
+	const session = await meService.me();
 
 	if(!session?.name) {
 		redirect('/signin');

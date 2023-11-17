@@ -1,14 +1,14 @@
 import { ReactNode } from 'react';
 import { redirect } from 'next/navigation';
 
-import { me } from '@/services/me';
+import { meService } from '@/services/me';
 
 type SignInLayoutProps = {
 	children: ReactNode;
 }
 
 export default async function SignInLayout({ children }: SignInLayoutProps) {
-	const session = await me();
+	const session = await meService.me();
 
 	if(session?.name) {
 		redirect('/users');

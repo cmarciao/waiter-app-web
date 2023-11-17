@@ -1,8 +1,5 @@
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { me } from './get';
 
-export async function me() {
-	const me = await getServerSession(authOptions);
-
-	return me?.user || {};
-}
+export const meService = {
+	me
+};
