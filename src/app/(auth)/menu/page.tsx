@@ -1,5 +1,5 @@
 import { MenuIcon } from 'lucide-react';
-import { Navigation } from './components/Navigation';
+import { TabNavigation } from './components/TabNavigation';
 import { ProductsTable } from './components/Products/ProductsTable';
 import { CategoriesTable } from './components/Categories/CategoriesTable';
 import { IngredientsTable } from './components/Ingredients/IngredientsTable';
@@ -25,7 +25,7 @@ export default function Menu({ searchParams }: MenuProps) {
 			</header>
 
 			<main className='mt-[4.5rem]'>
-				<Navigation tab={tab} />
+				<TabNavigation tab={tab} />
 
 				<div className='mt-2'>
 					{tab === 'products' && (
