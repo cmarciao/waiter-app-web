@@ -28,8 +28,8 @@ export function Sidebar() {
 					/>
 
 					<NavLink
-						label='History'
-						to='/history'
+						label='Historic'
+						to='/historic?orderBy=desc'
 						icon={HistoryIcon}
 					/>
 

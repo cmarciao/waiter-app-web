@@ -1,4 +1,5 @@
 import { MenuIcon } from 'lucide-react';
+
 import { TabNavigation } from './components/TabNavigation';
 import { ProductsTable } from './components/Products/ProductsTable';
 import { CategoriesTable } from './components/Categories/CategoriesTable';
@@ -12,7 +13,6 @@ export default function Menu({ searchParams }: MenuProps) {
 	const tab = searchParams['tab'] || 'products';
 
 	return (
-
 		<div className="px-4 max-w-7xl m-auto">
 			<header className="pt-10">
 				<div className='flex items-center gap-4'>

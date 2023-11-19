@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { Table } from '@/components/Table';
 
-import { formatPrice } from '@/utils/formatPrice';
+import { formatPrice } from '@/utils/formatUtils';
 import { useProductsTable } from './useProductsTable';
 import { RemoveProductModal } from '../RemoveProductModal';
 import { CreateProductModal } from '../CreateProductModal';

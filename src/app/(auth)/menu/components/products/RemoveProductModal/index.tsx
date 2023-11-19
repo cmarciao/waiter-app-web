@@ -1,10 +1,12 @@
+import Image from 'next/image';
+
+import { Product } from '@/entities/Product';
+import { formatPrice } from '@/utils/formatUtils';
+
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';
 import { ModalDescription } from '@/components/Modal/ModalDescription';
 import { ModalTitle } from '@/components/Modal/ModalTitle';
-import { Product } from '@/entities/Product';
-import { formatPrice } from '@/utils/formatPrice';
-import Image from 'next/image';
 import { useRemoveProductModal } from './useRemoveProductModal';
 
 type RemoveUserModalProps = {
