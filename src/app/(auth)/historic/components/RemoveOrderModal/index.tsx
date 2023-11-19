@@ -8,6 +8,8 @@ import { Modal } from '@/components/Modal';
 import { ModalTitle } from '@/components/Modal/ModalTitle';
 import { ModalDescription } from '@/components/Modal/ModalDescription';
 
+import { useRemoveOrderModal } from './useRemoveOrderModal';
+
 type RemoveOrderModalProps = {
 	selectedOrder: Order;
 	isOpen: boolean;
@@ -16,6 +18,11 @@ type RemoveOrderModalProps = {
 
 export function RemoveOrderModalModal({ selectedOrder, isOpen, handleCloseModal }: RemoveOrderModalProps) {
 	if(!isOpen) return;
+
+	const {
+		isRemovingHistoricOrder,
+		handleRemoveHistoricOrder
+	} = useRemoveOrderModal(selectedOrder, handleCloseModal);
 
 	return (
 		<Modal open={isOpen} onCloseModal={handleCloseModal}>
@@ -67,6 +74,8 @@ export function RemoveOrderModalModal({ selectedOrder, isOpen, handleCloseModal 
 				<Button
 					className='mt-8'
 					variant='secondary'
+					onClick={handleRemoveHistoricOrder}
+					isLoading={isRemovingHistoricOrder}
 				>
 					Delete order
 				</Button>
