@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Ingredient } from '@/entities/Ingredient';
+import { Ingredient } from '@/types/Ingredient';
 import { useGetAllIngredients } from '@/hooks/ingredients';
 
 export function useIngredientsTable() {

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { Order } from '@/entities/Order';
+import { Order } from '@/types/Order';
 import { useGetHistoric } from '@/hooks/historic';
 
 export function useHistoricTable(orderBy: string) {

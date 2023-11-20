@@ -1,4 +1,4 @@
-import { User } from '@/entities/User';
+import { User } from '@/types/User';
 import { httpClient } from '../httpClient';
 
 export async function create(user: User) {

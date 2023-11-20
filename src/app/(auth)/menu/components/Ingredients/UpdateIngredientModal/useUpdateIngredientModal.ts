@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Ingredient } from '@/entities/Ingredient';
+import { Ingredient } from '@/types/Ingredient';
 import { useUpdateIngredient } from '@/hooks/ingredients';
 import toast from 'react-hot-toast';
 import axios from 'axios';

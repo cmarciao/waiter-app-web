@@ -3,7 +3,7 @@ import { Input } from '@/components/Input';
 import { ModalTitle } from '@/components/Modal/ModalTitle';
 import { ModalDescription } from '@/components/Modal/ModalDescription';
 import { Button } from '@/components/Button';
-import { Ingredient } from '@/entities/Ingredient';
+import { Ingredient } from '@/types/Ingredient';
 import { useRemoveIngredientModal } from './useRemoveIngredientModal';
 
 type RemoveIngredientModalProps = {

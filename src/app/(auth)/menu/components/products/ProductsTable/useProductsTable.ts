@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Product } from '@/entities/Product';
+import { Product } from '@/types/Product';
 import { useGetAllProducts } from '@/hooks/products';
 
 export function useProductsTable() {

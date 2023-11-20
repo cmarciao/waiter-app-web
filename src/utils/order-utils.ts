@@ -1,4 +1,4 @@
-import { Order } from '@/entities/Order';
+import { Order } from '@/types/Order';
 
 export function generateOrderName(order: Order) {
 	const productsNameList = order.products.map(product => product.name);

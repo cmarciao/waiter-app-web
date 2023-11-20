@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { User } from '@/entities/User';
+import { User } from '@/types/User';
 import { useGetAllUsers } from '@/hooks/users';
 
 export function useUsersTable() {

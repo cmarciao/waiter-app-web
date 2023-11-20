@@ -1,4 +1,4 @@
-import { Ingredient } from '@/entities/Ingredient';
+import { Ingredient } from '@/types/Ingredient';
 import { httpClient } from '../httpClient';
 
 type CreateProductResponse = Ingredient[];

@@ -3,7 +3,7 @@ import { Input } from '@/components/Input';
 import { Modal } from '@/components/Modal';
 import { ModalTitle } from '@/components/Modal/ModalTitle';
 import { useUpdateIngredientModal } from './useUpdateIngredientModal';
-import { Ingredient } from '@/entities/Ingredient';
+import { Ingredient } from '@/types/Ingredient';
 
 type UpdateIngredientModalProps = {
 	ingredient: Ingredient;

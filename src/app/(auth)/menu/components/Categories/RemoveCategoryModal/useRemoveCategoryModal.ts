@@ -1,7 +1,7 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-import { Category } from '@/entities/Category';
+import { Category } from '@/types/Category';
 import { useRemoveCategory } from '@/hooks/categories';
 
 export function useRemoveCategoryModal(selectedCategory: Category, handleCloseModal: () => void) {

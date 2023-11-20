@@ -3,7 +3,7 @@ import { Input } from '@/components/Input';
 import { Modal } from '@/components/Modal';
 import { ModalTitle } from '@/components/Modal/ModalTitle';
 import { useUpdateCategoryModal } from './useUpdateCategoryModal';
-import { Category } from '@/entities/Category';
+import { Category } from '@/types/Category';
 
 type UpdateCategoryModalProps = {
 	selectedCategory: Category;

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Product } from '@/entities/Product';
+import { Product } from '@/types/Product';
 import { useRemoveProduct } from '@/hooks/products';
 
 export function useRemoveProductModal(selectedProduct: Product, onCloseModal: () => void) {

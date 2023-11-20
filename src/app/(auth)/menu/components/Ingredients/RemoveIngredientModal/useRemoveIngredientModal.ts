@@ -1,6 +1,6 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Ingredient } from '@/entities/Ingredient';
+import { Ingredient } from '@/types/Ingredient';
 import { useRemoveIngredient } from '@/hooks/ingredients';
 
 export function useRemoveIngredientModal(selectedIngredient:Ingredient, onCloseModal: () => void) {

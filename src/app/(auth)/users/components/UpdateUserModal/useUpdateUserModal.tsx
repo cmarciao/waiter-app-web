@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { User } from '@/entities/User';
+import { User } from '@/types/User';
 import { useUpdateUser } from '@/hooks/users';
 import { useRemoveUserModal } from '../RemoveUserModal/useRemoveUserModal';
 

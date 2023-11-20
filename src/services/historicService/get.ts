@@ -1,4 +1,4 @@
-import { Order } from '@/entities/Order';
+import { Order } from '@/types/Order';
 import { httpClient } from '../httpClient';
 
 type GetHistoricResponse = Order[];

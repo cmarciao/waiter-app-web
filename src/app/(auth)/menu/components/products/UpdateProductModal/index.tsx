@@ -8,7 +8,7 @@ import { ModalTitle } from '@/components/Modal/ModalTitle';
 import { useUpdateProductModal } from './useUpdateProductModal';
 import { twMerge } from 'tailwind-merge';
 import Image from 'next/image';
-import { Product } from '@/entities/Product';
+import { Product } from '@/types/Product';
 
 type UpdateProductModalProps = {
 	product: Product;

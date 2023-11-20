@@ -1,6 +1,6 @@
 import { Modal } from '@/components/Modal';
 import { Input } from '@/components/Input';
-import { User } from '@/entities/User';
+import { User } from '@/types/User';
 import { ModalTitle } from '@/components/Modal/ModalTitle';
 import { Button } from '@/components/Button';
 

@@ -2,8 +2,8 @@
 
 import { ArrowDown01, ArrowUp01, Eye, Trash2Icon } from 'lucide-react';
 
-import { formatDate, formatPrice } from '@/utils/formatUtils';
-import { generateOrderCategoryName, generateOrderName } from '@/utils/orderUtils';
+import { formatDate, formatPrice } from '@/utils/format-utils';
+import { generateOrderCategoryName, generateOrderName } from '@/utils/order-utils';
 
 import { Table } from '@/components/Table';
 import { Spinner } from '@/components/Spinner';

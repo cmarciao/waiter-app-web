@@ -1,4 +1,4 @@
-import { User } from '@/entities/User';
+import { User } from '@/types/User';
 import { httpClient } from '../httpClient';
 
 type UpdateUserParams =  {

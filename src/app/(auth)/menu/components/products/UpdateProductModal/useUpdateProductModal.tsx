@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { useUpdateProduct } from '@/hooks/products';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import { Product } from '@/entities/Product';
+import { Product } from '@/types/Product';
 import { useRemoveProductModal } from '../RemoveProductModal/useRemoveProductModal';
 
 const addProductSchema = z.object({

@@ -1,4 +1,4 @@
-import { Category } from '@/entities/Category';
+import { Category } from '@/types/Category';
 import { httpClient } from '../httpClient';
 
 export type CreateCategoryParams = Omit<Category, 'id'>

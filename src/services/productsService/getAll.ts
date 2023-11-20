@@ -1,4 +1,4 @@
-import { Product } from '@/entities/Product';
+import { Product } from '@/types/Product';
 import { httpClient } from '../httpClient';
 
 type GetAllProductsResponse = Product[];

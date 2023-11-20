@@ -1,4 +1,4 @@
-import { Category } from '@/entities/Category';
+import { Category } from '@/types/Category';
 
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';

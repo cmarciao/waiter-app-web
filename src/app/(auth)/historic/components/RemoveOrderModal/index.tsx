@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
-import { Order } from '@/entities/Order';
-import { formatDate, formatPrice } from '@/utils/formatUtils';
+import { Order } from '@/types/Order';
+import { formatDate, formatPrice } from '@/utils/format-utils';
 
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
-import { Product } from '@/entities/Product';
-import { formatPrice } from '@/utils/formatUtils';
+import { Product } from '@/types/Product';
+import { formatPrice } from '@/utils/format-utils';
 
 import { Button } from '@/components/Button';
 import { Modal } from '@/components/Modal';

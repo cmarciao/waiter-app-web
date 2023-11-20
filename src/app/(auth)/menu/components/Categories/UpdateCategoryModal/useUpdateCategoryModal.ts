@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Category } from '@/entities/Category';
+import { Category } from '@/types/Category';
 import { useUpdateCategory } from '@/hooks/categories';
 import { useRemoveCategoryModal } from '../RemoveCategoryModal/useRemoveCategoryModal';
 

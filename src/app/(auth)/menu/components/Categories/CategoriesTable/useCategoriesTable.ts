@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Category } from '@/entities/Category';
+import { Category } from '@/types/Category';
 import { useGetAllCategories } from '@/hooks/categories';
 
 export function useCategoriesTable() {

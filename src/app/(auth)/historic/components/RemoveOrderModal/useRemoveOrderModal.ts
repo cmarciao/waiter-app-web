@@ -1,4 +1,4 @@
-import { Order } from '@/entities/Order';
+import { Order } from '@/types/Order';
 import { useRemoveHistoricOrder } from '@/hooks/historic';
 import axios from 'axios';
 import toast from 'react-hot-toast';
