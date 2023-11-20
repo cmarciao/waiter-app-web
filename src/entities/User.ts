@@ -1,6 +1,6 @@
-import { UserType } from '../config/constants';
+import { USER_TYPE } from '@/constants/user-type';
 
-export type UserType = keyof typeof UserType;
+export type UserType = keyof typeof USER_TYPE;
 
 export type User = {
 	id?: string;
