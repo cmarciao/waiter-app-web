@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 
 import { Order } from '@/types/Order';
 import { useGetHistoric } from '@/hooks/historic';
+import { APP_ROUTES } from '@/constants/app-routes';
 
 export function useHistoricTable(orderBy: string) {
 	const navigate = useRouter();
@@ -16,8 +17,8 @@ export function useHistoricTable(orderBy: string) {
 	} = useGetHistoric(orderBy);
 
 	function toggleOrderBy() {
-		if(orderBy === 'desc') navigate.push('/historic?orderBy=asc');
-		else navigate.push('/historic?orderBy=desc');
+		if(orderBy === 'desc') navigate.push(`${APP_ROUTES.private.historic}?orderBy=asc`);
+		else navigate.push(`${APP_ROUTES.private.historic}?orderBy=desc`);
 	}
 
 	function handleOpenOrderDetailsModal(order: Order) {

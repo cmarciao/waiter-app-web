@@ -10,5 +10,6 @@ export interface Order {
 	orderState: string;
 	total: number;
 	createdAt: Date;
+	totalProducts: number;
 	products: ProductOrder[];
 }
