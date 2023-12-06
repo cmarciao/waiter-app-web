@@ -14,7 +14,7 @@ export default function Users() {
 					<h1>Users</h1>
 				</div>
 
-				<span className='block font-semibold mt-4'>Register and manager your users</span>
+				<span className='block font-semibold mt-4 text-gray-400'>Register and manager your users</span>
 			</header>
 
 			<main className='mt-[4.5rem]'>

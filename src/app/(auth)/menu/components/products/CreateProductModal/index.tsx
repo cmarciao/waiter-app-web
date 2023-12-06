@@ -1,3 +1,5 @@
+import Image from 'next/image';
+import { twMerge } from 'tailwind-merge';
 import { CheckIcon, ImageDownIcon, ImageIcon, InfoIcon } from 'lucide-react';
 
 import { Modal } from '@/components/Modal';
@@ -6,8 +8,6 @@ import { Button } from '@/components/Button';
 import { ModalTitle } from '@/components/Modal/ModalTitle';
 
 import { useCreateProductModal } from './useCreateProductModal';
-import { twMerge } from 'tailwind-merge';
-import Image from 'next/image';
 import { CreateIngredientModal } from '../../Ingredients/CreateIngredientModal';
 
 type AddProductModalProps = {
@@ -143,7 +143,8 @@ export function CreateProductModal({
 										htmlFor={category.name}
 										className={twMerge(
 											'cursor-pointer flex gap-2 px-[14px] py-[10px] rounded-3xl shadow-equals justify-center focus:bg-gray-300 border border-white',
-											'data-[active=true]:border data-[active=true]:border-gray-300'
+											'data-[active=true]:border data-[active=true]:border-gray-300',
+											'hover:border-gray-300'
 										)}
 									>
 										<input
@@ -194,13 +195,10 @@ export function CreateProductModal({
 							className='mt-6 flex flex-col gap-1 h-[476px] overflow-auto s'
 						>
 							{ingredients.map((ingredient) => (
-								<div
-									key={ingredient.id}
-									className='p-4 rounded-md border border-gray-200'
-								>
+								<div key={ingredient.id} >
 									<label
 										htmlFor={ingredient.id}
-										className='w-full flex items-center justify-between'
+										className='w-full flex items-center justify-between p-4 rounded-md border border-gray-200 cursor-pointer hover:border-gray-300'
 									>
 										<span>{ingredient.emoji} {ingredient.name}</span>
 										<div className='border border-gray-300 flex items-center justify-center rounded-md h-[18px] w-[18px]'>

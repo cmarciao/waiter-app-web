@@ -21,7 +21,7 @@ export default function Menu({ searchParams }: MenuProps) {
 					<h1>Menu</h1>
 				</div>
 
-				<span className='block font-semibold mt-4'>Manage your establishment&apos;s products</span>
+				<span className='block font-semibold mt-4 text-gray-400'>Manage your establishment&apos;s products</span>
 			</header>
 
 			<main className='mt-[4.5rem]'>
