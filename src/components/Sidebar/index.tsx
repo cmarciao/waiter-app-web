@@ -1,5 +1,6 @@
 'use client';
 
+import { APP_ROUTES } from '@/constants/app-routes';
 import { NavLink } from './SidebarLink';
 import { SignOutButton } from './SignOutButton';
 
@@ -23,25 +24,25 @@ export function Sidebar() {
 				<div>
 					<NavLink
 						label='Home'
-						to='/home'
+						to={APP_ROUTES.private.home}
 						icon={HomeIcon}
 					/>
 
 					<NavLink
 						label='Historic'
-						to='/historic?orderBy=desc'
+						to={`${APP_ROUTES.private.historic}?orderBy=desc`}
 						icon={HistoryIcon}
 					/>
 
 					<NavLink
 						label='Menu'
-						to='/menu?tab=products'
+						to={`${APP_ROUTES.private.menu}?tab=products`}
 						icon={MenuIcon}
 					/>
 
 					<NavLink
 						label='Users'
-						to='/users'
+						to={APP_ROUTES.private.users}
 						icon={UserCircle2}
 					/>
 				</div>

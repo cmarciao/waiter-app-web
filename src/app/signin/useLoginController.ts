@@ -8,6 +8,8 @@ import toast from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import { APP_ROUTES } from '@/constants/app-routes';
+
 const loginSchema = z.object({
 	email: z.string().email('Invalid email.'),
 	password: z.string().min(8, { message: 'Min 8 characters.' })
@@ -43,7 +45,7 @@ export function useLoginController() {
 		}
 
 		toast.success('Are you ready? Let\'s get to work! 🍕');
-		router.replace('/users');
+		router.replace(APP_ROUTES.private.home);
 	});
 
 	return {
