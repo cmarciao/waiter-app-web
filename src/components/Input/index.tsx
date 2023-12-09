@@ -49,6 +49,7 @@ function InputRef({ label, className, errorMessage = undefined, ...props }: Inpu
 
 				{props.type === 'password' && (
 					<button
+						type='button'
 						className='absolute right-4 top-[55%]'
 						onClick={handleToggleShowPassword}
 					>
