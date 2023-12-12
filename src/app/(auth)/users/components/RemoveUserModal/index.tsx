@@ -1,36 +1,60 @@
-import { Modal } from '@/components/Modal';
-import { Input } from '@/components/Input';
-import { User } from '@/types/User';
-import { ModalTitle } from '@/components/Modal/ModalTitle';
-import { ModalDescription } from '@/components/Modal/ModalDescription';
-import { Button } from '@/components/Button';
+import Link from 'next/link';
+import { useFormStatus } from 'react-dom';
+
+import { Input, Button } from '@/components';
+import { LoadScreen } from '@/components/LoadScreen';
+import { Modal, ModalTitle, ModalDescription } from '@/components';
+
 import { useRemoveUserModal } from './useRemoveUserModal';
 
 type RemoveUserModalProps = {
-	user: User;
 	isOpen: boolean;
-	onCloseModal: () => void;
 }
 
-export function RemoveUserModal({
-	user,
-	isOpen,
-	onCloseModal
-}: RemoveUserModalProps) {
-	if(!isOpen) return;
-
-	const {
-		isRemovingUser,
-		handleRemoveUser
-	} = useRemoveUserModal(onCloseModal);
+function ActionsButtons() {
+	const { pending } = useFormStatus();
 
 	return (
-		<Modal open={isOpen} onCloseModal={onCloseModal}>
+		<footer className='mt-12 flex items-center justify-between'>
+			<Button
+				variant='secondary'
+				isLoading={pending}
+			>
+				<Link href='/users'>
+					Keep user
+				</Link>
+			</Button>
+
+			<Button
+				type='submit'
+				isLoading={pending}
+			>
+				Remove user
+			</Button>
+		</footer>
+	);
+}
+
+export function RemoveUserModal({ isOpen }: RemoveUserModalProps) {
+	if(!isOpen) return null;
+
+	const {
+		user,
+		formAction
+	} = useRemoveUserModal();
+
+	if(!user) {
+		return <LoadScreen />;
+	}
+
+	return (
+		<Modal open={isOpen} hrefModalClose='/users'>
 			<ModalTitle>Remove user</ModalTitle>
 			<ModalDescription>Tem certeza que deseja excluir o usuário?</ModalDescription>
 
-			<section className='mt-6 flex flex-col gap-6'>
+			<form className='mt-6 flex flex-col gap-6' action={formAction}>
 				<Input
+					name='Name'
 					label='Name'
 					type='text'
 					value={user.name}
@@ -38,28 +62,15 @@ export function RemoveUserModal({
 				/>
 
 				<Input
+					name='email'
 					label='Email'
 					type='email'
 					value={user.email}
 					disabled
 				/>
-			</section>
 
-			<footer className='mt-12 flex items-center justify-between'>
-				<Button
-					variant='secondary'
-					onClick={onCloseModal}
-					isLoading={isRemovingUser}
-				>
-					Keep user
-				</Button>
-				<Button
-					onClick={() => handleRemoveUser(user.id!)}
-					isLoading={isRemovingUser}
-				>
-					Remove user
-				</Button>
-			</footer>
+				<ActionsButtons />
+			</form>
 		</Modal>
 	);
 }

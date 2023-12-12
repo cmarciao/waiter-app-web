@@ -1,105 +1,104 @@
-import { Modal } from '@/components/Modal';
-import { Input } from '@/components/Input';
-import { User } from '@/types/User';
-import { ModalTitle } from '@/components/Modal/ModalTitle';
-import { Button } from '@/components/Button';
+import { useFormStatus } from 'react-dom';
 
-import { InputRadio } from '@/components/Checkbox';
+import { LoadScreen, Modal, ModalTitle } from '@/components';
+import { Input, Button, InputGroup, InputRadio } from '@/components';
+
 import { useUpdateUserModal } from './useUpdateUserModal';
 
 type UpdateUserModalProps = {
-	user: User;
 	isOpen: boolean;
-	onCloseModal: () => void;
 }
 
-export function UpdateUserModal({
-	user,
-	isOpen,
-	onCloseModal
-}: UpdateUserModalProps) {
+type ActionsButtonsProps = {
+	onRemoveUser: () => void;
+}
+
+function ActionsButtons({ onRemoveUser }: ActionsButtonsProps) {
+	const { pending } = useFormStatus();
+
+	return (
+		<footer className='mt-12 flex items-center justify-between'>
+			<Button
+				type='button'
+				variant='secondary'
+				isLoading={pending}
+				onClick={onRemoveUser}
+			>
+				Remove user
+			</Button>
+
+			<Button
+				type='submit'
+				isLoading={pending}
+			>
+				Save changes
+			</Button>
+		</footer>
+	);
+}
+
+export function UpdateUserModal({ isOpen }: UpdateUserModalProps) {
 	if(!isOpen) return;
 
 	const {
-		isValid,
-		isRemovingUser,
-		isUpdatingUser,
-		errors,
-		register,
-		handlUpdateUser,
-		handleRemoveUser
-	} = useUpdateUserModal(
 		user,
-		onCloseModal,
-	);
+		state,
+		formAction,
+		handleRemoveUser
+	} = useUpdateUserModal();
+
+	if(!user) {
+		return <LoadScreen />;
+	}
 
 	return (
-		<Modal open={isOpen} onCloseModal={onCloseModal}>
+		<Modal open={isOpen} hrefModalClose='/users'>
 			<ModalTitle>Update user</ModalTitle>
 
-			<form className='mt-6' onSubmit={handlUpdateUser}>
+			<form className='mt-6' action={formAction}>
 				<div className='flex flex-col gap-6'>
 					<Input
-						id='name'
+						name='name'
 						label='Name'
 						type='text'
-						errorMessage={errors?.name?.message}
-						{...register('name')}
+						errorMessage={state?.name?.at(0)}
 						defaultValue={user.name}
 					/>
 
 					<Input
-						id='email'
+						name='email'
 						label='Email'
 						type='email'
-						errorMessage={errors?.email?.message}
-						{...register('email')}
+						errorMessage={state?.email?.at(0)}
 						defaultValue={user.email}
 					/>
 
 					<Input
-						id='password'
+						name='password'
 						label='Password'
 						type='password'
-						errorMessage={errors?.password?.message}
-						{...register('password')}
-						defaultValue={user.password}
+						errorMessage={state?.password?.at(0)}
 					/>
 
-					<div className='flex gap-8'>
+					<InputGroup>
 						<InputRadio
-							{...register('type')}
+							name='type'
 							value="ADMIN"
 							label='Admin'
 							defaultChecked={user.type === 'ADMIN'}
 						/>
 						<InputRadio
-							{...register('type')}
+							name='type'
 							value="WAITER"
 							label='Waiter'
 							defaultChecked={user.type === 'WAITER'}
 						/>
-					</div>
+					</InputGroup>
 				</div>
 
-				<footer className='mt-12 flex justify-between'>
-					<Button
-						type='button'
-						variant='secondary'
-						isLoading={isUpdatingUser || isRemovingUser}
-						onClick={handleRemoveUser}
-					>
-						Remove user
-					</Button>
-
-					<Button
-						type='submit'
-						isLoading={isUpdatingUser || isRemovingUser}
-						disabled={!isValid}
-					>
-						Save changes
-					</Button>
-				</footer>
+				<ActionsButtons
+					onRemoveUser={handleRemoveUser}
+				/>
 			</form>
 		</Modal>
 	);

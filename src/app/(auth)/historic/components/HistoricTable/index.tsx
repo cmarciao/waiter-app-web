@@ -33,7 +33,7 @@ export function HistoricTable({orderBy}: HistoricTableProps) {
 	if(isHistoricLoading) {
 		return (
 			<div className='w-full flex items-center justify-center h-[calc(100vh-350px)]'>
-				<Spinner size={48} />
+				<Spinner />
 			</div>
 		);
 	}

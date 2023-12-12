@@ -1,47 +1,28 @@
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useFormState } from 'react-dom';
 import toast from 'react-hot-toast';
-import axios from 'axios';
 
-import { useCreateUser } from '@/hooks/users';
+import { createUser } from '../../action';
 
-const createUserSchema = z.object({
-	name: z.string({required_error: 'Name is required.'}).trim(),
-	email: z.string().email('Invalid email.'),
-	password: z.string().min(8, { message: 'Min 8 characters.' }),
-	type: z.enum(['ADMIN', 'WAITER'])
-});
+export function useCreateUserModal() {
+	const [state, formAction] = useFormState(handleCreateUser, null);
 
-type CreateUserSchema = z.infer<typeof createUserSchema>;
-
-export function useCreateUserModal(handleCloseCreateUserModal: () => void) {
-	const { isCreatingUser, createUser } = useCreateUser();
-	const { register, handleSubmit, formState: { errors, isValid }} = useForm<CreateUserSchema>({
-		resolver: zodResolver(createUserSchema)
-	});
-
-	const handleCreateUser = handleSubmit(async (data) => {
+	async function handleCreateUser(_prevState: unknown, formData: FormData) {
 		try {
-			await createUser(data);
+			const response = await createUser(formData);
 
-			toast.success('User created successfulluy. ✔');
-			handleCloseCreateUserModal();
-		} catch(err) {
-			if(axios.isAxiosError(err)) {
-				toast.error(err.response?.data.message);
-				return;
+			if(response?.errors) {
+				return response.errors;
 			}
 
-			toast.error('Error when creating user.');
+			toast.success('User created successfully. ✔');
+		} catch(e) {
+			const error = e as Error;
+			toast.error(error.message);
 		}
-	});
+	}
 
 	return {
-		isCreatingUser,
-		register,
-		isValid,
-		errors,
-		handleCreateUser
+		state,
+		formAction
 	};
 }

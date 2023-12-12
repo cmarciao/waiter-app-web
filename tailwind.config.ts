@@ -29,6 +29,7 @@ const config: Config = {
 			'brand-red-dark': '#8A1114',
 			'brand-red-light': '#FFABAD',
 			'gray-500': '#333333',
+			'brand-gray-500-opacity': 'rgb(51, 51, 51, 0.5)',
 			'gray-400': '#666666',
 			'gray-300': '#999999',
 			'gray-200': '#CCCCCC',

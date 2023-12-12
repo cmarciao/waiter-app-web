@@ -6,16 +6,17 @@ type CheckboxRefProps = Omit<ComponentProps<'input'>, 'type'> & {
 
 function InputRadioRef({ label, ...rest }: CheckboxRefProps, ref: LegacyRef<HTMLInputElement>) {
 	return (
-		<label htmlFor={rest.name}>
+		<div>
 			<input
 				className='mr-2'
 				ref={ref}
 				type="radio"
+				id={label}
 				{...rest}
 			/>
 
-			{label}
-		</label>
+			<label htmlFor={label}>{label}</label>
+		</div>
 	);
 }
 

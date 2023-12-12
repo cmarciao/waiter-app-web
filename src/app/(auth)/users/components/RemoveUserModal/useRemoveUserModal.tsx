@@ -1,30 +1,48 @@
-import axios from 'axios';
+import { useFormState } from 'react-dom';
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+
 import toast from 'react-hot-toast';
 
-import { useRemoveUser } from '@/hooks/users';
+import { User } from '@/types/User';
+import { getUserById, removeUser } from '../../action';
 
-export function useRemoveUserModal(handleCloseModal: () => void) {
-	const { isRemovingUser, removeUser } = useRemoveUser();
+export function useRemoveUserModal() {
+	const router = useRouter();
+	const searchParams = useSearchParams();
+	const userId = searchParams.get('userId') || '';
 
-	async function handleRemoveUser(id: string) {
-		try {
-			await removeUser(id);
+	const [user, setUser] = useState<User | null>(null);
+	const [state, formAction] = useFormState(handleRemoveUser, null);
 
-			toast.success('User removed successfulluy. ✔');
-
-			handleCloseModal();
-		} catch(err) {
-			if(axios.isAxiosError(err)) {
-				toast.error(err.response?.data.message);
-				return;
+	useEffect(() => {
+		async function loadUser() {
+			try {
+				const response = await getUserById(userId);
+				setUser(response);
+			} catch(e) {
+				toast.error('User not found');
+				router.push('/users');
 			}
+		}
 
-			toast.error('Error when removing user.');
+		loadUser();
+	}, []);
+
+	async function handleRemoveUser() {
+		try {
+			await removeUser(userId);
+			toast.success('User removed successfulluy. ✔');
+		} catch(e) {
+			const error = e as Error;
+			toast.error(error.message);
 		}
 	}
 
 	return {
-		isRemovingUser,
+		user,
+		state,
+		formAction,
 		handleRemoveUser
 	};
 }

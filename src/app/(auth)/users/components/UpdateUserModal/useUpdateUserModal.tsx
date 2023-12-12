@@ -1,73 +1,56 @@
-import axios from 'axios';
+import { useFormState } from 'react-dom';
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+
 import toast from 'react-hot-toast';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 import { User } from '@/types/User';
-import { useUpdateUser } from '@/hooks/users';
+import { getUserById, updateUser } from '../../action';
 import { useRemoveUserModal } from '../RemoveUserModal/useRemoveUserModal';
 
-const updateUserSchema = z.object({
-	name: z.string({required_error: 'Name is required.'}).trim(),
-	email: z.string().email('Invalid email.'),
-	password:
-		z.string()
-			.min(8, { message:  'Min 8 characters.' })
-			.nullable()
-			.optional()
-			.or(z.literal(''))
-			.transform((value) => value === '' ? null : value),
-	type: z.enum(['ADMIN', 'WAITER'])
-});
+export function useUpdateUserModal() {
+	const router = useRouter();
+	const searchParams = useSearchParams();
+	const userId = searchParams.get('userId') || '';
 
-type UpdateUserSchema = z.infer<typeof updateUserSchema>;
+	const { handleRemoveUser } = useRemoveUserModal();
 
-export function useUpdateUserModal(
-	user: User,
-	handleCloseModal: () => void
-) {
-	const { isUpdatingUser, updateUser } = useUpdateUser();
-	const { isRemovingUser, handleRemoveUser: onRemoveUser } = useRemoveUserModal(handleCloseModal);
+	const [user, setUser] = useState<User | null>(null);
+	const [state, formAction] = useFormState(handlUpdateUser, null);
 
-	const { register, handleSubmit, formState: { errors, isValid } } = useForm<UpdateUserSchema>({
-		resolver: zodResolver(updateUserSchema)
-	});
+	useEffect(() => {
+		async function loadUser() {
+			try {
+				const response = await getUserById(userId);
+				setUser(response);
+			} catch(e) {
+				toast.error('User not found');
+				router.push('/users');
+			}
+		}
 
-	const handlUpdateUser = handleSubmit(async (data) => {
+		loadUser();
+	}, []);
+
+	async function handlUpdateUser(_prevState: unknown, formData: FormData) {
 		try {
-			const updatedUser = {
-				name: data.name,
-				email: data.email,
-				type: data.type,
-				...(data?.password && { password: data.password })
-			};
+			const response = await updateUser(userId, formData);
 
-			await updateUser({id: user.id!, user: updatedUser});
-
-			toast.success('User update successfulluy. ✔');
-			handleCloseModal();
-		} catch(err) {
-			if(axios.isAxiosError(err)) {
-				toast.error(err.response?.data.message);
-				return;
+			if(response?.errors) {
+				return response.errors;
 			}
 
+			toast.success('User updated successfully. ✔');
+		} catch(err) {
 			toast.error('Error when creating user.');
 		}
-	});
-
-	function handleRemoveUser() {
-		onRemoveUser(user.id!);
 	}
 
 	return {
-		isValid,
-		isUpdatingUser,
-		isRemovingUser,
-		register,
+		user,
+		state,
+		formAction,
 		handlUpdateUser,
 		handleRemoveUser,
-		errors,
 	};
 }

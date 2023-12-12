@@ -30,11 +30,11 @@ function InputRef({ label, className, errorMessage = undefined, ...props }: Inpu
 			className
 		)}>
 			<div className='flex flex-col relative'>
-				<label htmlFor={props.id}>{label}</label>
+				<label className='w-fit' htmlFor={props.name}>{label}</label>
 				<input
+					id={props.name}
 					data-error={hasError}
 					data-ispassword={isPasswordType}
-					id={props.id}
 					ref={ref}
 					className={twMerge(
 						'data-[error=true]:caret-brand-red',

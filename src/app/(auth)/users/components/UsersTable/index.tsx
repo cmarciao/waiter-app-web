@@ -1,32 +1,17 @@
-'use client';
-
 import { PencilIcon, Trash2Icon } from 'lucide-react';
 
 import { Table } from '@/components/Table';
-import { CreateUserModal } from '../CreateUserModal';
-import { UpdateUserModal } from '../UpdateUserModal';
-import { RemoveUserModal } from '../RemoveUserModal';
+import { UserModals } from '../UserModals';
 
-import { useUsersTable } from './useUsersTable';
+import { getUsers } from '@/services/temp/UsersService';
 
-export function UsersTable() {
-	const {
-		users,
-		selectedUser,
-		isOpenCreateUserModal,
-		isOpenUpdateUserModal,
-		isOpenRemoveUserModal,
-		handleOpenCreateUserModal,
-		handleCloseCreateUserModal,
-		handleOpenUpdateUserModal,
-		handleOpenRemoveUserModal,
-		closeModalWhenRemoveUser,
-	} = useUsersTable();
+export async function UsersTable() {
+	const users = await getUsers();
 
 	return (
 		<Table.Root className='mt-2'>
 			<Table.Header title='Users' amount={users.length}>
-				<Table.HeaderAction onClick={handleOpenCreateUserModal}>
+				<Table.HeaderAction href='/users?openedModal=creation'>
 					New user
 				</Table.HeaderAction>
 			</Table.Header>
@@ -40,6 +25,7 @@ export function UsersTable() {
 						<Table.Th>Action</Table.Th>
 					</Table.Row>
 				</Table.Head>
+
 				<Table.Body>
 					{users.map((user) => (
 						<Table.Row key={user.id}>
@@ -50,11 +36,11 @@ export function UsersTable() {
 								<Table.Actions>
 									<Table.Action
 										icon={<PencilIcon />}
-										onClick={() => handleOpenUpdateUserModal(user)}
+										hrefAction={`/users?openedModal=update&userId=${user.id}`}
 									/>
 									<Table.Action
 										icon={<Trash2Icon color='#D73035'/>}
-										onClick={() => handleOpenRemoveUserModal(user)}
+										hrefAction={`/users?openedModal=removal&userId=${user.id}`}
 									/>
 								</Table.Actions>
 							</Table.Td>
@@ -63,22 +49,7 @@ export function UsersTable() {
 				</Table.Body>
 			</Table.Content>
 
-			<CreateUserModal
-				isOpen={isOpenCreateUserModal}
-				onCloseModal={handleCloseCreateUserModal}
-			/>
-
-			<UpdateUserModal
-				user={selectedUser!}
-				isOpen={isOpenUpdateUserModal}
-				onCloseModal={closeModalWhenRemoveUser}
-			/>
-
-			<RemoveUserModal
-				user={selectedUser!}
-				isOpen={isOpenRemoveUserModal}
-				onCloseModal={closeModalWhenRemoveUser}
-			/>
+			<UserModals />
 
 		</Table.Root>
 	);

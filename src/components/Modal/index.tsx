@@ -1,15 +1,18 @@
+import Link from 'next/link';
 import { ReactNode } from 'react';
-import * as Dialog from '@radix-ui/react-dialog';
+
 import { XIcon } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
+import * as Dialog from '@radix-ui/react-dialog';
 
 type ModalProps = Dialog.DialogProps & {
 	className?: string;
-	onCloseModal: () => void;
 	children: ReactNode;
+	hrefModalClose?: string;
+	onCloseModal?: () => void;
 }
 
-export function Modal({ className, onCloseModal, children, ...rest }: ModalProps) {
+export function Modal({ className, children, hrefModalClose = '', ...rest }: ModalProps) {
 	return (
 		<Dialog.Root {...rest} >
 			<Dialog.Portal>
@@ -19,9 +22,9 @@ export function Modal({ className, onCloseModal, children, ...rest }: ModalProps
 					className
 				)}>
 					<Dialog.Close asChild className='absolute right-6 top-9'>
-						<button onClick={onCloseModal}>
+						<Link href={hrefModalClose}>
 							<XIcon />
-						</button>
+						</Link>
 					</Dialog.Close>
 
 					{children}
