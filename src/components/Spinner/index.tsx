@@ -1,13 +1,9 @@
-import { twMerge } from 'tailwind-merge';
-
 export function Spinner() {
 	return (
 		<div role="status">
 			<svg
 				aria-hidden="true"
-				className={twMerge(
-					'w-12 h-12 text-gray-200 animate-spin dark:text-gray-600 fill-brand-red'
-				)}
+				className='w-12 h-12 text-gray-200 animate-spin dark:text-gray-600 fill-brand-red'
 				viewBox="0 0 100 101"
 				fill="none"
 				xmlns="http://www.w3.org/2000/svg"
