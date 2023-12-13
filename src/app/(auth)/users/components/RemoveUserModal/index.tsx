@@ -44,7 +44,7 @@ export function RemoveUserModal({ isOpen }: RemoveUserModalProps) {
 	} = useRemoveUserModal();
 
 	if(!user) {
-		return <LoadScreen />;
+		return <LoadScreen hasOpacityInBackground />;
 	}
 
 	return (

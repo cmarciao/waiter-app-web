@@ -48,7 +48,7 @@ export function UpdateUserModal({ isOpen }: UpdateUserModalProps) {
 	} = useUpdateUserModal();
 
 	if(!user) {
-		return <LoadScreen />;
+		return <LoadScreen hasOpacityInBackground />;
 	}
 
 	return (
