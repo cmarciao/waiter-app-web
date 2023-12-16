@@ -1,85 +1,95 @@
 import Image from 'next/image';
+import { useFormStatus } from 'react-dom';
 
-import { Order } from '@/types/Order';
 import { formatDate, formatPrice } from '@/utils/format-utils';
 
 import { Button } from '@/components/Button';
-import { Modal } from '@/components/Modal';
-import { ModalTitle } from '@/components/Modal/ModalTitle';
-import { ModalDescription } from '@/components/Modal/ModalDescription';
+import { LoadScreen } from '@/components/LoadScreen';
+import { Modal, ModalTitle, ModalDescription } from '@/components';
 
 import { useRemoveOrderModal } from './useRemoveOrderModal';
 
 type RemoveOrderModalProps = {
-	selectedOrder: Order;
 	isOpen: boolean;
-	handleCloseModal: () => void;
 }
 
-export function RemoveOrderModalModal({ selectedOrder, isOpen, handleCloseModal }: RemoveOrderModalProps) {
+function ActionsButtons() {
+	const { pending } = useFormStatus();
+
+	return (
+		<Button
+			className='mt-8'
+			variant='secondary'
+			isLoading={pending}
+		>
+			Delete order
+		</Button>
+	);
+}
+
+export function RemoveOrderModalModal({ isOpen }: RemoveOrderModalProps) {
 	if(!isOpen) return;
 
 	const {
-		isRemovingHistoricOrder,
+		historic,
 		handleRemoveHistoricOrder
-	} = useRemoveOrderModal(selectedOrder, handleCloseModal);
+	} = useRemoveOrderModal();
+
+	if(!historic) {
+		return <LoadScreen hasOpacityInBackground/>;
+	}
 
 	return (
-		<Modal open={isOpen} onCloseModal={handleCloseModal}>
+		<Modal open={isOpen} hrefModalClose='/historic'>
 			<ModalTitle>Remove order</ModalTitle>
 			<ModalDescription>Are you sure you want to remove this order?</ModalDescription>
 
-			<section className='flex flex-col gap-2 mt-8'>
-				<span className='text-small' >Table</span>
-				<strong>{selectedOrder.table}</strong>
-			</section>
-
-			<section className='flex flex-col gap-2 mt-8'>
-				<span className='text-small' >Order date</span>
-				<strong>{formatDate(new Date(selectedOrder.createdAt))}</strong>
-			</section>
-
-			<section className='mt-8'>
-				<span className='text-small'>Items</span>
-				<section className='flex flex-col gap-4 mt-4'>
-					{selectedOrder.products.map((product) => (
-						<div key={product.id} className='flex gap-3'>
-							<Image
-								className='rounded-md'
-								width={56}
-								height={48}
-								src={product.imageUrl}
-								alt={product.name}
-								style={{
-									width: 56,
-									height: 48
-								}}
-							/>
-
-							<span className='text-gray-300'>{product.count}x</span>
-
-							<div className='flex flex-col'>
-								<strong>{product.name}</strong>
-								<span>{formatPrice(product.price)}</span>
-							</div>
-						</div>
-					))}
+			<form action={handleRemoveHistoricOrder}>
+				<section className='flex flex-col gap-2 mt-8'>
+					<span className='text-small' >Table</span>
+					<strong>{historic.table}</strong>
 				</section>
 
-				<div className='mt-6 flex justify-between items-center'>
-					<span className='text-small'>Total</span>
-					<strong>{formatPrice(selectedOrder.total)}</strong>
-				</div>
+				<section className='flex flex-col gap-2 mt-8'>
+					<span className='text-small' >Order date</span>
+					<strong>{formatDate(new Date(historic.createdAt))}</strong>
+				</section>
 
-				<Button
-					className='mt-8'
-					variant='secondary'
-					onClick={handleRemoveHistoricOrder}
-					isLoading={isRemovingHistoricOrder}
-				>
-					Delete order
-				</Button>
-			</section>
+				<section className='mt-8'>
+					<span className='text-small'>Items</span>
+					<section className='flex flex-col gap-4 mt-4'>
+						{historic.products.map((product) => (
+							<div key={product.id} className='flex gap-3'>
+								<Image
+									className='rounded-md'
+									width={56}
+									height={48}
+									src={product.imageUrl}
+									alt={product.name}
+									style={{
+										width: 56,
+										height: 48
+									}}
+								/>
+
+								<span className='text-gray-300'>{product.count}x</span>
+
+								<div className='flex flex-col'>
+									<strong>{product.name}</strong>
+									<span>{formatPrice(product.price)}</span>
+								</div>
+							</div>
+						))}
+					</section>
+
+					<div className='mt-6 flex justify-between items-center'>
+						<span className='text-small'>Total</span>
+						<strong>{formatPrice(historic.total)}</strong>
+					</div>
+
+					<ActionsButtons />
+				</section>
+			</form>
 		</Modal>
 	);
 }

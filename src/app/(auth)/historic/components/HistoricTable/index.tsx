@@ -1,42 +1,20 @@
-'use client';
-
+import Link from 'next/link';
 import { ArrowDown01, ArrowUp01, Eye, Trash2Icon } from 'lucide-react';
 
 import { formatDate, formatPrice } from '@/utils/format-utils';
 import { generateOrderCategoryName, generateOrderName } from '@/utils/order-utils';
 
 import { Table } from '@/components/Table';
-import { Spinner } from '@/components/Spinner';
-import { OrderDetailsModal } from '../OrderDetailsModal';
-import { RemoveOrderModalModal } from '../RemoveOrderModal';
+import { HistoricModals } from '../HistoricModals';
 
-import { useHistoricTable } from './useHistoricTable';
+import { getHistoricService } from '@/services/temp/HistoricService';
 
 type HistoricTableProps = {
 	orderBy: string;
 }
 
-export function HistoricTable({orderBy}: HistoricTableProps) {
-	const {
-		historic,
-		isHistoricLoading,
-		selectedOrder,
-		isOpenOrderDetailsModal,
-		isOpenRemoveOrderModal,
-		toggleOrderBy,
-		handleOpenOrderDetailsModal,
-		handleCloseOrderDetailsModal,
-		handleOpenRemoveOrderModal,
-		handleCloseRemoveOrderModal
-	} = useHistoricTable(orderBy);
-
-	if(isHistoricLoading) {
-		return (
-			<div className='w-full flex items-center justify-center h-[calc(100vh-350px)]'>
-				<Spinner />
-			</div>
-		);
-	}
+export async function HistoricTable({orderBy}: HistoricTableProps) {
+	const historic = await getHistoricService(orderBy);
 
 	return (
 		<Table.Root className='mt-2'>
@@ -47,10 +25,20 @@ export function HistoricTable({orderBy}: HistoricTableProps) {
 					<Table.Row>
 						<Table.Th>Table</Table.Th>
 						<Table.Th>
-							<button className='flex items-center gap-2' onClick={toggleOrderBy} >
+							<button className='flex items-center gap-2'>
 								<span>Date</span>
-								{orderBy === 'asc' && <ArrowUp01 size={16} />}
-								{orderBy === 'desc' && <ArrowDown01 size={16} />}
+
+								{orderBy === 'asc' && (
+									<Link href='/historic?orderBy=desc'>
+										<ArrowUp01 size={16} />
+									</Link>
+								)}
+
+								{orderBy === 'desc' && (
+									<Link href='/historic?orderBy=asc'>
+										<ArrowDown01 size={16} />
+									</Link>
+								)}
 							</button>
 						</Table.Th>
 						<Table.Th>Name</Table.Th>
@@ -71,11 +59,11 @@ export function HistoricTable({orderBy}: HistoricTableProps) {
 								<Table.Actions>
 									<Table.Action
 										icon={<Eye />}
-										onClick={() => handleOpenOrderDetailsModal(order)}
+										hrefAction={`/historic?openedModal=details&historicId=${order.id}`}
 									/>
 									<Table.Action
 										icon={<Trash2Icon color='#D73035'/>}
-										onClick={() => handleOpenRemoveOrderModal(order)}
+										hrefAction={`/historic?openedModal=removal&historicId=${order.id}`}
 									/>
 								</Table.Actions>
 							</Table.Td>
@@ -84,17 +72,7 @@ export function HistoricTable({orderBy}: HistoricTableProps) {
 				</Table.Body>
 			</Table.Content>
 
-			<OrderDetailsModal
-				selectedOrder={selectedOrder!}
-				isOpen={isOpenOrderDetailsModal && !!selectedOrder}
-				handleCloseModal={handleCloseOrderDetailsModal}
-			/>
-
-			<RemoveOrderModalModal
-				selectedOrder={selectedOrder!}
-				isOpen={isOpenRemoveOrderModal && !!selectedOrder}
-				handleCloseModal={handleCloseRemoveOrderModal}
-			/>
+			<HistoricModals />
 
 		</Table.Root>
 	);

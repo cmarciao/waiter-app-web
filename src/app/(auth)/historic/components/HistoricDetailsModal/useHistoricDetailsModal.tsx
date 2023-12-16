@@ -1,19 +1,17 @@
 import { useEffect, useState } from 'react';
-import { useFormState } from 'react-dom';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import toast from 'react-hot-toast';
 
 import { Order } from '@/types/Order';
-import { getHistoricById, removeHistoric } from '../actions';
+import { getHistoricById } from '../actions';
 
-export function useRemoveOrderModal() {
+export function useHistoricDetailsModal() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const historicId = searchParams.get('historicId') || '';
 
 	const [historic, setHistoric] = useState<Order | null>(null);
-	const [, formAction] = useFormState(handleRemoveHistoricOrder, null);
 
 	useEffect(() => {
 		async function loadHistoric() {
@@ -29,20 +27,7 @@ export function useRemoveOrderModal() {
 		loadHistoric();
 	}, []);
 
-	async function handleRemoveHistoricOrder() {
-		try {
-			await removeHistoric(historicId);
-
-			toast.success('Historic deleted successfulluy. ✔');
-		} catch(e) {
-			const error = e as Error;
-			toast.error(error.message);
-		}
-	}
-
 	return {
-		historic,
-		formAction,
-		handleRemoveHistoricOrder
+		historic
 	};
 }

@@ -24,7 +24,9 @@ export default function Historic({ searchParams }: MenuProps) {
 			</header>
 
 			<main className='mt-[4.5rem]'>
-				<HistoricTable orderBy={orderBy}/>
+				<HistoricTable
+					orderBy={orderBy}
+				/>
 			</main>
 		</div>
 	);

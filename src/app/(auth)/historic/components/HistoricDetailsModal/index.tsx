@@ -1,33 +1,37 @@
 import Image from 'next/image';
 
-import { formatDate, formatPrice } from '@/utils/format-utils';
+import { LoadScreen } from '@/components';
+import { Modal, ModalTitle } from '@/components';
 
-import { Order } from '@/types/Order';
-import { Modal } from '@/components/Modal';
-import { ModalTitle } from '@/components/Modal/ModalTitle';
+import { formatDate, formatPrice } from '@/utils/format-utils';
+import { useHistoricDetailsModal } from './useHistoricDetailsModal';
 
 type OrderDetailsModalProps = {
-	selectedOrder: Order;
 	isOpen: boolean;
-	handleCloseModal: () => void;
 }
 
-export function OrderDetailsModal({ selectedOrder, isOpen, handleCloseModal }: OrderDetailsModalProps) {
+export function HistoricDetailsModal({ isOpen }: OrderDetailsModalProps) {
 	if(!isOpen) return;
 
+	const { historic } = useHistoricDetailsModal();
+
+	if(!historic) {
+		return <LoadScreen hasOpacityInBackground />;
+	}
+
 	return (
-		<Modal open={isOpen} onCloseModal={handleCloseModal} className='pb-12'>
-			<ModalTitle>Table {selectedOrder.table}</ModalTitle>
+		<Modal open={isOpen} hrefModalClose='/historic' className='pb-12'>
+			<ModalTitle>Table {historic.table}</ModalTitle>
 
 			<section className='flex flex-col gap-2 mt-8'>
-				<span className='text-small' >Order date</span>
-				<strong>{formatDate(new Date(selectedOrder.createdAt))}</strong>
+				<span className='text-small' >historic date</span>
+				<strong>{formatDate(new Date(historic.createdAt))}</strong>
 			</section>
 
 			<section className='mt-8'>
 				<span className='text-small'>Items</span>
 				<section className='flex flex-col gap-4 mt-4'>
-					{selectedOrder.products.map((product) => (
+					{historic.products.map((product) => (
 						<div key={product.id} className='flex gap-3'>
 							<Image
 								className='rounded-md'
@@ -53,7 +57,7 @@ export function OrderDetailsModal({ selectedOrder, isOpen, handleCloseModal }: O
 
 				<div className='mt-6 flex justify-between items-center'>
 					<span className='text-small'>Total</span>
-					<strong>{formatPrice(selectedOrder.total)}</strong>
+					<strong>{formatPrice(historic.total)}</strong>
 				</div>
 			</section>
 		</Modal>
