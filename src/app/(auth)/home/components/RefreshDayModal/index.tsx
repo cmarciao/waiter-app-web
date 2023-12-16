@@ -1,25 +1,24 @@
+import Link from 'next/link';
 import { RefreshCcw } from 'lucide-react';
 
-import { Modal } from '@/components/Modal';
 import { Button } from '@/components/Button';
-import { ModalTitle } from '@/components/Modal/ModalTitle';
+import { Modal, ModalTitle } from '@/components';
 
 import { useRefreshDayModal } from './useRefreshDayModal';
 
 type RefreshDayModalProps = {
 	isOpen: boolean;
-	onCloseModal: () => void;
 }
 
-export function RefreshDayModal({ isOpen, onCloseModal }: RefreshDayModalProps) {
+export function RefreshDayModal({ isOpen }: RefreshDayModalProps) {
 	const {
 		handleRefreshDay
-	} = useRefreshDayModal(onCloseModal);
+	} = useRefreshDayModal();
 
 	return (
 		<Modal
 			open={isOpen}
-			onCloseModal={onCloseModal}
+			hrefModalClose='/home'
 			className='max-w-lg w-full'
 		>
 			<ModalTitle className='flex items-center gap-4'>
@@ -36,8 +35,10 @@ export function RefreshDayModal({ isOpen, onCloseModal }: RefreshDayModalProps) 
 			</section>
 
 			<footer className='flex items-center justify-between mt-12'>
-				<Button variant='secondary' onClick={onCloseModal}>
-					No, we can continue
+				<Button variant='secondary'>
+					<Link href='/home'>
+						No, we can continue
+					</Link>
 				</Button>
 
 				<Button onClick={handleRefreshDay}>

@@ -1,20 +1,21 @@
 'use client';
 
+import Link from 'next/link';
 import { HomeIcon, RefreshCcw } from 'lucide-react';
+
+import { RefreshDayModal } from './components/RefreshDayModal';
 
 import { Button } from '@/components/Button';
 import { OrdersBoard } from '@/components/OrdersBoard';
 import { ORDER_STATES } from '@/constants/order-states';
-import { RefreshDayModal } from './components/RefreshDayModal';
+
 
 import { useHome } from './useHome';
 
 export default function Home() {
 	const {
 		orders,
-		isOpenRefreshDayModal,
-		handleOpenRefreshDayModal,
-		handleCloseRefreshDayModal
+		openedModal
 	} = useHome();
 
 	const waitingOrders = orders.filter((order) => order.orderState === ORDER_STATES.WAITING);
@@ -34,17 +35,19 @@ export default function Home() {
 					</div>
 
 					<div>
-						<Button
-							className='flex items-center gap-2'
-							variant='secondary'
-							onClick={handleOpenRefreshDayModal}
-						>
-							<RefreshCcw
-								size={24}
-								color='#D73035'
-							/>
-							Restart the day
-						</Button>
+						<Link href='/home?openedModal=refresh'>
+							<Button
+								className='flex items-center gap-2'
+								variant='secondary'
+							>
+								<RefreshCcw
+									size={24}
+									color='#D73035'
+								/>
+
+								Restart the day
+							</Button>
+						</Link>
 					</div>
 				</div>
 
@@ -75,8 +78,7 @@ export default function Home() {
 			</main>
 
 			<RefreshDayModal
-				isOpen={isOpenRefreshDayModal}
-				onCloseModal={handleCloseRefreshDayModal}
+				isOpen={openedModal === 'refresh'}
 			/>
 		</div>
 	);
