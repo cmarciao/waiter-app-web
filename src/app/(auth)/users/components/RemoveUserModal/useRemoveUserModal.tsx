@@ -1,5 +1,5 @@
-import { useFormState } from 'react-dom';
 import { useEffect, useState } from 'react';
+import { useFormState } from 'react-dom';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import toast from 'react-hot-toast';
@@ -13,7 +13,8 @@ export function useRemoveUserModal() {
 	const userId = searchParams.get('userId') || '';
 
 	const [user, setUser] = useState<User | null>(null);
-	const [state, formAction] = useFormState(handleRemoveUser, null);
+	const [isRemovingUser, setIsRemovingUser] = useState(false);
+	const [, formAction] = useFormState(handleRemoveUser, null);
 
 	useEffect(() => {
 		async function loadUser() {
@@ -31,17 +32,22 @@ export function useRemoveUserModal() {
 
 	async function handleRemoveUser() {
 		try {
+			setIsRemovingUser(true);
+
 			await removeUser(userId);
+
 			toast.success('User removed successfulluy. ✔');
 		} catch(e) {
 			const error = e as Error;
 			toast.error(error.message);
+		} finally {
+			setIsRemovingUser(false);
 		}
 	}
 
 	return {
 		user,
-		state,
+		isRemovingUser,
 		formAction,
 		handleRemoveUser
 	};

@@ -1,22 +1,41 @@
-import { useFormState } from 'react-dom';
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import toast from 'react-hot-toast';
 
 import { User } from '@/types/User';
 import { getUserById, updateUser } from '../../action';
 import { useRemoveUserModal } from '../RemoveUserModal/useRemoveUserModal';
+import { useForm } from 'react-hook-form';
+
+const updateUserSchema = z.object({
+	name: z.string().trim().min(1, {
+		message: 'Name is required.'
+	}),
+	email: z.string().email('Invalid email.'),
+	password:
+		z.string()
+			.min(8, { message:  'Min 8 characters.' })
+			.optional()
+			.or(z.literal(''))
+			.transform((value) => value === '' ? undefined : value),
+	type: z.enum(['ADMIN', 'WAITER'])
+});
+
+export type UpdateUserSchema = z.infer<typeof updateUserSchema>;
 
 export function useUpdateUserModal() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const userId = searchParams.get('userId') || '';
+	const {register, handleSubmit, formState: { isValid, isSubmitting, errors }} = useForm<UpdateUserSchema>({
+		resolver: zodResolver(updateUserSchema)
+	});
 
-	const { handleRemoveUser } = useRemoveUserModal();
+	const { handleRemoveUser, isRemovingUser } = useRemoveUserModal();
 
 	const [user, setUser] = useState<User | null>(null);
-	const [state, formAction] = useFormState(handlUpdateUser, null);
 
 	useEffect(() => {
 		async function loadUser() {
@@ -32,24 +51,23 @@ export function useUpdateUserModal() {
 		loadUser();
 	}, []);
 
-	async function handlUpdateUser(_prevState: unknown, formData: FormData) {
+	const handlUpdateUser: () => void = handleSubmit(async (data: UpdateUserSchema) => {
 		try {
-			const response = await updateUser(userId, formData);
-
-			if(response?.errors) {
-				return response.errors;
-			}
+			await updateUser(userId, data);
 
 			toast.success('User updated successfully. ✔');
 		} catch(err) {
 			toast.error('Error when creating user.');
 		}
-	}
+	});
 
 	return {
 		user,
-		state,
-		formAction,
+		errors,
+		isFormValid: isValid,
+		isRemovingUser,
+		isFormSubmitting: isSubmitting,
+		register,
 		handlUpdateUser,
 		handleRemoveUser,
 	};

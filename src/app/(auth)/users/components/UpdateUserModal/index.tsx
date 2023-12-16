@@ -1,5 +1,3 @@
-import { useFormStatus } from 'react-dom';
-
 import { LoadScreen, Modal, ModalTitle } from '@/components';
 import { Input, Button, InputGroup, InputRadio } from '@/components';
 
@@ -9,42 +7,18 @@ type UpdateUserModalProps = {
 	isOpen: boolean;
 }
 
-type ActionsButtonsProps = {
-	onRemoveUser: () => void;
-}
-
-function ActionsButtons({ onRemoveUser }: ActionsButtonsProps) {
-	const { pending } = useFormStatus();
-
-	return (
-		<footer className='mt-12 flex items-center justify-between'>
-			<Button
-				type='button'
-				variant='secondary'
-				isLoading={pending}
-				onClick={onRemoveUser}
-			>
-				Remove user
-			</Button>
-
-			<Button
-				type='submit'
-				isLoading={pending}
-			>
-				Save changes
-			</Button>
-		</footer>
-	);
-}
-
 export function UpdateUserModal({ isOpen }: UpdateUserModalProps) {
 	if(!isOpen) return;
 
 	const {
 		user,
-		state,
-		formAction,
-		handleRemoveUser
+		errors,
+		isFormValid,
+		isRemovingUser,
+		isFormSubmitting,
+		register,
+		handlUpdateUser,
+		handleRemoveUser,
 	} = useUpdateUserModal();
 
 	if(!user) {
@@ -55,50 +29,65 @@ export function UpdateUserModal({ isOpen }: UpdateUserModalProps) {
 		<Modal open={isOpen} hrefModalClose='/users'>
 			<ModalTitle>Update user</ModalTitle>
 
-			<form className='mt-6' action={formAction}>
+			<form className='mt-6' action={handlUpdateUser}>
 				<div className='flex flex-col gap-6'>
 					<Input
-						name='name'
 						label='Name'
 						type='text'
-						errorMessage={state?.name?.at(0)}
 						defaultValue={user.name}
+						errorMessage={errors?.name?.message}
+						{...register('name')}
 					/>
 
 					<Input
-						name='email'
 						label='Email'
 						type='email'
-						errorMessage={state?.email?.at(0)}
 						defaultValue={user.email}
+						errorMessage={errors?.email?.message}
+						{...register('email')}
 					/>
 
 					<Input
-						name='password'
 						label='Password'
 						type='password'
-						errorMessage={state?.password?.at(0)}
+						errorMessage={errors?.password?.message}
+						{...register('password')}
 					/>
 
 					<InputGroup>
 						<InputRadio
-							name='type'
 							value="ADMIN"
 							label='Admin'
 							defaultChecked={user.type === 'ADMIN'}
+							{...register('type')}
 						/>
 						<InputRadio
-							name='type'
 							value="WAITER"
 							label='Waiter'
 							defaultChecked={user.type === 'WAITER'}
+							{...register('type')}
 						/>
 					</InputGroup>
 				</div>
 
-				<ActionsButtons
-					onRemoveUser={handleRemoveUser}
-				/>
+				<footer className='mt-12 flex items-center justify-between'>
+					<Button
+						type='button'
+						variant='secondary'
+						isLoading={isRemovingUser}
+						onClick={handleRemoveUser}
+					>
+						Remove user
+					</Button>
+
+					<Button
+						type='submit'
+						disabled={!isFormValid}
+						isLoading={isFormSubmitting || isRemovingUser}
+					>
+						Save changes
+					</Button>
+				</footer>
 			</form>
 		</Modal>
 	);
