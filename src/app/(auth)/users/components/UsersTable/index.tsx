@@ -16,7 +16,7 @@ export async function UsersTable() {
 				</Table.HeaderAction>
 			</Table.Header>
 
-			<Table.Content>
+			<Table.Content className='mt-4'>
 				<Table.Head>
 					<Table.Row>
 						<Table.Th>Name</Table.Th>

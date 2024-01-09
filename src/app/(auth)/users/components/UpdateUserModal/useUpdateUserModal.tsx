@@ -43,7 +43,9 @@ export function useUpdateUserModal() {
 				const response = await getUserById(userId);
 				setUser(response);
 			} catch(e) {
-				toast.error('User not found');
+				const error = e as Error;
+				toast.error(error.message);
+
 				router.push('/users');
 			}
 		}
