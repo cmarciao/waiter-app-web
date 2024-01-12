@@ -1,58 +1,74 @@
-import axios from 'axios';
-import toast from 'react-hot-toast';
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Category } from '@/types/Category';
-import { useUpdateCategory } from '@/hooks/categories';
 import { useRemoveCategoryModal } from '../RemoveCategoryModal/useRemoveCategoryModal';
+import { getCategoryById, updateCategory } from './../actions';
 
 const updateProductSchema = z.object({
 	emoji: z.string().min(1, { message: 'Emoji is required.' }),
 	name: z.string().min(1, { message: 'Name is required.' }),
 });
 
-type UpdateProductSchema = z.infer<typeof updateProductSchema>;
+export type UpdateProductSchema = z.infer<typeof updateProductSchema>;
 
-export function useUpdateCategoryModal(selectedCategory: Category, handleCloseModal: () => void) {
-	const { isUpdatingCategory, updateCategory } = useUpdateCategory();
-	const { isRemovingCategory, handleRemoveCategory: onRemoveCategory } = useRemoveCategoryModal(selectedCategory, handleCloseModal);
+export function useUpdateCategoryModal() {
+	const router = useRouter();
+	const searchParams = useSearchParams();
+	const categoryId = searchParams.get('categoryId') || '';
 
-	const { register, handleSubmit, formState: { errors, isValid } } = useForm<UpdateProductSchema>({
+	const [category, setCategory] = useState<null | Category>(null);
+
+	const { isRemovingCategory, handleRemoveCategory } = useRemoveCategoryModal();
+
+	const {
+		register,
+		handleSubmit,
+		formState: { errors, isValid, isSubmitting }
+	} = useForm<UpdateProductSchema>({
 		resolver: zodResolver(updateProductSchema)
 	});
 
+	useEffect(() => {
+		async function loadCategory() {
+			try {
+				const response = await getCategoryById(categoryId);
+				setCategory(response);
+			} catch(e) {
+				const error  = e as Error;
+				toast.error(error.message);
+
+				router.push('/menu?tab=categories');
+			}
+		}
+
+		loadCategory();
+	}, []);
+
 	const handleUpdateCategory = handleSubmit(async (data) => {
 		try {
-			const category = {
-				id: selectedCategory.id,
-				...data
-			};
-
-			await updateCategory(category);
+			await updateCategory(categoryId, data);
 
 			toast.success('Category updated successfulluy. ✔');
-		} catch(err) {
-			if(axios.isAxiosError(err)) {
-				toast.error(err.response?.data.message);
-				return;
-			}
+		} catch(e) {
+			const error = e as Error;
+			toast.error(error.message);
 
-			toast.error('Error when updating category.');
+			router.push('/menu?tab=categories');
 		}
 	});
 
-	function handleRemoveCategory() {
-		onRemoveCategory();
-	}
-
 	return {
 		isValid,
-		register,
+		category,
 		errors,
-		isUpdatingCategory,
 		isRemovingCategory,
+		isUpdatingCategory: isSubmitting,
+		register,
 		handleUpdateCategory,
 		handleRemoveCategory
 	};

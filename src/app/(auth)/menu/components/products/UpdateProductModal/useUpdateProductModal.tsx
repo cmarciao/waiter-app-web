@@ -1,14 +1,19 @@
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-
-import { useGetAllCategories } from '@/hooks/categories';
-import { useGetAllIngredients } from '@/hooks/ingredients';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useUpdateProduct } from '@/hooks/products';
+import { useSearchParams } from 'next/navigation';
+import { z } from 'zod';
+import { useForm, useWatch } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import toast from 'react-hot-toast';
-import axios from 'axios';
+
+import { getProductById, updateProduct } from '../actions';
+import { getCategories } from '../../Categories/actions';
+import { getIngredients } from '../../Ingredients/actions';
+
 import { Product } from '@/types/Product';
+import { Category } from '@/types/Category';
+import { Ingredient } from '@/types/Ingredient';
+
 import { useRemoveProductModal } from '../RemoveProductModal/useRemoveProductModal';
 
 const addProductSchema = z.object({
@@ -24,23 +29,58 @@ const addProductSchema = z.object({
 
 type AddProductSchema = z.infer<typeof addProductSchema>;
 
-export function useUpdateProductModal(selectedProduct: Product, onCloseModal: () => void) {
-	const { categories } = useGetAllCategories();
-	const { ingredients } = useGetAllIngredients();
-	const { isUpdatingProduct, updateProduct } = useUpdateProduct();
-	const { isRemovingProduct, handleRemoveProduct: onRemoveProduct } = useRemoveProductModal(selectedProduct, onCloseModal);
+export function useUpdateProductModal() {
+	const router = useRouter();
+	const searchParams = useSearchParams();
+	const productId = searchParams.get('productId') || '';
 
+	const [product, setProduct] = useState<null | Product>(null);
+	const [isLoadingData, setIsLoadingData] = useState(true);
+	const [categories, setCategories] = useState<Category[]>();
+	const [ingredients, setIngredients] = useState<Ingredient[]>();
 	const [imageUrlPreview, setImageUrlPreview] = useState<string | ArrayBuffer | null | undefined>(null);
 
-	const {watch, register, handleSubmit, formState: { errors, isValid }} = useForm<AddProductSchema>({
+	const { isRemovingProduct, handleRemoveProduct: onRemoveProduct } = useRemoveProductModal();
+
+	const {control, register, handleSubmit, setValue, formState: { errors, isValid, isSubmitting }} = useForm<AddProductSchema>({
 		resolver: zodResolver(addProductSchema),
 		defaultValues: {
 			imageUrl: {}
 		}
 	});
-	const watchImageUrl = watch('imageUrl');
-	const watchCategory = watch('category');
-	const watchIngredients = watch('ingredients');
+	const watchImageUrl = useWatch({ control, name: 'imageUrl' });
+	const watchCategory = useWatch({ control, name: 'category' });
+	const watchIngredients = useWatch({ control, name: 'ingredients', defaultValue: []});
+
+	useEffect(() => {
+		async function loadData() {
+			try {
+				const [
+					productResponse,
+					categoriesResponse,
+					ingredientsResponse,
+				] = await Promise.all([getProductById(productId), getCategories(), getIngredients()]);
+
+				setProduct(productResponse);
+				setCategories(categoriesResponse);
+				setIngredients(ingredientsResponse);
+
+				const ingredientIds = productResponse.ingredients.map(ingredient => ingredient.id);
+
+				setValue('ingredients', ingredientIds);
+				setValue('category', productResponse.category.id);
+			} catch(e) {
+				const error = e as Error;
+				toast.error(error.message);
+
+				router.push('/menu?tab=products');
+			} finally {
+				setIsLoadingData(false);
+			}
+		}
+
+		loadData();
+	}, []);
 
 	useEffect(() => {
 		const fileReader = new FileReader();
@@ -58,35 +98,26 @@ export function useUpdateProductModal(selectedProduct: Product, onCloseModal: ()
 		}
 	}, [watchImageUrl]);
 
-	const handleUpdateProduct = handleSubmit(async (data) => {
+	const handleUpdateProduct: () => void = handleSubmit(async (data) => {
 		try {
-			const product = {
-				name: data.name,
-				description: data.description,
-				price: data.price,
-				categoryId: data.category,
-				ingredientIds: data.ingredients,
-			};
+			const formData = new FormData();
+
+			formData.append('name', data.name);
+			formData.append('description', data.description);
+			formData.append('price', `${data.price}`);
+			formData.append('categoryId', data.category);
+			formData.append('ingredientIds', JSON.stringify(data.ingredients));
 
 			if(watchImageUrl[0]) {
-				Object.assign(product, { image: watchImageUrl[0] });
+				formData.append('image', watchImageUrl[0]);
 			}
 
-			await updateProduct({
-				id: selectedProduct.id,
-				...product
-			});
+			await updateProduct(productId, formData);
 
 			toast.success('Product updated successfulluy. ✔');
-
-			onCloseModal();
-		} catch(err) {
-			if(axios.isAxiosError(err)) {
-				toast.error(err.response?.data.message);
-				return;
-			}
-
-			toast.error('Error when updating product.');
+		} catch(e) {
+			const error = e as Error;
+			toast.error(error.message);
 		}
 	});
 
@@ -95,17 +126,19 @@ export function useUpdateProductModal(selectedProduct: Product, onCloseModal: ()
 	}
 
 	return {
-		errors,
+		isLoadingData,
+		product,
 		categories,
 		ingredients,
+		errors,
 		watchCategory,
 		watchIngredients,
 		imageUrlPreview,
-		register,
 		isFormValid: isValid,
+		isUpdatingProduct: isSubmitting,
+		isRemovingProduct,
+		register,
 		handleUpdateProduct,
 		handleRemoveProduct,
-		isUpdatingProduct,
-		isRemovingProduct
 	};
 }

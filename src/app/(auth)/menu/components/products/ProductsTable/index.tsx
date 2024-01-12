@@ -1,39 +1,24 @@
-'use client';
-
 import Image from 'next/image';
+import { PencilIcon, Trash2Icon } from 'lucide-react';
+
 import { Table } from '@/components/Table';
+import { ProductsModals } from '../ProductsModals';
 
 import { formatPrice } from '@/utils/format-utils';
-import { useProductsTable } from './useProductsTable';
-import { RemoveProductModal } from '../RemoveProductModal';
-import { CreateProductModal } from '../CreateProductModal';
+import ProductsService from '@/services/ProductsService';
 
-import { PencilIcon, Trash2Icon } from 'lucide-react';
-import { UpdateProductModal } from '../UpdateProductModal';
-
-export function ProductsTable() {
-	const {
-		products,
-		selectedProduct,
-		isOpenCreateProductModal,
-		isOpenUpdateProductModal,
-		isOpenRemoveProductModal,
-		handleOpenCreateProductModal,
-		handleCloseCreateProductModal,
-		handleOpenUpdateProductModal,
-		handleOpenRemoveProductModal,
-		closeModalWhenRemoveProduct
-	} = useProductsTable();
+export async function ProductsTable() {
+	const products = await ProductsService.getProducts();
 
 	return (
 		<Table.Root>
 			<Table.Header title='Products' amount={products.length}>
-				<Table.HeaderAction onClick={handleOpenCreateProductModal}>
-					New product
+				<Table.HeaderAction href='/menu?openedModal=creation'>
+						New product
 				</Table.HeaderAction>
 			</Table.Header>
 
-			<Table.Content>
+			<Table.Content className='mt-4'>
 				<Table.Head>
 					<Table.Row>
 						<Table.Th>Image</Table.Th>
@@ -66,11 +51,11 @@ export function ProductsTable() {
 								<Table.Actions>
 									<Table.Action
 										icon={<PencilIcon />}
-										onClick={() => handleOpenUpdateProductModal(product)}
+										hrefAction={`/menu?openedModal=update&productId=${product.id}`}
 									/>
 									<Table.Action
 										icon={<Trash2Icon color='#D73035'/>}
-										onClick={() => handleOpenRemoveProductModal(product)}
+										hrefAction={`/menu?openedModal=removal&productId=${product.id}`}
 									/>
 								</Table.Actions>
 							</Table.Td>
@@ -79,22 +64,7 @@ export function ProductsTable() {
 				</Table.Body>
 			</Table.Content>
 
-			<CreateProductModal
-				isOpen={isOpenCreateProductModal}
-				onCloseModal={handleCloseCreateProductModal}
-			/>
-
-			<UpdateProductModal
-				product={selectedProduct!}
-				isOpen={isOpenUpdateProductModal}
-				onCloseModal={closeModalWhenRemoveProduct}
-			/>
-
-			<RemoveProductModal
-				product={selectedProduct!}
-				isOpen={isOpenRemoveProductModal}
-				onCloseModal={closeModalWhenRemoveProduct}
-			/>
+			<ProductsModals />
 		</Table.Root>
 	);
 }

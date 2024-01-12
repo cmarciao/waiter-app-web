@@ -2,7 +2,7 @@
 import NextAuth, { AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-import { authService } from '@/services/authService';
+import AuthService from '@/services/AuthService';
 
 export const authOptions: AuthOptions = {
 	providers: [
@@ -18,7 +18,7 @@ export const authOptions: AuthOptions = {
 					password: credentials?.password || ''
 				};
 
-				const { accessToken } = await authService.signIn(params);
+				const { accessToken } = await AuthService.signIn(params);
 
 				if(accessToken) {
 					return {

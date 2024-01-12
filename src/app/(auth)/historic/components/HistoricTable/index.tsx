@@ -7,14 +7,14 @@ import { generateOrderCategoryName, generateOrderName } from '@/utils/order-util
 import { Table } from '@/components/Table';
 import { HistoricModals } from '../HistoricModals';
 
-import { getHistoricService } from '@/services/temp/HistoricService';
+import HistoricService from '@/services/HistoricService';
 
 type HistoricTableProps = {
 	orderBy: string;
 }
 
 export async function HistoricTable({orderBy}: HistoricTableProps) {
-	const historic = await getHistoricService(orderBy);
+	const historic = await HistoricService.getHistoric(orderBy);
 
 	return (
 		<Table.Root className='mt-2'>

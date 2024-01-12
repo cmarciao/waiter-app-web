@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast';
 
-import { createHistoric } from '../../actions';
+import { createHistoric } from '@/app/(auth)/historic/components/actions';
 
 export function useRefreshDayModal() {
 	async function handleRefreshDay() {

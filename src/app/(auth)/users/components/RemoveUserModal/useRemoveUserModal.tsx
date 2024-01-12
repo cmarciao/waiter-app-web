@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 import toast from 'react-hot-toast';
 
-import { User } from '@/types/User';
+import { User } from '@/types/Users';
 import { getUserById, removeUser } from '../../action';
 
 export function useRemoveUserModal() {
@@ -22,7 +22,9 @@ export function useRemoveUserModal() {
 				const response = await getUserById(userId);
 				setUser(response);
 			} catch(e) {
-				toast.error('User not found');
+				const error = e as Error;
+				toast.error(error.message);
+
 				router.push('/users');
 			}
 		}

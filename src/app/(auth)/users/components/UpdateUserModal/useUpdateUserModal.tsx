@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import toast from 'react-hot-toast';
 
-import { User } from '@/types/User';
+import { User } from '@/types/Users';
 import { getUserById, updateUser } from '../../action';
 import { useRemoveUserModal } from '../RemoveUserModal/useRemoveUserModal';
 import { useForm } from 'react-hook-form';

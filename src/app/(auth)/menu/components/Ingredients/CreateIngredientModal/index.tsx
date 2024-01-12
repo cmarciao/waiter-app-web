@@ -5,26 +5,23 @@ import { Button } from '@/components/Button';
 import { useCreateIngredientModal } from './useCreateIngredientModal';
 
 type CreateIngredientModalProps = {
-	isOpen: boolean;
-	onCloseModal: () => void;
+	isOpen?: boolean;
 }
 
-export function CreateIngredientModal({
-	isOpen,
-	onCloseModal
-}: CreateIngredientModalProps) {
+export function CreateIngredientModal({ isOpen = true }: CreateIngredientModalProps) {
 	if(!isOpen) return;
 
 	const {
-		register,
+		redirectUrl,
 		errors,
 		isFormValid,
 		isCreatingIngredient,
+		register,
 		handleCreateIngredient
-	} = useCreateIngredientModal(onCloseModal);
+	} = useCreateIngredientModal();
 
 	return (
-		<Modal open={isOpen} onCloseModal={onCloseModal}>
+		<Modal open={true} hrefModalClose={redirectUrl} >
 			<ModalTitle>Create Ingredient</ModalTitle>
 
 			<section className='mt-6 flex flex-col gap-6'>

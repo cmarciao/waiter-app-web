@@ -35,11 +35,11 @@ export function RefreshDayModal({ isOpen }: RefreshDayModalProps) {
 			</section>
 
 			<footer className='flex items-center justify-between mt-12'>
-				<Button variant='secondary'>
-					<Link href='/home'>
+				<Link href='/home'>
+					<Button variant='secondary'>
 						No, we can continue
-					</Link>
-				</Button>
+					</Button>
+				</Link>
 
 				<Button onClick={handleRefreshDay}>
 					Yes, refresh the day

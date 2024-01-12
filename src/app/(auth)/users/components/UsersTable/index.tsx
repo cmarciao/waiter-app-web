@@ -3,10 +3,15 @@ import { PencilIcon, Trash2Icon } from 'lucide-react';
 import { Table } from '@/components/Table';
 import { UserModals } from '../UserModals';
 
-import { getUsers } from '@/services/temp/UsersService';
+import UserService from '@/services/UserService';
+import { redirect } from 'next/navigation';
 
 export async function UsersTable() {
-	const users = await getUsers();
+	const users = await UserService.listUsers();
+
+	if('error' in users) {
+		redirect('/home');
+	}
 
 	return (
 		<Table.Root className='mt-2'>

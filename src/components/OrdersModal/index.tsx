@@ -1,43 +1,48 @@
-import { Order } from '@/types/Order';
-import { Modal } from '../Modal';
-import { ModalTitle } from '../Modal/ModalTitle';
 import Image from 'next/image';
-import { formatPrice } from '@/utils/format-utils';
+
 import { Button } from '../Button';
+import { LoadScreen, Modal, ModalTitle } from '../';
+
+import { formatPrice } from '@/utils/format-utils';
 import { ORDER_STATES } from '@/constants/order-states';
+
 import { useOrdersModal } from './useOrdersModal';
 
 type OrdersModalProps = {
 	isOpen: boolean;
-	selectedOrder: Order;
-	onCloseModal: () => void;
 }
 
-export function OrdersModal({ isOpen, selectedOrder, onCloseModal }: OrdersModalProps) {
+export function OrdersModal({ isOpen }: OrdersModalProps) {
 	if(!isOpen) return;
 
 	const {
-		isUpdatingOrderStatus,
-		handleChangeOrderStatus
-	} = useOrdersModal(selectedOrder, onCloseModal);
+		order,
+		isUpdatingOrder,
+		handleChangeOrderStatus,
+		handleRemoveOrder
+	} = useOrdersModal();
+
+	if(!order) {
+		return <LoadScreen hasOpacityInBackground />;
+	}
 
 	return (
-		<Modal open={isOpen} onCloseModal={onCloseModal}>
-			<ModalTitle>Table {selectedOrder.table}</ModalTitle>
+		<Modal open={isOpen} hrefModalClose='/home'>
+			<ModalTitle>Table {order.table}</ModalTitle>
 
 			<section className='flex flex-col gap-2 mt-8'>
 				<span className='text-small' >Order status</span>
 				<strong>
-					{selectedOrder.orderState === ORDER_STATES.WAITING && '🕒 Waiting'}
-					{selectedOrder.orderState === ORDER_STATES.PREPARING && '👨‍🍳 Preparing'}
-					{selectedOrder.orderState === ORDER_STATES.FINISHED && '✅ Finished'}
+					{order.orderState === ORDER_STATES.WAITING && '🕒 Waiting'}
+					{order.orderState === ORDER_STATES.PREPARING && '👨‍🍳 Preparing'}
+					{order.orderState === ORDER_STATES.FINISHED && '✅ Finished'}
 				</strong>
 			</section>
 
 			<section className='mt-8'>
 				<span className='text-small'>Items</span>
 				<section className='flex flex-col gap-4 mt-4'>
-					{selectedOrder.products.map((product) => (
+					{order.products.map((product) => (
 						<div key={product.id} className='flex gap-3'>
 							<Image
 								className='rounded-md'
@@ -63,26 +68,28 @@ export function OrdersModal({ isOpen, selectedOrder, onCloseModal }: OrdersModal
 
 				<div className='mt-6 flex justify-between items-center'>
 					<span className='text-small'>Total</span>
-					<strong>{formatPrice(selectedOrder.total)}</strong>
+					<strong>{formatPrice(order.total)}</strong>
 				</div>
 
 				<footer className='flex items-center justify-between mt-8'>
-					{selectedOrder.orderState !== ORDER_STATES.FINISHED && (
+					{order.orderState !== ORDER_STATES.FINISHED && (
 						<Button
 							variant='secondary'
+							onClick={handleRemoveOrder}
+							isLoading={isUpdatingOrder}
 						>
-						Cancel order
+							Cancel order
 						</Button>
 					)}
 
-					{selectedOrder.orderState === ORDER_STATES.WAITING && (
-						<Button isLoading={isUpdatingOrderStatus} onClick={handleChangeOrderStatus}>
+					{order.orderState === ORDER_STATES.WAITING && (
+						<Button isLoading={isUpdatingOrder} onClick={handleChangeOrderStatus}>
 							👨‍🍳 Start order
 						</Button>
 					)}
 
-					{selectedOrder.orderState === ORDER_STATES.PREPARING && (
-						<Button isLoading={isUpdatingOrderStatus} onClick={handleChangeOrderStatus}>
+					{order.orderState === ORDER_STATES.PREPARING && (
+						<Button isLoading={isUpdatingOrder} onClick={handleChangeOrderStatus}>
 							✅ Finish order
 						</Button>
 					)}

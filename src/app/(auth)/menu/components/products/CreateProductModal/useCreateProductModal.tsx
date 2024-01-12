@@ -1,13 +1,16 @@
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-
-import { useGetAllCategories } from '@/hooks/categories';
-import { useGetAllIngredients } from '@/hooks/ingredients';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import axios from 'axios';
-import { useCreateProduct } from '@/hooks/products';
+import { z } from 'zod';
+import { useForm, useWatch } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { Category } from '@/types/Category';
+import { Ingredient } from '@/types/Ingredient';
+
+import { createProduct } from './../actions';
+import { getCategories } from '../../Categories/actions';
+import { getIngredients } from '../../Ingredients/actions';
 
 const createProductSchema = z.object({
 	imageUrl: z.any().refine((files) => files?.length == 1, 'File is required.'),
@@ -20,29 +23,43 @@ const createProductSchema = z.object({
 	ingredients: z.string({ invalid_type_error: 'At least one ingredient must be selected' }).array().min(1, { message: 'At least one ingredient must be selected' }),
 });
 
-type CreateProductSchema = z.infer<typeof createProductSchema>;
+export type CreateProductSchema = z.infer<typeof createProductSchema>;
 
-export function useCreateProductModal(onCloseModal: () => void) {
-	const { categories } = useGetAllCategories();
-	const { ingredients } = useGetAllIngredients();
+export function useCreateProductModal() {
+	const searchParams = useSearchParams();
+	const isCreateIngredienModalOpen = searchParams.get('ingredient');
 
-	const [isOpenCreateIngredientModal, setIsOpenCreateIngredientModal] = useState(false);
+	const [categories, setCategories] = useState<Category[]>();
+	const [ingredients, setIngredients] = useState<Ingredient[]>();
 	const [imageUrlPreview, setImageUrlPreview] = useState<string | ArrayBuffer | null | undefined>(null);
 
-	const {watch, register, handleSubmit, formState: { errors, isValid }} = useForm<CreateProductSchema>({
+	const {control, register, handleSubmit, formState: { errors, isValid, isSubmitting }} = useForm<CreateProductSchema>({
 		resolver: zodResolver(createProductSchema)
 	});
-	const watchImageUrl = watch('imageUrl');
-	const watchCategory = watch('category');
-	const watchIngredients = watch('ingredients');
+	const watchImageUrl = useWatch({ control, name: 'imageUrl' });
+	const watchCategory = useWatch({ control, name: 'category' });
+	const watchIngredients = useWatch({ control, name: 'ingredients' });
 
-	const { isCreatingProduct, createProduct } = useCreateProduct();
+	useEffect(() => {
+		async function loadData() {
+			const [
+				categoriesResponse,
+				ingredientsResponse,
+			] = await Promise.all([getCategories(), getIngredients()]);
+
+			setCategories(categoriesResponse);
+			setIngredients(ingredientsResponse);
+		}
+
+		loadData();
+	}, []);
 
 	useEffect(() => {
 		const fileReader = new FileReader();
 
 		if(watchImageUrl) {
 			const blob = new Blob([watchImageUrl[0]]);
+
 			fileReader?.readAsDataURL(blob);
 			fileReader.onload = (readerEvent) => {
 				const result = readerEvent.target?.result;
@@ -54,51 +71,35 @@ export function useCreateProductModal(onCloseModal: () => void) {
 		}
 	}, [watchImageUrl]);
 
-	const handleCreateProduct = handleSubmit(async (data) => {
+	const handleCreateProduct: () => void = handleSubmit(async (data: CreateProductSchema) => {
 		try {
-			const product = {
-				name: data.name,
-				description: data.description,
-				image: watchImageUrl[0],
-				price: data.price,
-				categoryId: data.category,
-				ingredientIds: data.ingredients,
-			};
+			const formData = new FormData();
 
-			await createProduct(product);
+			formData.append('name', data.name);
+			formData.append('description', data.description);
+			formData.append('image', watchImageUrl[0]);
+			formData.append('price', `${data.price}`);
+			formData.append('categoryId', data.category);
+			formData.append('ingredientIds', JSON.stringify(data.ingredients));
+
+			await createProduct(formData);
 
 			toast.success('Product created successfulluy. ✔');
-
-			onCloseModal();
-		} catch(err) {
-			if(axios.isAxiosError(err)) {
-				toast.error(err.response?.data.message);
-				return;
-			}
-
-			toast.error('Error when creating product.');
+		} catch(e) {
+			const error = e as Error;
+			toast.error(error.message);
 		}
 	});
 
-	function handleOpenCreateIngredientModal() {
-		setIsOpenCreateIngredientModal(true);
-	}
-
-	function handleCloseCreateIngredientModal() {
-		setIsOpenCreateIngredientModal(false);
-	}
-
 	return {
 		errors,
+		isCreateIngredienModalOpen,
 		categories,
 		ingredients,
 		watchCategory,
-		watchIngredients,
+		watchIngredients: watchIngredients || [],
 		imageUrlPreview,
-		isOpenCreateIngredientModal,
-		isCreatingProduct,
-		handleOpenCreateIngredientModal,
-		handleCloseCreateIngredientModal,
+		isCreatingProduct: isSubmitting,
 		register,
 		isFormValid: isValid,
 		handleCreateProduct,

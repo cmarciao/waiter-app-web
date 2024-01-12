@@ -1,35 +1,33 @@
-import { Button } from '@/components/Button';
-import { Input } from '@/components/Input';
-import { Modal } from '@/components/Modal';
-import { ModalTitle } from '@/components/Modal/ModalTitle';
+import { LoadScreen } from '@/components';
+import { Button, Input } from '@/components';
+import { Modal, ModalTitle } from '@/components';
+
 import { useUpdateCategoryModal } from './useUpdateCategoryModal';
-import { Category } from '@/types/Category';
 
 type UpdateCategoryModalProps = {
-	selectedCategory: Category;
 	isOpen: boolean;
-	handleCloseModal: () => void;
 }
 
-export function UpdateCategoryModal({
-	selectedCategory,
-	isOpen,
-	handleCloseModal
-}: UpdateCategoryModalProps) {
+export function UpdateCategoryModal({ isOpen }: UpdateCategoryModalProps) {
 	if(!isOpen) return;
 
 	const {
+		category,
 		isValid,
-		register,
 		errors,
 		isUpdatingCategory,
 		isRemovingCategory,
+		register,
 		handleUpdateCategory,
 		handleRemoveCategory
-	} = useUpdateCategoryModal(selectedCategory, handleCloseModal);
+	} = useUpdateCategoryModal();
+
+	if(!category) {
+		return <LoadScreen hasOpacityInBackground />;
+	}
 
 	return (
-		<Modal open={isOpen} onCloseModal={handleCloseModal}>
+		<Modal open={isOpen} hrefModalClose='/menu?tab=categories' >
 			<ModalTitle>Edit category</ModalTitle>
 
 			<form className='mt-6' onSubmit={handleUpdateCategory}>
@@ -40,7 +38,7 @@ export function UpdateCategoryModal({
 						type='text'
 						errorMessage={errors?.emoji?.message}
 						{...register('emoji')}
-						defaultValue={selectedCategory.emoji}
+						defaultValue={category.emoji}
 					/>
 
 					<Input
@@ -49,7 +47,7 @@ export function UpdateCategoryModal({
 						type='text'
 						errorMessage={errors?.name?.message}
 						{...register('name')}
-						defaultValue={selectedCategory.name}
+						defaultValue={category.name}
 					/>
 				</div>
 

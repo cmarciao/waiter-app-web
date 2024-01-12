@@ -1,38 +1,24 @@
-'use client';
-
 import { PencilIcon, Trash2Icon } from 'lucide-react';
 
 import { Table } from '@/components/Table';
-import { UpdateCategoryModal } from '../UpdateCategoryModal';
-import { RemoveCategoryModal } from '../RemoveCategoryModal';
-import { CreateCategoryModal } from '../CreateCategoryModal';
+import { Category } from '@/types/Category';
 
-import { useCategoriesTable } from './useCategoriesTable';
+import { CategoriesModals } from '../CategoriesModals';
+import CategoriesService from '@/services/CategoriesService';
 
-export function CategoriesTable() {
-	const {
-		categories,
-		selectedCategory,
-		isOpenCreateCategoryModal,
-		isOpenUpdateCategoryModal,
-		isOpenRemoveCategoryModal,
-		handleOpenCreateCategoryModal,
-		handleCloseCreateCategoryModal,
-		handleOpenUpdateCategoryModal,
-		handleOpenRemoveCategoryModal,
-		closeModalWhenRemoveCategory
-	} = useCategoriesTable();
+export async function CategoriesTable() {
+	const categories: Category[] = await CategoriesService.getCategories();
 
 	return (
 		<>
 			<Table.Root>
 				<Table.Header title='Categories' amount={categories.length}>
-					<Table.HeaderAction onClick={handleOpenCreateCategoryModal}>
+					<Table.HeaderAction href='/menu?tab=categories&openedModal=creation'>
 						New category
 					</Table.HeaderAction>
 				</Table.Header>
 
-				<Table.Content>
+				<Table.Content className='mt-4'>
 					<Table.Head>
 						<Table.Row>
 							<Table.Th>Emoji</Table.Th>
@@ -49,11 +35,11 @@ export function CategoriesTable() {
 									<Table.Actions>
 										<Table.Action
 											icon={<PencilIcon />}
-											onClick={() => handleOpenUpdateCategoryModal(categroy)}
+											hrefAction={`/menu?tab=categories&openedModal=update&categoryId=${categroy.id}`}
 										/>
 										<Table.Action
 											icon={<Trash2Icon color='#D73035'/>}
-											onClick={() => handleOpenRemoveCategoryModal(categroy)}
+											hrefAction={`/menu?tab=categories&openedModal=removal&categoryId=${categroy.id}`}
 										/>
 									</Table.Actions>
 								</Table.Td>
@@ -63,22 +49,7 @@ export function CategoriesTable() {
 				</Table.Content>
 			</Table.Root>
 
-			<CreateCategoryModal
-				isOpen={isOpenCreateCategoryModal}
-				onCloseModal={handleCloseCreateCategoryModal}
-			/>
-
-			<UpdateCategoryModal
-				selectedCategory={selectedCategory!}
-				isOpen={isOpenUpdateCategoryModal}
-				handleCloseModal={closeModalWhenRemoveCategory}
-			/>
-
-			<RemoveCategoryModal
-				category={selectedCategory!}
-				isOpen={isOpenRemoveCategoryModal}
-				onCloseModal={closeModalWhenRemoveCategory}
-			/>
+			<CategoriesModals />
 		</>
 	);
 }

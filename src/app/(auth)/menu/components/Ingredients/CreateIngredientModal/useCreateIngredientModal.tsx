@@ -1,48 +1,44 @@
-import axios from 'axios';
+import { useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { useCreateIngredient } from '@/hooks/ingredients';
+import { createIngredient } from './../actions';
 
-const addIngredientSchema = z.object({
+const createIngredientSchema = z.object({
 	emoji: z.string().min(1, { message: 'Emoji is required.' }),
 	name: z.string().min(1, { message: 'Name is required.' }),
 });
 
-type AddIngredientSchema = z.infer<typeof addIngredientSchema>;
+export type CreateIngredientSchema = z.infer<typeof createIngredientSchema>;
 
-export function useCreateIngredientModal(
-	onCloseModal: () => void
-) {
-	const { isCreatingIngredient, createIngredient } = useCreateIngredient();
-	const { register, handleSubmit, formState: { errors, isValid: isFormValid } } = useForm<AddIngredientSchema>({
-		resolver: zodResolver(addIngredientSchema)
+export function useCreateIngredientModal() {
+	const searchParams = useSearchParams();
+	const hasIngredientParam = searchParams.get('ingredient');
+	const redirectUrl = hasIngredientParam ? '/menu?openedModal=creation' : '/menu?tab=ingredients';
+
+	const { register, handleSubmit, formState: { errors, isValid: isFormValid, isSubmitting } } = useForm<CreateIngredientSchema>({
+		resolver: zodResolver(createIngredientSchema)
 	});
 
 	const handleCreateIngredient = handleSubmit(async (data) => {
 		try {
-			await createIngredient(data);
+			await createIngredient(data, redirectUrl);
 
 			toast.success('Ingredient created successfulluy. ✔');
-
-			onCloseModal();
-		} catch(err) {
-			if(axios.isAxiosError(err)) {
-				toast.error(err.response?.data.message);
-				return;
-			}
-
-			toast.error('Error when creating ingredient.');
+		} catch(e) {
+			const error = e as Error;
+			toast.error(error.message);
 		}
 	});
 
 	return {
-		register,
+		redirectUrl,
 		isFormValid,
 		errors,
-		isCreatingIngredient,
+		isCreatingIngredient: isSubmitting,
+		register,
 		handleCreateIngredient
 	};
 }

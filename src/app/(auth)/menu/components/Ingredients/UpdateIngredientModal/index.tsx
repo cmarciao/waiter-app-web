@@ -1,38 +1,35 @@
-import { Button } from '@/components/Button';
-import { Input } from '@/components/Input';
-import { Modal } from '@/components/Modal';
-import { ModalTitle } from '@/components/Modal/ModalTitle';
+import { Input, Button, LoadScreen } from '@/components';
+import { Modal, ModalTitle } from '@/components';
+
 import { useUpdateIngredientModal } from './useUpdateIngredientModal';
-import { Ingredient } from '@/types/Ingredient';
 
 type UpdateIngredientModalProps = {
-	ingredient: Ingredient;
 	isOpen: boolean;
-	onCloseModal: () => void;
 }
 
-export function UpdateIngredientModal({
-	isOpen,
-	ingredient,
-	onCloseModal,
-}: UpdateIngredientModalProps) {
+export function UpdateIngredientModal({ isOpen }: UpdateIngredientModalProps) {
 	if(!isOpen) return;
 
 	const {
+		ingredient,
 		isValid,
-		register,
 		errors,
 		isUpdatingIngredient,
 		isRemovingIngredient,
+		register,
 		handleUpdateIngredient,
 		handleRemoveIngredient
-	} = useUpdateIngredientModal(ingredient, onCloseModal);
+	} = useUpdateIngredientModal();
+
+	if(!ingredient) {
+		return <LoadScreen hasOpacityInBackground />;
+	}
 
 	return (
-		<Modal open={isOpen} onCloseModal={onCloseModal}>
+		<Modal open={isOpen} hrefModalClose='/menu?tab=ingredients'>
 			<ModalTitle>Edit ingredient</ModalTitle>
 
-			<form className='mt-6' onSubmit={handleUpdateIngredient}>
+			<form className='mt-6' action={handleUpdateIngredient}>
 				<div className='flex flex-col gap-6'>
 					<Input
 						id='emoji'
@@ -40,7 +37,7 @@ export function UpdateIngredientModal({
 						type='text'
 						errorMessage={errors?.emoji?.message}
 						{...register('emoji')}
-						defaultValue={ingredient?.emoji}
+						defaultValue={ingredient.emoji}
 					/>
 
 					<Input
@@ -49,7 +46,7 @@ export function UpdateIngredientModal({
 						type='text'
 						errorMessage={errors?.name?.message}
 						{...register('name')}
-						defaultValue={ingredient?.name}
+						defaultValue={ingredient.name}
 					/>
 				</div>
 

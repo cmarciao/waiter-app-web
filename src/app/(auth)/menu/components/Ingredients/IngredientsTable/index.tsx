@@ -1,36 +1,24 @@
-'use client';
-
 import { PencilIcon, Trash2Icon } from 'lucide-react';
-import { Table } from '@/components/Table';
-import { useIngredientsTable } from './useIngredientsTable';
-import { CreateIngredientModal } from '../CreateIngredientModal';
-import { RemoveIngredientModal } from '../RemoveIngredientModal';
-import { UpdateIngredientModal } from '../UpdateIngredientModal';
 
-export function IngredientsTable() {
-	const {
-		ingredients,
-		selectedIngredient,
-		isOpenCreateIngredientModal,
-		isOpenUpdateIngredientModal,
-		isOpenRemoveIngredientModal,
-		handleOpenCreateIngredientModal,
-		handleCloseCreateIngredientModal,
-		handleOpenUpdateIngredientModal,
-		handleOpenRemoveIngredientModal,
-		closeModalWhenRemoveIngredient
-	} = useIngredientsTable();
+import { Table } from '@/components/Table';
+import { Ingredient } from '@/types/Ingredient';
+
+import { IngredientsModals } from '../IngredientsModals';
+import IngredientsService from '@/services/IngredientsService';
+
+export async function IngredientsTable() {
+	const ingredients: Ingredient[] = await IngredientsService.getIngredients();
 
 	return (
 		<>
 			<Table.Root>
 				<Table.Header title='Categories' amount={ingredients.length}>
-					<Table.HeaderAction onClick={handleOpenCreateIngredientModal}>
+					<Table.HeaderAction href='/menu?tab=ingredients&openedModal=creation'>
 						New ingredient
 					</Table.HeaderAction>
 				</Table.Header>
 
-				<Table.Content>
+				<Table.Content className='mt-4'>
 					<Table.Head>
 						<Table.Row>
 							<Table.Th>Emoji</Table.Th>
@@ -47,11 +35,12 @@ export function IngredientsTable() {
 									<Table.Actions>
 										<Table.Action
 											icon={<PencilIcon />}
-											onClick={() => handleOpenUpdateIngredientModal(ingredient)}
+											hrefAction={`/menu?tab=ingredients&openedModal=update&ingredientId=${ingredient.id}`}
 										/>
+
 										<Table.Action
 											icon={<Trash2Icon color='#D73035'/>}
-											onClick={() => handleOpenRemoveIngredientModal(ingredient)}
+											hrefAction={`/menu?tab=ingredients&openedModal=removal&ingredientId=${ingredient.id}`}
 										/>
 									</Table.Actions>
 								</Table.Td>
@@ -61,22 +50,7 @@ export function IngredientsTable() {
 				</Table.Content>
 			</Table.Root>
 
-			<CreateIngredientModal
-				isOpen={isOpenCreateIngredientModal}
-				onCloseModal={handleCloseCreateIngredientModal}
-			/>
-
-			<UpdateIngredientModal
-				ingredient={selectedIngredient!}
-				isOpen={isOpenUpdateIngredientModal}
-				onCloseModal={closeModalWhenRemoveIngredient}
-			/>
-
-			<RemoveIngredientModal
-				ingredient={selectedIngredient!}
-				isOpen={isOpenRemoveIngredientModal}
-				onCloseModal={closeModalWhenRemoveIngredient}
-			/>
+			<IngredientsModals />
 		</>
 	);
 }

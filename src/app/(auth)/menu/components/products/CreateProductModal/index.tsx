@@ -9,21 +9,20 @@ import { ModalTitle } from '@/components/Modal/ModalTitle';
 
 import { useCreateProductModal } from './useCreateProductModal';
 import { CreateIngredientModal } from '../../Ingredients/CreateIngredientModal';
+import { LoadScreen } from '@/components';
+import Link from 'next/link';
 
 type AddProductModalProps = {
 	isOpen: boolean;
-	onCloseModal: () => void;
 }
 
-export function CreateProductModal({
-	isOpen,
-	onCloseModal,
-}: AddProductModalProps) {
+export function CreateProductModal({ isOpen }: AddProductModalProps) {
 	if(!isOpen) return;
 
 	const {
 		register,
 		errors,
+		isCreateIngredienModalOpen,
 		isFormValid,
 		categories,
 		ingredients,
@@ -32,217 +31,215 @@ export function CreateProductModal({
 		imageUrlPreview,
 		isCreatingProduct,
 		handleCreateProduct,
-		isOpenCreateIngredientModal,
-		handleOpenCreateIngredientModal,
-		handleCloseCreateIngredientModal,
-	} = useCreateProductModal(onCloseModal);
+	} = useCreateProductModal();
 
-	if(isOpenCreateIngredientModal) {
-		return (
-			<CreateIngredientModal
-				isOpen={isOpenCreateIngredientModal}
-				onCloseModal={handleCloseCreateIngredientModal}
-			/>
-		);
+	if(isCreateIngredienModalOpen) {
+		return <CreateIngredientModal />;
+	}
+
+	if(!ingredients || !categories) {
+		return <LoadScreen hasOpacityInBackground />;
 	}
 
 	return (
-		<Modal open={isOpen} onCloseModal={onCloseModal} className='max-w-[928px]'>
+		<Modal open={isOpen} hrefModalClose='/menu?tab=products' className='max-w-[928px]'>
 			<ModalTitle>New product</ModalTitle>
 
 			<section>
-				<form className='mt-12 flex gap-8'>
-					<div className='flex-1'>
-						<div className='flex items-center justify-between'>
-							<h3>Image</h3>
-
-							{errors?.imageUrl?.message && (
-								<div className='text-brand-red flex items-center gap-2'>
-									<InfoIcon />
-									<span>{`${errors?.imageUrl?.message}`}</span>
-								</div>
-							)}
-						</div>
-
-						<label htmlFor="dropzone-file" className="mt-4 flex flex-col items-center rounded-md justify-center border border-gray-200">
-							<input
-								id="dropzone-file"
-								type="file"
-								className="hidden"
-								{...register('imageUrl')}
-							/>
-
-
-							{!imageUrlPreview && (
-								<>
-									<div className="flex items-center justify-center w-full h-[240px] transition-all cursor-pointer bg-gray-50 hover:bg-gray-200">
-										<ImageDownIcon color='#666'/>
-									</div>
-								</>
-							)}
-
-							{imageUrlPreview && (
-								<Image
-									src={imageUrlPreview.toString()}
-									height={240}
-									width={416}
-									style={{
-										maxWidth: 416,
-										maxHeight: 240,
-										borderTopLeftRadius: 6,
-										borderTopRightRadius: 6,
-										objectFit: 'cover',
-										cursor: 'pointer'
-									}}
-									alt=''
-								/>
-
-							)}
-
-							<div className='h-[60px] flex items-center text-brand-red cursor-pointer'>
-								<ImageIcon color='#D73035'/>
-
-								<strong className='ml-1'>Change Image</strong>
-							</div>
-						</label>
-
-						<Input
-							className='mt-8'
-							label='Product name'
-							placeholder='Pepperoni Pizza'
-							{...register('name')}
-							errorMessage={errors?.name?.message}
-						/>
-
-						<Input
-							id='description'
-							className='mt-8'
-							label='Description'
-							placeholder='Pepperoni Pizza with tradicional borders'
-							{...register('description')}
-							errorMessage={errors?.description?.message}
-						/>
-
-						<section className='mt-8'>
+				<form action={handleCreateProduct}>
+					<div className='mt-12 flex gap-8'>
+						<div className='flex-1'>
 							<div className='flex items-center justify-between'>
-								<span>Category</span>
+								<h3>Image</h3>
 
-								{errors?.category?.message && (
+								{errors?.imageUrl?.message && (
 									<div className='text-brand-red flex items-center gap-2'>
 										<InfoIcon />
-										<span>{errors?.category?.message}</span>
+										<span>{`${errors?.imageUrl?.message}`}</span>
 									</div>
 								)}
 							</div>
 
-							<div className='mt-4 flex flex-wrap gap-x-3 gap-y-4'>
-								{categories.map((category) => (
-									<label
-										data-active={watchCategory === category.id}
-										key={category.id}
-										htmlFor={category.name}
-										className={twMerge(
-											'cursor-pointer flex gap-2 px-[14px] py-[10px] rounded-3xl shadow-equals justify-center focus:bg-gray-300 border border-white',
-											'data-[active=true]:border data-[active=true]:border-gray-300',
-											'hover:border-gray-300'
-										)}
-									>
-										<input
-											id={category.name}
-											className='mr-2 hidden'
-											type="radio"
-											value={category.id}
-											{...register('category')}
-										/>
+							<label htmlFor="dropzone-file" className="mt-4 flex flex-col items-center rounded-md justify-center border border-gray-200">
+								<input
+									id="dropzone-file"
+									type="file"
+									className="hidden"
+									{...register('imageUrl')}
+								/>
 
-										<span>{category.emoji}</span>
-										<span>{category.name}</span>
-									</label>
-								))}
-							</div>
-						</section>
-					</div>
 
-					<div className='flex-1'>
-						<header>
-							<div className='flex items-center justify-between'>
-								<h3>Ingredients</h3>
-								<Button
-									onClick={handleOpenCreateIngredientModal}
-									variant='secondary'
-									type='button'
-								>
-									New ingredient
-								</Button>
-							</div>
-
-							{errors?.ingredients?.message && (
-								<div className='text-brand-red flex items-center gap-2'>
-									<InfoIcon />
-									<span>{errors?.ingredients?.message}</span>
-								</div>
-							)}
-						</header>
-
-						<Input
-							className='mt-6'
-							label='Search the ingredient'
-							placeholder='Ex: Pepporoni'
-						/>
-
-						<div
-							id='ingredients-bar'
-							className='mt-6 flex flex-col gap-1 h-[476px] overflow-auto s'
-						>
-							{ingredients.map((ingredient) => (
-								<div key={ingredient.id} >
-									<label
-										htmlFor={ingredient.id}
-										className='w-full flex items-center justify-between p-4 rounded-md border border-gray-200 cursor-pointer hover:border-gray-300'
-									>
-										<span>{ingredient.emoji} {ingredient.name}</span>
-										<div className='border border-gray-300 flex items-center justify-center rounded-md h-[18px] w-[18px]'>
-											{watchIngredients && watchIngredients.includes(ingredient.id) && (
-												<CheckIcon width={11} height={11} color='#000'/>
-											)}
+								{!imageUrlPreview && (
+									<>
+										<div className="flex items-center justify-center w-full h-[240px] transition-all cursor-pointer bg-gray-50 hover:bg-gray-200">
+											<ImageDownIcon color='#666'/>
 										</div>
-									</label>
-									<input
-										id={ingredient.id}
-										type="checkbox"
-										value={ingredient.id}
-										className='hidden'
-										{...register('ingredients')}
+									</>
+								)}
+
+								{imageUrlPreview && (
+									<Image
+										src={imageUrlPreview.toString()}
+										height={240}
+										width={416}
+										style={{
+											maxWidth: 416,
+											maxHeight: 240,
+											borderTopLeftRadius: 6,
+											borderTopRightRadius: 6,
+											objectFit: 'cover',
+											cursor: 'pointer'
+										}}
+										alt=''
 									/>
+
+								)}
+
+								<div className='h-[60px] flex items-center text-brand-red cursor-pointer'>
+									<ImageIcon color='#D73035'/>
+
+									<strong className='ml-1'>Change Image</strong>
 								</div>
-							))}
+							</label>
+
+							<Input
+								className='mt-8'
+								label='Product name'
+								placeholder='Pepperoni Pizza'
+								{...register('name')}
+								errorMessage={errors?.name?.message}
+							/>
+
+							<Input
+								id='description'
+								className='mt-8'
+								label='Description'
+								placeholder='Pepperoni Pizza with tradicional borders'
+								{...register('description')}
+								errorMessage={errors?.description?.message}
+							/>
+
+							<section className='mt-8'>
+								<div className='flex items-center justify-between'>
+									<span>Category</span>
+
+									{errors?.category?.message && (
+										<div className='text-brand-red flex items-center gap-2'>
+											<InfoIcon />
+											<span>{errors?.category?.message}</span>
+										</div>
+									)}
+								</div>
+
+								<div className='mt-4 flex flex-wrap gap-x-3 gap-y-4'>
+									{categories.map((category) => (
+										<label
+											data-active={watchCategory === category.id}
+											key={category.id}
+											htmlFor={category.name}
+											className={twMerge(
+												'cursor-pointer flex gap-2 px-[14px] py-[10px] rounded-3xl shadow-equals justify-center focus:bg-gray-300 border border-white',
+												'data-[active=true]:border data-[active=true]:border-gray-300',
+												'hover:border-gray-300'
+											)}
+										>
+											<input
+												id={category.name}
+												className='mr-2 hidden'
+												type="radio"
+												value={category.id}
+												{...register('category')}
+											/>
+
+											<span>{category.emoji}</span>
+											<span>{category.name}</span>
+										</label>
+									))}
+								</div>
+							</section>
 						</div>
 
-						<Input
-							className='mt-4'
-							label='Price'
-							type='number'
-							min={1}
-							placeholder='Ex: R$ 10.00'
-							{...register('price', {
-								valueAsNumber: true,
-							})}
-							errorMessage={errors?.price?.message}
-						/>
+						<div className='flex-1'>
+							<header>
+								<div className='flex items-center justify-between'>
+									<h3>Ingredients</h3>
+									<Button
+										type='button'
+										variant='secondary'
+									>
+										<Link href='/menu?openedModal=creation&ingredient=true'>
+											New ingredient
+										</Link>
+									</Button>
+								</div>
+
+								{errors?.ingredients?.message && (
+									<div className='text-brand-red flex items-center gap-2'>
+										<InfoIcon />
+										<span>{errors?.ingredients?.message}</span>
+									</div>
+								)}
+							</header>
+
+							<Input
+								className='mt-6'
+								label='Search the ingredient'
+								placeholder='Ex: Pepporoni'
+							/>
+
+							<div
+								id='ingredients-bar'
+								className='mt-6 flex flex-col gap-1 h-[476px] overflow-auto s'
+							>
+								{ingredients.map((ingredient) => (
+									<div key={ingredient.id} >
+										<label
+											htmlFor={ingredient.id}
+											className='w-full flex items-center justify-between p-4 rounded-md border border-gray-200 cursor-pointer hover:border-gray-300'
+										>
+											<span>{ingredient.emoji} {ingredient.name}</span>
+											<div className='border border-gray-300 flex items-center justify-center rounded-md h-[18px] w-[18px]'>
+												{watchIngredients.includes(ingredient.id) && (
+													<CheckIcon width={11} height={11} color='#000'/>
+												)}
+											</div>
+										</label>
+										<input
+											id={ingredient.id}
+											type="checkbox"
+											value={ingredient.id}
+											className='hidden'
+											{...register('ingredients')}
+										/>
+									</div>
+								))}
+							</div>
+
+							<Input
+								className='mt-4'
+								label='Price'
+								type='number'
+								min={1}
+								placeholder='Ex: R$ 10.00'
+								{...register('price', {
+									valueAsNumber: true,
+								})}
+								errorMessage={errors?.price?.message}
+							/>
+						</div>
 					</div>
 
+					<footer className='mt-12 flex justify-end'>
+						<Button
+							type='submit'
+							disabled={!isFormValid}
+							isLoading={isCreatingProduct}
+						>
+							Save product
+						</Button>
+					</footer>
 				</form>
 			</section>
-
-			<footer className='mt-12 flex justify-end'>
-				<Button
-					disabled={!isFormValid}
-					isLoading={isCreatingProduct}
-					onClick={handleCreateProduct}
-				>
-					Save product
-				</Button>
-			</footer>
 		</Modal>
 	);
 }

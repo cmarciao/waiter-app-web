@@ -1,17 +1,14 @@
-import { Modal } from '@/components/Modal';
-import { Input } from '@/components/Input';
-import { ModalTitle } from '@/components/Modal/ModalTitle';
-import { Button } from '@/components/Button';
+import { Input, Button } from '@/components';
+import { Modal, ModalTitle } from '@/components/';
+
 import { useCreateCategoryModal } from './useCreateCategoryModal';
 
 type AddCategoryModalProps = {
 	isOpen: boolean;
-	onCloseModal: () => void;
 }
 
 export function CreateCategoryModal({
-	isOpen,
-	onCloseModal
+	isOpen
 }: AddCategoryModalProps) {
 	if(!isOpen) return;
 
@@ -21,39 +18,41 @@ export function CreateCategoryModal({
 		errors,
 		isCreatingCategory,
 		handleCreateCategory,
-	} = useCreateCategoryModal(onCloseModal);
+	} = useCreateCategoryModal();
 
 	return (
-		<Modal open={isOpen} onCloseModal={onCloseModal}>
+		<Modal open={isOpen} hrefModalClose='/menu?tab=categories'>
 			<ModalTitle>Create category</ModalTitle>
 
-			<section className='mt-6 flex flex-col gap-6'>
-				<Input
-					label='Emoji'
-					type='text'
-					placeholder='Ex: 🍕'
-					{...register('emoji')}
-					errorMessage={errors?.emoji?.message}
-				/>
+			<form action={handleCreateCategory} className='mt-6'>
+				<section className='flex flex-col gap-6'>
+					<Input
+						label='Emoji'
+						type='text'
+						placeholder='Ex: 🍕'
+						{...register('emoji')}
+						errorMessage={errors?.emoji?.message}
+					/>
 
-				<Input
-					label='Name'
-					type='text'
-					placeholder='Ex: Pizza'
-					{...register('name')}
-					errorMessage={errors?.name?.message}
-				/>
-			</section>
+					<Input
+						label='Name'
+						type='text'
+						placeholder='Ex: Pizza'
+						{...register('name')}
+						errorMessage={errors?.name?.message}
+					/>
+				</section>
 
-			<footer className='mt-12 text-right'>
-				<Button
-					disabled={!isFormValid}
-					isLoading={isCreatingCategory}
-					onClick={handleCreateCategory}
-				>
-					Create ingredient
-				</Button>
-			</footer>
+				<footer className='mt-12 text-right'>
+					<Button
+						type='submit'
+						disabled={!isFormValid}
+						isLoading={isCreatingCategory}
+					>
+						Create ingredient
+					</Button>
+				</footer>
+			</form>
 		</Modal>
 	);
 }

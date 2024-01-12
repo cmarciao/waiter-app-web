@@ -1,6 +1,9 @@
+import Link from 'next/link';
+
 import { Order } from '@/types/Order';
-import { useOrdersBoard } from './useOrdersBoard';
 import { OrdersModal } from '../OrdersModal';
+
+import { useOrdersBoard } from './useOrdersBoard';
 
 type OrdersBoardProps = {
 	icon: string;
@@ -11,10 +14,7 @@ type OrdersBoardProps = {
 
 export function OrdersBoard({ icon, title, quantity, orders }: OrdersBoardProps) {
 	const {
-		selectedOrder,
-		isOpenOrderDetailsModal,
-		handleOpenOrderDetailsModal,
-		handleCloseOrderDetailsModal
+		hasSomeModalOpened
 	} = useOrdersBoard();
 
 	return (
@@ -27,21 +27,20 @@ export function OrdersBoard({ icon, title, quantity, orders }: OrdersBoardProps)
 
 			<section className='mt-6 flex flex-col gap-4'>
 				{orders.map((order) => (
-					<button
+					<Link
 						key={order.id}
-						className='flex flex-col items-center justify-center gap-1 py-10 bg-white rounded-md border border-gray-200'
-						onClick={() => handleOpenOrderDetailsModal(order)}
+						href={`/home?openedModal=order-details&orderId=${order.id}`}
+						className='text-center py-10 bg-white rounded-md border border-gray-200'
+
 					>
 						<strong className='font-semibold'>Table {order.table}</strong>
-						<span>{order.totalProducts} items</span>
-					</button>
+						<span className='block mt-1'>{order.totalProducts} items</span>
+					</Link>
 				))}
 			</section>
 
 			<OrdersModal
-				selectedOrder={selectedOrder!}
-				isOpen={isOpenOrderDetailsModal}
-				onCloseModal={handleCloseOrderDetailsModal}
+				isOpen={hasSomeModalOpened}
 			/>
 		</section>
 	);

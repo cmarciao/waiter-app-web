@@ -1,33 +1,55 @@
-import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 
 import { Category } from '@/types/Category';
-import { useRemoveCategory } from '@/hooks/categories';
+import { getCategoryById, removeCategory } from './../actions';
+import { useFormState } from 'react-dom';
 
-export function useRemoveCategoryModal(selectedCategory: Category, handleCloseModal: () => void) {
-	const { isRemovingCategory, removeCategory } = useRemoveCategory();
+export function useRemoveCategoryModal() {
+	const router = useRouter();
+	const searchParams = useSearchParams();
+	const categoryId = searchParams.get('categoryId') || '';
+
+	const [category, setCategory] = useState<null | Category>(null);
+	const [isRemovingCategory, setIsRemovingCategory] = useState(false);
+	const [, formAction] = useFormState(handleRemoveCategory, null);
+
+	useEffect(() => {
+		async function loadCategory() {
+			try {
+				const response = await getCategoryById(categoryId);
+				setCategory(response);
+			} catch(e) {
+				const error  = e as Error;
+				toast.error(error.message);
+
+				router.push('/menu?tab=categories');
+			}
+		}
+
+		loadCategory();
+	}, []);
 
 	async function handleRemoveCategory() {
 		try {
-			if(selectedCategory) {
-				await removeCategory({ id: selectedCategory.id });
-			}
+			setIsRemovingCategory(true);
+
+			await removeCategory(categoryId);
 
 			toast.success('Category deleted successfulluy. ✔');
-
-			handleCloseModal();
-		} catch(err) {
-			if(axios.isAxiosError(err)) {
-				toast.error(err.response?.data.message);
-				return;
-			}
-
-			toast.error('Error when deleting category.');
+		} catch(e) {
+			const error = e as Error;
+			toast.error(error.message);
+		} finally {
+			setIsRemovingCategory(false);
 		}
 	}
 
 	return {
+		category,
 		isRemovingCategory,
-		handleRemoveCategory
+		formAction,
+		handleRemoveCategory,
 	};
 }
