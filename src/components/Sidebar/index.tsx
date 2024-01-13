@@ -2,7 +2,7 @@
 
 import { APP_ROUTES } from '@/constants/app-routes';
 import { NavLink } from './SidebarLink';
-import { SignOutButton } from './SignOutButton';
+import { SignOutButton } from './SignOut/SignOutButton';
 
 import {
 	HomeIcon,
