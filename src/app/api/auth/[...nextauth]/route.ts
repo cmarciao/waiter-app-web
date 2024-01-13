@@ -18,11 +18,15 @@ export const authOptions: AuthOptions = {
 					password: credentials?.password || ''
 				};
 
-				const { accessToken } = await AuthService.signIn(params);
+				const reponse = await AuthService.signIn(params);
 
-				if(accessToken) {
+				if(reponse?.error) {
+					throw new Error(reponse.message);
+				}
+
+				if(reponse.accessToken) {
 					return {
-						name: accessToken
+						name: reponse.accessToken
 					} as any;
 				}
 

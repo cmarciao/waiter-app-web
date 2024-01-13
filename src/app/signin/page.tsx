@@ -2,7 +2,7 @@
 
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
-import { useLoginController } from './useLoginController';
+import { useLogin } from './useLogin';
 
 export default function Login() {
 	const {
@@ -11,7 +11,7 @@ export default function Login() {
 		register,
 		handleLogin,
 		errors
-	} = useLoginController();
+	} = useLogin();
 
 	return (
 		<section className="h-screen flex-center p-4">

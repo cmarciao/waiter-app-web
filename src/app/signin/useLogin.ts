@@ -20,7 +20,7 @@ type LoginSchema = {
 	password: string;
 }
 
-export function useLoginController() {
+export function useLogin() {
 	const router = useRouter();
 
 	const {register,  handleSubmit, formState: { errors, isValid, isSubmitting: isLoading}} = useForm<LoginSchema>({
@@ -33,13 +33,8 @@ export function useLoginController() {
 			redirect: false
 		});
 
-
 		if(response?.error) {
-			if(response.status === 401) {
-				toast.error('Invalid e-mail or password.');
-			} else {
-				toast.error(response?.error);
-			}
+			toast.error(response?.error);
 
 			return;
 		}
