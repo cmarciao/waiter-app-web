@@ -5,8 +5,8 @@ const nextConfig = {
 		remotePatterns: [
 			{
 				protocol: 'https',
-				hostname: 'ik.imagekit.io',
-				pathname: '/v6rcwgkcr/**'
+				hostname: 'waiterapp-dev-uploadimages-tvdslzrah1vy.s3.amazonaws.com',
+				pathname: '/**'
 			}
 		]
 	}
