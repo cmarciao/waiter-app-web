@@ -24,13 +24,12 @@ export const authOptions: AuthOptions = {
 					throw new Error(reponse.message);
 				}
 
-				if(reponse.accessToken) {
-					return {
-						name: reponse.accessToken
-					} as any;
-				}
+				return {
+					name: reponse.accessToken,
+					accessToken: reponse.accessToken,
+					refreshToken: reponse.refreshToken,
+				} as any;
 
-				return null;
 			},
 		})
 	],
@@ -39,9 +38,18 @@ export const authOptions: AuthOptions = {
 	},
 	secret: process.env.NEXTAUTH_SECRET,
 	callbacks: {
+		async jwt({ token, user }) {
+			if(user) {
+				token.accessToken = user.accessToken;
+				token.refreshToken = user.refreshToken;
+			}
+
+			return token;
+		},
 		async session({ session, token }) {
 			session.user = {
-				name: token.name,
+				accessToken: token.accessToken,
+				refreshToken: token.refreshToken
 			};
 
 			return session;

@@ -5,6 +5,10 @@ export type SignInParams = {
 	password: string;
 }
 
+export type RefreshTokenParams = {
+	id: string;
+}
+
 class AuthService {
 	private httpClient: HttpClient;
 
@@ -13,11 +17,15 @@ class AuthService {
 	}
 
 	async signIn(params: SignInParams){
-		const response = this.httpClient.post('/auth/signin', {
+		return this.httpClient.post('/auth/signin', {
 			body: JSON.stringify(params),
 		});
+	}
 
-		return response;
+	async refreshToken({ id }: RefreshTokenParams) {
+		return this.httpClient.post('/auth/refresh-token', {
+			body: JSON.stringify(id)
+		});
 	}
 }
 

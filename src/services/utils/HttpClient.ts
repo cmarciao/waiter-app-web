@@ -40,7 +40,7 @@ export class HttpClient {
 	private async makeRequest(path: string, config?: RequestInit) {
 		const headers = new Headers();
 
-		if(config?.body) {
+		if(config?.body && !(config?.body instanceof FormData)) {
 			headers.append('Content-Type', 'application/json');
 		}
 

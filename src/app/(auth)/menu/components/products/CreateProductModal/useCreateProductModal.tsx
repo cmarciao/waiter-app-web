@@ -17,10 +17,10 @@ const createProductSchema = z.object({
 	name: z.string().trim().min(1, { message: 'Name is required.'}),
 	description: z.string().trim().min(1, { message: 'Description is required.' }),
 	price: z.number({
-		invalid_type_error: 'Price is required.'
+		required_error: 'Price is required.'
 	}),
-	category: z.string({ invalid_type_error: 'Category is required.' }),
-	ingredients: z.string({ invalid_type_error: 'At least one ingredient must be selected' }).array().min(1, { message: 'At least one ingredient must be selected' }),
+	category: z.string({ required_error: 'Category is required.' }),
+	ingredients: z.string({ required_error: 'At least one ingredient must be selected' }).array().min(1, { message: 'At least one ingredient must be selected' }),
 });
 
 export type CreateProductSchema = z.infer<typeof createProductSchema>;
