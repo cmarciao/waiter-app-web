@@ -6,7 +6,7 @@ export function checkIsPublicRoute(asPath: string) {
 	return appPublicRoutes.includes(asPath);
 }
 
-export function checkIsDefaultRoute(asPath: string) {
+export function checkIsDefaultNextRoute(asPath: string) {
 	const appDefaultRoutes = Object.values(APP_ROUTES.default);
 
 	return appDefaultRoutes.some((route) => asPath.includes(route));

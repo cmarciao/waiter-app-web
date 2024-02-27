@@ -2,12 +2,12 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 import { APP_ROUTES } from '@/constants/app-routes';
-import { checkIsDefaultRoute, checkIsPublicRoute } from '@/utils/check-routes';
+import { checkIsDefaultNextRoute, checkIsPublicRoute } from '@/utils/check-routes';
 
 export default async function middleware(req: NextRequest) {
 	const { pathname } = req.nextUrl;
 
-	if(checkIsDefaultRoute(pathname)) {
+	if(checkIsDefaultNextRoute(pathname)) {
 		return NextResponse.next();
 	}
 
