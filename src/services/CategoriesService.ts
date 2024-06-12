@@ -1,4 +1,4 @@
-import { HttpClient } from './utils/HttpClient';
+import { api } from './utils/api';
 
 type ICreateCategoryParams = {
     emoji: string;
@@ -11,47 +11,33 @@ type IUpdateProductParams = {
 }
 
 class CategoriesService {
-	private httpClient: HttpClient;
-
-	constructor() {
-		this.httpClient = new HttpClient('http://localhost:3333');
-	}
-
 	async getCategoryById(id: string) {
-		const response = await this.httpClient.get(`/categories/${id}`);
-
-		return response;
+		return api.get(`/categories/${id}`);
 	}
 
 
 	async getCategories()  {
-		const response = await this.httpClient.get('/categories', {
+		return api.get('/categories', {
 			next: {
 				tags: ['categories']
 			}
 		});
-
-		return response;
 	}
 
 	async createCategory(category: ICreateCategoryParams) {
-		const response = await this.httpClient.post('/categories', {
+		return api.post('/categories', {
 			body: JSON.stringify(category),
 		});
-
-		return response;
 	}
 
 	async updateCategory(id: string, category: IUpdateProductParams) {
-		const response = await this.httpClient.put(`/categories/${id}`, {
+		return api.put(`/categories/${id}`, {
 			body: JSON.stringify(category)
 		});
-
-		return response;
 	}
 
 	async removeCategory(id: string) {
-		await this.httpClient.delete(`/categories/${id}`);
+		return api.delete(`/categories/${id}`);
 	}
 
 }

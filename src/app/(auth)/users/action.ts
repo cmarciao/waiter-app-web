@@ -3,46 +3,56 @@
 import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-import UserService from '@/services/UserService';
 import { CreateUserSchema } from './components/CreateUserModal/useCreateUserModal';
 import { UpdateUserSchema } from './components/UpdateUserModal/useUpdateUserModal';
 
+import UserService from '@/services/UserService';
+
+import { APIError } from '@/errors/APIError';
+import { httpTags } from '@/constants/http-tags';
+import { APP_ROUTES } from '@/constants/app-routes';
+
 export async function getUserById(id: string) {
-	const response = await UserService.getUserById(id);
-
-	if('error' in response) {
-		throw new Error(response.message);
+	try {
+		return await UserService.getUserById(id);
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
 	}
-
-	return response;
 }
 
 export async function createUser(user: CreateUserSchema) {
-	const response = await UserService.createUser(user);
+	try {
+		await UserService.createUser(user);
 
-	if('error' in response) {
-		throw new Error(response.message);
+		revalidateTag(httpTags.users);
+		redirect(APP_ROUTES.private.users);
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
 	}
-
-	revalidateTag('users');
-	redirect('/users');
 }
 
 export async function updateUser(id: string, user: UpdateUserSchema) {
-	const response = await UserService.updateUser(id, user);
+	try {
+		await UserService.updateUser(id, user);
 
-	if('error' in response) {
-		throw new Error(response.message);
+		revalidateTag(httpTags.users);
+		redirect(APP_ROUTES.private.users);
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
 	}
-
-	revalidateTag('users');
-	redirect('/users');
 }
 
-
 export async function removeUser(id: string) {
-	await UserService.removeUser(id);
+	try {
+		await UserService.removeUser(id);
 
-	revalidateTag('users');
-	redirect('/users');
+		revalidateTag(httpTags.users);
+		redirect(APP_ROUTES.private.users);
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
+	}
 }

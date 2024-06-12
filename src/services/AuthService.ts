@@ -1,4 +1,4 @@
-import { HttpClient } from './utils/HttpClient';
+import { api } from './utils/api';
 
 export type SignInParams = {
 	email: string;
@@ -10,21 +10,15 @@ export type RefreshTokenParams = {
 }
 
 class AuthService {
-	private httpClient: HttpClient;
-
-	constructor() {
-		this.httpClient = new HttpClient('http://localhost:3333');
-	}
-
-	async signIn(params: SignInParams){
-		return this.httpClient.post('/auth/signin', {
+	async signInService(params: SignInParams){
+		return api.post('/auth/signin', {
 			body: JSON.stringify(params),
 		});
 	}
 
-	async refreshToken({ id }: RefreshTokenParams) {
-		return this.httpClient.post('/auth/refresh-token', {
-			body: JSON.stringify(id)
+	async refreshTokenService(params: RefreshTokenParams) {
+		return api.post('/auth/refresh-token', {
+			body: JSON.stringify(params)
 		});
 	}
 }

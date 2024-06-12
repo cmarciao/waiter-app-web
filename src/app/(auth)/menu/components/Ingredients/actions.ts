@@ -8,52 +8,59 @@ import { UpdateIngredientSchema } from './UpdateIngredientModal/useUpdateIngredi
 
 import { Ingredient } from '@/types/Ingredient';
 import IngredientsService from '@/services/IngredientsService';
+import { APIError } from '@/errors/APIError';
+import { httpTags } from '@/constants/http-tags';
 
 export async function getIngredientById(id: string): Promise<Ingredient> {
-	const response = await IngredientsService.getIngredientById(id);
-
-	if(response?.error) {
-		throw new Error(response.message);
+	try {
+		return IngredientsService.getIngredientById(id);
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
 	}
-
-	return response;
 }
 
 export async function getIngredients(): Promise<Ingredient[]> {
-	const response = await IngredientsService.getIngredients();
-
-	if(response?.error) {
-		throw new Error(response.message);
+	try {
+		return IngredientsService.getIngredients();
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
 	}
-
-	return response;
 }
 
 export async function createIngredient(ingredient: CreateIngredientSchema, redirectUrl: string) {
-	const response = await IngredientsService.createIngredient(ingredient);
+	try {
+		await IngredientsService.createIngredient(ingredient);
 
-	if(response?.error) {
-		throw new Error(response.message);
+		revalidateTag(httpTags.ingredients);
+		redirect(redirectUrl);
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
 	}
-
-	revalidateTag('ingredients');
-	redirect(redirectUrl);
 }
 
 export async function updateIngredient(id: string, ingredient: UpdateIngredientSchema) {
-	const response = await IngredientsService.updateIngredient(id, ingredient);
+	try {
+		await IngredientsService.updateIngredient(id, ingredient);
 
-	if(response?.error) {
-		throw new Error(response.message);
+		revalidateTag(httpTags.ingredients);
+		redirect('/menu?tab=ingredients');
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
 	}
-
-	revalidateTag('ingredients');
-	redirect('/menu?tab=ingredients');
 }
 
 export async function removeIngredient(id: string) {
-	await IngredientsService.removeIngredient(id);
+	try {
+		await IngredientsService.removeIngredient(id);
 
-	revalidateTag('ingredients');
-	redirect('/menu?tab=ingredients');
+		revalidateTag(httpTags.ingredients);
+		redirect('/menu?tab=ingredients');
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
+	}
 }

@@ -6,52 +6,59 @@ import { revalidateTag } from 'next/cache';
 import { Category } from '@/types/Category';
 import CategoriesService from '@/services/CategoriesService';
 import { CreateCategorySchema } from './CreateCategoryModal/useCreateCategoryModal';
+import { APIError } from '@/errors/APIError';
+import { httpTags } from '@/constants/http-tags';
 
 export async function getCategoryById(id: string): Promise<Category> {
-	const response = await CategoriesService.getCategoryById(id);
-
-	if(response?.error) {
-		throw new Error(response.message);
+	try {
+		return CategoriesService.getCategoryById(id);
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
 	}
-
-	return response;
 }
 
 export async function getCategories(): Promise<Category[]> {
-	const response = await CategoriesService.getCategories();
-
-	if(response?.error) {
-		throw new Error(response.message);
+	try {
+		return CategoriesService.getCategories();
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
 	}
-
-	return response;
 }
 
 export async function createCategory(category: CreateCategorySchema) {
-	const response = await CategoriesService.createCategory(category);
+	try {
+		await CategoriesService.createCategory(category);
 
-	if(response?.error) {
-		throw new Error(response.message);
+		revalidateTag(httpTags.categories);
+		redirect('/menu?tab=categories');
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
 	}
-
-	revalidateTag('categories');
-	redirect('/menu?tab=categories');
 }
 
 export async function updateCategory(id: string, category: CreateCategorySchema) {
-	const response = await CategoriesService.updateCategory(id, category);
+	try {
+		await CategoriesService.updateCategory(id, category);
 
-	if(response?.error) {
-		throw new Error(response.message);
+		revalidateTag(httpTags.categories);
+		redirect('/menu?tab=categories');
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
 	}
-
-	revalidateTag('categories');
-	redirect('/menu?tab=categories');
 }
 
 export async function removeCategory(id: string) {
-	await CategoriesService.removeCategory(id);
+	try {
+		await CategoriesService.removeCategory(id);
 
-	revalidateTag('categories');
-	redirect('/menu?tab=categories');
+		revalidateTag(httpTags.categories);
+		redirect('/menu?tab=categories');
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
+	}
 }

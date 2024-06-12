@@ -2,11 +2,11 @@ import Link from 'next/link';
 
 import { twMerge } from 'tailwind-merge';
 import { ShieldAlertIcon } from 'lucide-react';
-import { getServerSession } from 'next-auth';
+import { getAccessToken } from '@/utils/user-credentials';
 
 export default async function NotFound() {
-	const session = await getServerSession();
-	const isLogged = !!session?.user?.name;
+	const accessToken = await getAccessToken();
+	const isLogged = !!accessToken;
 
 	return (
 		<div className='h-screen flex items-center justify-center'>

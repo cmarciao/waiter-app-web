@@ -1,39 +1,27 @@
 import { ORDER_STATES } from '@/constants/order-states';
-import { HttpClient } from './utils/HttpClient';
+import { api } from './utils/api';
 
 class OrdersService {
-	private httpClient: HttpClient;
-
-	constructor() {
-		this.httpClient = new HttpClient('http://localhost:3333');
-	}
-
 	async getOrderById(id: string) {
-		const response = await this.httpClient.get(`/orders/${id}`);
-
-		return response;
+		return api.get(`/orders/${id}`);
 	}
 
 	async getOrders() {
-		const response = await this.httpClient.get('/orders', {
+		return api.get('/orders', {
 			next: {
 				tags: ['orders']
 			}
 		});
-
-		return response;
 	}
 
 	async updateOrderStatus(id: string, state: ORDER_STATES) {
-		const response = await this.httpClient.patch(`/orders/${id}`, {
+		return api.patch(`/orders/${id}`, {
 			body: JSON.stringify({state})
 		});
-
-		return response;
 	}
 
 	async removeOrder(id: string) {
-		await this.httpClient.delete(`/orders/${id}`);
+		return api.delete(`/orders/${id}`);
 	}
 }
 

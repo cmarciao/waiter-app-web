@@ -1,6 +1,5 @@
 'use client';
 
-import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 import { z } from 'zod';
@@ -9,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { APP_ROUTES } from '@/constants/app-routes';
+import { signIn } from './actions';
 
 const loginSchema = z.object({
 	email: z.string().email('Invalid email.'),
@@ -27,20 +27,16 @@ export function useLogin() {
 		resolver: zodResolver(loginSchema)
 	});
 
-	const handleLogin = handleSubmit(async (data: LoginSchema) => {
-		const response = await signIn('credentials', {
-			...data,
-			redirect: false
-		});
+	const handleLogin = handleSubmit(async ({ email, password }: LoginSchema) => {
+		try {
+			await signIn({ email, password });
 
-		if(response?.error) {
-			toast.error(response?.error);
-
-			return;
+			toast.success('Are you ready? Let\'s get to work! 🍕');
+			router.replace(APP_ROUTES.private.home);
+		} catch(e) {
+			const error = e as Error;
+			toast.error(error.message);
 		}
-
-		toast.success('Are you ready? Let\'s get to work! 🍕');
-		router.replace(APP_ROUTES.private.home);
 	});
 
 	return {

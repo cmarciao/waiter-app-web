@@ -1,4 +1,4 @@
-import { HttpClient } from './utils/HttpClient';
+import { api } from './utils/api';
 
 type ICreateIngredientParams = {
     name: string;
@@ -11,46 +11,32 @@ type IUpdateIngredientParams = {
 }
 
 class CategoriesService {
-	private httpClient: HttpClient;
-
-	constructor() {
-		this.httpClient = new HttpClient('http://localhost:3333');
-	}
-
 	async getIngredientById(id: string) {
-		const response = await this.httpClient.get(`/ingredients/${id}`);
-
-		return response;
+		return api.get(`/ingredients/${id}`);
 	}
 
 	async getIngredients() {
-		const response = await this.httpClient.get('/ingredients', {
+		return api.get('/ingredients', {
 			next: {
 				tags: ['ingredients']
 			}
 		});
-
-		return response;
 	}
 
 	async createIngredient(ingredient: ICreateIngredientParams) {
-		const response = await this.httpClient.post('/ingredients', {
+		return api.post('/ingredients', {
 			body: JSON.stringify(ingredient)
 		});
-
-		return response;
 	}
 
 	async updateIngredient(id: string, ingredient: IUpdateIngredientParams) {
-		const response = await this.httpClient.put(`/ingredients/${id}`, {
+		return api.put(`/ingredients/${id}`, {
 			body: JSON.stringify(ingredient),
 		});
-
-		return response;
 	}
 
 	async removeIngredient(id: string) {
-		await this.httpClient.delete(`/ingredients/${id}`);
+		return api.delete(`/ingredients/${id}`);
 	}
 }
 

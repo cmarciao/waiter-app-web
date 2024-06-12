@@ -1,47 +1,33 @@
 import { Product } from '@/types/Product';
-import { HttpClient } from './utils/HttpClient';
+import { api } from './utils/api';
 
 class ProductsService {
-	private httpClient: HttpClient;
-
-	constructor() {
-		this.httpClient = new HttpClient('http://localhost:3333');
-	}
-
 	async getProductById(id: string) {
-		const response = await this.httpClient.get(`/products/${id}`);
-
-		return response;
+		return api.get(`/products/${id}`);
 	}
 
 	async getProducts(): Promise<Product[]> {
-		const response = await this.httpClient.get('/products', {
+		return api.get('/products', {
 			next: {
 				tags: ['products']
 			},
 		});
-
-		return response;
 	}
 
 	async createProduct(product: FormData) {
-		const response = await this.httpClient.post('/products', {
+		return api.post('/products', {
 			body: product
 		});
-
-		return response;
 	}
 
 	async updateProduct(id: string, product: FormData) {
-		const response = await this.httpClient.put(`/products/${id}`, {
+		return api.put(`/products/${id}`, {
 			body: product,
 		});
-
-		return response;
 	}
 
 	async removeProduct(id: string) {
-		await this.httpClient.delete(`/products/${id}`);
+		return api.delete(`/products/${id}`);
 	}
 }
 

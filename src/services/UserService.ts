@@ -1,45 +1,35 @@
-import { HttpClient } from './utils/HttpClient';
 import { IErrorResponse, IUserRequest, IUserResponse } from '@/types/Users';
-
-export const BASE_URL = 'http://localhost:3333';
+import { api } from './utils/api';
 
 class UsersService {
-	private httpClient = new HttpClient('http://localhost:3333');
-
 	async createUser(user: IUserRequest): Promise<IUserResponse> {
-		const response = await this.httpClient.post('/users', {
+		return api.post('/users', {
 			body: JSON.stringify(user)
 		});
-
-		return response;
 	}
 
 	async listUsers(): Promise<IUserResponse[] | IErrorResponse> {
-		const response = await this.httpClient.get('/users', {
+		return api.get('/users', {
 			next: {
 				tags: ['users']
 			}
 		});
-
-		return response;
 	}
 
 	async getUserById(id: string): Promise<IUserResponse> {
-		const response = await this.httpClient.get(`/users/${id}`);
+		return api.get(`/users/${id}`);
 
-		return response;
 	}
 
 	async updateUser(id: string, user: IUserRequest): Promise<IUserResponse> {
-		const response = await this.httpClient.put(`/users/${id}`, {
+		return api.put(`/users/${id}`, {
 			body: JSON.stringify(user)
 		});
 
-		return response;
 	}
 
 	async removeUser(id: string) {
-		await this.httpClient.delete(`/users/${id}`);
+		return api.delete(`/users/${id}`);
 	}
 }
 

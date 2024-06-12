@@ -1,8 +1,16 @@
-import { getServerSession } from 'next-auth';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 type HttpClientInit = Omit<RequestInit, 'method'>;
 
+type ConfigRequestInterpector = RequestInit & {
+	headers: Headers;
+}
+
+type InterceptorRequest = (config: ConfigRequestInterpector) => void;
+
 export class HttpClient {
+	private requestInterceptors: InterceptorRequest[] = [];
+
 	constructor(private readonly baseURL: string) {}
 
 	get(path: string, config?: RequestInit) {
@@ -37,28 +45,21 @@ export class HttpClient {
 		});
 	}
 
+	addInterceptorRequest(callback: InterceptorRequest) {
+		this.requestInterceptors.push(callback);
+	}
+
 	private async makeRequest(path: string, config?: RequestInit) {
 		const headers = new Headers();
+		const requestConfig = { ...config, headers };
 
-		if(config?.body && !(config?.body instanceof FormData)) {
-			headers.append('Content-Type', 'application/json');
-		}
-
-		const session = await getServerSession();
-
-		if(session?.user?.name) {
-			headers.append('Authorization', `Bearer ${session?.user?.name}`);
-		}
-
-		const response = await fetch(
-			`${this.baseURL}${path}`,
-			{
-				...config,
-				headers
-			}
+		this.requestInterceptors.forEach(interceptor =>
+			interceptor(requestConfig)
 		);
 
-		let responseBody = null;
+		const response = await fetch(`${this.baseURL}${path}`, requestConfig);
+
+		let responseBody: any = null;
 		const contentType = response.headers.get('Content-Type');
 
 		if(contentType?.includes('application/json')) {

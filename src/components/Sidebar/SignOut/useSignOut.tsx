@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { signOut } from 'next-auth/react';
+import { signOut } from './actions';
 
 export function useSignOut() {
 	const router = useRouter();
@@ -11,23 +11,15 @@ export function useSignOut() {
 	const [isLoggingOut, setIsLoggingOut] = useState(false);
 
 	function backToPreviousPage() {
-		setIsLoggingOut(true);
-
-		new Promise((res) => {
-			res(router.back());
-		}).finally(() => {
-			setIsLoggingOut(false);
-		});
+		router.back();
 	}
 
-	function logout() {
+	async function logout() {
 		setIsLoggingOut(true);
 
-		new Promise((res) => {
-			res(signOut());
-		}).finally(() => {
-			setIsLoggingOut(false);
-		});
+		await signOut();
+
+		setIsLoggingOut(false);
 	}
 
 	return {

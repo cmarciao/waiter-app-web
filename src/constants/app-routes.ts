@@ -10,7 +10,8 @@ export const APP_ROUTES = {
 		signIn: '/signin'
 	},
 	default: {
-		next: '_next',
-		api: '/api'
+		next: '/_next',
+		api: '/api',
+		favicon: '/favicon'
 	}
 };

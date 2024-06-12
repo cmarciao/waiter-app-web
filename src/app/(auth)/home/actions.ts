@@ -3,49 +3,51 @@
 import { redirect } from 'next/navigation';
 import { revalidateTag } from 'next/cache';
 
-import { ORDER_STATES } from '@/constants/order-states';
 import OrdersService from '@/services/OrdersService';
 
+import { APIError } from '@/errors/APIError';
+import { httpTags } from '@/constants/http-tags';
+import { APP_ROUTES } from '@/constants/app-routes';
+import { ORDER_STATES } from '@/constants/order-states';
+
 export async function getOrders() {
-	const response = await OrdersService.getOrders();
-
-	if(response?.error) {
-		throw new Error(response.message);
+	try {
+		return OrdersService.getOrders();
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
 	}
-
-	return response;
 }
 
 export async function getOrderById(id: string) {
-	const response = await OrdersService.getOrderById(id);
-
-	if(response?.error) {
-		throw new Error(response.message);
+	try {
+		return OrdersService.getOrderById(id);
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
 	}
-
-	return response;
 }
 
 export async function updateOrderStatus(id: string, state: ORDER_STATES) {
-	const response = await OrdersService.updateOrderStatus(id, state);
+	try {
+		await OrdersService.updateOrderStatus(id, state);
 
-	if(response?.error) {
-		throw new Error(response.message);
+		revalidateTag(httpTags.orders);
+		redirect(APP_ROUTES.private.home);
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
 	}
-
-	revalidateTag('orders');
-	redirect('/home');
 }
 
 export async function removeOrder(id: string) {
 	try {
 		await OrdersService.removeOrder(id);
 
-		revalidateTag('orders');
-		redirect('/home');
+		revalidateTag(httpTags.orders);
+		redirect(APP_ROUTES.private.home);
 	} catch(e) {
 		const error = e as Error;
-
 		throw new Error(error.message);
 	}
 }

@@ -5,15 +5,17 @@ import { redirect } from 'next/navigation';
 
 import { Product } from '@/types/Product';
 import ProductsService from '@/services/ProductsService';
+import { APIError } from '@/errors/APIError';
+import { httpTags } from '@/constants/http-tags';
+import { APP_ROUTES } from '@/constants/app-routes';
 
 export async function getProductById(id: string): Promise<Product> {
-	const response = await ProductsService.getProductById(id);
-
-	if(response?.error) {
-		throw new Error(response.message);
+	try {
+		return ProductsService.getProductById(id);
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
 	}
-
-	return response;
 }
 
 export type CreateProductBody = {
@@ -26,30 +28,37 @@ export type CreateProductBody = {
 }
 
 export async function createProduct(product: FormData) {
-	const response = await ProductsService.createProduct(product);
+	try {
+		await ProductsService.createProduct(product);
 
-	if(response?.error) {
-		throw new Error(response.message);
+		revalidateTag(httpTags.products);
+		redirect(APP_ROUTES.private.menu);
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
 	}
-
-	revalidateTag('products');
-	redirect('/menu');
 }
 
 export async function updateProduct(id: string, product: FormData) {
-	const response = await ProductsService.updateProduct(id, product);
+	try {
+		await ProductsService.updateProduct(id, product);
 
-	if(response?.error) {
-		throw new Error(response.message);
+		revalidateTag(httpTags.products);
+		redirect('/menu?tab=products');
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
 	}
-
-	revalidateTag('products');
-	redirect('/menu?tab=products');
 }
 
 export async function removeProduct(id: string) {
-	await ProductsService.removeProduct(id);
+	try {
+		await ProductsService.removeProduct(id);
 
-	revalidateTag('products');
-	redirect('/menu?tab=products');
+		revalidateTag(httpTags.products);
+		redirect('/menu?tab=products');
+	} catch(e){
+		const apiError = e as APIError;
+		throw new Error(apiError.message);
+	}
 }
