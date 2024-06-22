@@ -31,7 +31,7 @@ export function useLogin() {
 		try {
 			await signIn({ email, password });
 
-			toast.success('Are you ready? Let\'s get to work! 🍕');
+			toast.success('Welcome, let\'s get to work! 🍕');
 			router.replace(APP_ROUTES.private.home);
 		} catch(e) {
 			const error = e as Error;
