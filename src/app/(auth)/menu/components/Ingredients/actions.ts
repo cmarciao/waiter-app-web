@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidateTag } from 'next/cache';
-import { redirect } from 'next/navigation';
+import { RedirectType, redirect } from 'next/navigation';
 
 import { CreateIngredientSchema } from './CreateIngredientModal/useCreateIngredientModal';
 import { UpdateIngredientSchema } from './UpdateIngredientModal/useUpdateIngredientModal';
@@ -34,10 +34,11 @@ export async function createIngredient(ingredient: CreateIngredientSchema, redir
 		await IngredientsService.createIngredient(ingredient);
 
 		revalidateTag(httpTags.ingredients);
-		redirect(redirectUrl);
 	} catch(e){
 		const apiError = e as APIError;
 		throw new Error(apiError.message);
+	} finally {
+		redirect(redirectUrl, RedirectType.replace);
 	}
 }
 
@@ -46,10 +47,11 @@ export async function updateIngredient(id: string, ingredient: UpdateIngredientS
 		await IngredientsService.updateIngredient(id, ingredient);
 
 		revalidateTag(httpTags.ingredients);
-		redirect('/menu?tab=ingredients');
 	} catch(e){
 		const apiError = e as APIError;
 		throw new Error(apiError.message);
+	} finally {
+		redirect('/menu?tab=ingredients', RedirectType.replace);
 	}
 }
 
@@ -58,9 +60,10 @@ export async function removeIngredient(id: string) {
 		await IngredientsService.removeIngredient(id);
 
 		revalidateTag(httpTags.ingredients);
-		redirect('/menu?tab=ingredients');
 	} catch(e){
 		const apiError = e as APIError;
 		throw new Error(apiError.message);
+	} finally {
+		redirect('/menu?tab=ingredients', RedirectType.replace);
 	}
 }

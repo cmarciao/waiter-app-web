@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidateTag } from 'next/cache';
-import { redirect } from 'next/navigation';
+import { RedirectType, redirect } from 'next/navigation';
 
 import { Product } from '@/types/Product';
 import ProductsService from '@/services/ProductsService';
@@ -32,10 +32,11 @@ export async function createProduct(product: FormData) {
 		await ProductsService.createProduct(product);
 
 		revalidateTag(httpTags.products);
-		redirect(APP_ROUTES.private.menu);
 	} catch(e){
 		const apiError = e as APIError;
 		throw new Error(apiError.message);
+	} finally {
+		redirect(APP_ROUTES.private.menu, RedirectType.replace);
 	}
 }
 
@@ -44,10 +45,11 @@ export async function updateProduct(id: string, product: FormData) {
 		await ProductsService.updateProduct(id, product);
 
 		revalidateTag(httpTags.products);
-		redirect('/menu?tab=products');
 	} catch(e){
 		const apiError = e as APIError;
 		throw new Error(apiError.message);
+	} finally {
+		redirect('/menu?tab=products', RedirectType.replace);
 	}
 }
 
@@ -56,9 +58,10 @@ export async function removeProduct(id: string) {
 		await ProductsService.removeProduct(id);
 
 		revalidateTag(httpTags.products);
-		redirect('/menu?tab=products');
 	} catch(e){
 		const apiError = e as APIError;
 		throw new Error(apiError.message);
+	} finally {
+		redirect('/menu?tab=products', RedirectType.replace);
 	}
 }

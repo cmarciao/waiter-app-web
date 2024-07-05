@@ -1,6 +1,6 @@
 'use server';
 
-import { redirect } from 'next/navigation';
+import { RedirectType, redirect } from 'next/navigation';
 import { revalidateTag } from 'next/cache';
 
 import { Category } from '@/types/Category';
@@ -32,10 +32,11 @@ export async function createCategory(category: CreateCategorySchema) {
 		await CategoriesService.createCategory(category);
 
 		revalidateTag(httpTags.categories);
-		redirect('/menu?tab=categories');
 	} catch(e){
 		const apiError = e as APIError;
 		throw new Error(apiError.message);
+	} finally {
+		redirect('/menu?tab=categories', RedirectType.replace);
 	}
 }
 
@@ -44,10 +45,11 @@ export async function updateCategory(id: string, category: CreateCategorySchema)
 		await CategoriesService.updateCategory(id, category);
 
 		revalidateTag(httpTags.categories);
-		redirect('/menu?tab=categories');
 	} catch(e){
 		const apiError = e as APIError;
 		throw new Error(apiError.message);
+	} finally {
+		redirect('/menu?tab=categories', RedirectType.replace);
 	}
 }
 
@@ -56,9 +58,10 @@ export async function removeCategory(id: string) {
 		await CategoriesService.removeCategory(id);
 
 		revalidateTag(httpTags.categories);
-		redirect('/menu?tab=categories');
 	} catch(e){
 		const apiError = e as APIError;
 		throw new Error(apiError.message);
+	} finally {
+		redirect('/menu?tab=categories', RedirectType.replace);
 	}
 }

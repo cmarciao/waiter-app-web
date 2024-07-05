@@ -1,3 +1,4 @@
+import { httpTags } from '@/constants/http-tags';
 import { api } from './utils/api';
 
 type ICreateIngredientParams = {
@@ -18,7 +19,7 @@ class CategoriesService {
 	async getIngredients() {
 		return api.get('/ingredients', {
 			next: {
-				tags: ['ingredients']
+				tags: [httpTags.ingredients]
 			}
 		});
 	}

@@ -1,6 +1,6 @@
 'use server';
 
-import { redirect } from 'next/navigation';
+import { RedirectType, redirect } from 'next/navigation';
 import { revalidateTag } from 'next/cache';
 import { APIError } from '@/errors/APIError';
 import { APP_ROUTES } from '@/constants/app-routes';
@@ -24,11 +24,11 @@ export async function createHistoric() {
 
 		revalidateTag(httpTags.orders);
 		revalidateTag(httpTags.historic);
-
-		redirect(APP_ROUTES.private.home);
 	} catch(e){
 		const apiError = e as APIError;
 		throw new Error(apiError.message);
+	} finally {
+		redirect(APP_ROUTES.private.home, RedirectType.replace);
 	}
 }
 
@@ -37,9 +37,10 @@ export async function removeHistoric(id: string) {
 		await HistoricService.removeHistoric(id);
 
 		revalidateTag(httpTags.historic);
-		redirect(APP_ROUTES.private.historic);
 	} catch(e){
 		const apiError = e as APIError;
 		throw new Error(apiError.message);
+	} finally {
+		redirect(APP_ROUTES.private.historic);
 	}
 }
