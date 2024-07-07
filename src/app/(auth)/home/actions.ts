@@ -13,7 +13,7 @@ import { ORDER_STATES } from '@/constants/order-states';
 export async function getOrders() {
 	try {
 		return OrdersService.getOrders();
-	} catch(e){
+	} catch (e) {
 		const apiError = e as APIError;
 		throw new Error(apiError.message);
 	}
@@ -22,7 +22,7 @@ export async function getOrders() {
 export async function getOrderById(id: string) {
 	try {
 		return OrdersService.getOrderById(id);
-	} catch(e){
+	} catch (e) {
 		const apiError = e as APIError;
 		throw new Error(apiError.message);
 	}
@@ -33,11 +33,12 @@ export async function updateOrderStatus(id: string, state: ORDER_STATES) {
 		await OrdersService.updateOrderStatus(id, state);
 
 		revalidateTag(httpTags.orders);
-		redirect(APP_ROUTES.private.home);
-	} catch(e){
+	} catch (e) {
 		const apiError = e as APIError;
 		throw new Error(apiError.message);
 	}
+
+	redirect(APP_ROUTES.private.home);
 }
 
 export async function removeOrder(id: string) {
@@ -45,9 +46,10 @@ export async function removeOrder(id: string) {
 		await OrdersService.removeOrder(id);
 
 		revalidateTag(httpTags.orders);
-		redirect(APP_ROUTES.private.home);
-	} catch(e) {
+	} catch (e) {
 		const error = e as Error;
 		throw new Error(error.message);
 	}
+
+	redirect(APP_ROUTES.private.home);
 }

@@ -14,7 +14,7 @@ export async function ProductsTable() {
 		<Table.Root>
 			<Table.Header title='Products' amount={products.length}>
 				<Table.HeaderAction href='/menu?openedModal=creation'>
-						New product
+					New product
 				</Table.HeaderAction>
 			</Table.Header>
 
@@ -54,7 +54,7 @@ export async function ProductsTable() {
 										hrefAction={`/menu?openedModal=update&productId=${product.id}`}
 									/>
 									<Table.Action
-										icon={<Trash2Icon color='#D73035'/>}
+										icon={<Trash2Icon color='#D73035' />}
 										hrefAction={`/menu?openedModal=removal&productId=${product.id}`}
 									/>
 								</Table.Actions>

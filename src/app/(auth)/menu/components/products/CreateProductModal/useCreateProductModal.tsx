@@ -8,13 +8,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Category } from '@/types/Category';
 import { Ingredient } from '@/types/Ingredient';
 
-import { createProduct } from './../actions';
+import { createProduct } from '../actions';
 import { getCategories } from '../../Categories/actions';
 import { getIngredients } from '../../Ingredients/actions';
 
 const createProductSchema = z.object({
 	imageUrl: z.any().refine((files) => files?.length == 1, 'File is required.'),
-	name: z.string().trim().min(1, { message: 'Name is required.'}),
+	name: z.string().trim().min(1, { message: 'Name is required.' }),
 	description: z.string().trim().min(1, { message: 'Description is required.' }),
 	price: z.number({
 		required_error: 'Price is required.'
@@ -33,7 +33,7 @@ export function useCreateProductModal() {
 	const [ingredients, setIngredients] = useState<Ingredient[]>();
 	const [imageUrlPreview, setImageUrlPreview] = useState<string | ArrayBuffer | null | undefined>(null);
 
-	const {control, register, handleSubmit, formState: { errors, isValid, isSubmitting }} = useForm<CreateProductSchema>({
+	const { control, register, handleSubmit, formState: { errors, isValid, isSubmitting } } = useForm<CreateProductSchema>({
 		resolver: zodResolver(createProductSchema)
 	});
 	const watchImageUrl = useWatch({ control, name: 'imageUrl' });
@@ -57,14 +57,14 @@ export function useCreateProductModal() {
 	useEffect(() => {
 		const fileReader = new FileReader();
 
-		if(watchImageUrl) {
+		if (watchImageUrl) {
 			const blob = new Blob([watchImageUrl[0]]);
 
 			fileReader?.readAsDataURL(blob);
 			fileReader.onload = (readerEvent) => {
 				const result = readerEvent.target?.result;
 
-				if(result === 'data:application/octet-stream;base64,dW5kZWZpbmVk') return;
+				if (result === 'data:application/octet-stream;base64,dW5kZWZpbmVk') return;
 
 				setImageUrlPreview(result);
 			};
@@ -85,7 +85,7 @@ export function useCreateProductModal() {
 			await createProduct(formData);
 
 			toast.success('Product created successfulluy. ✔');
-		} catch(e) {
+		} catch (e) {
 			const error = e as Error;
 			toast.error(error.message);
 		}
