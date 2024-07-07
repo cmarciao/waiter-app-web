@@ -15,7 +15,7 @@ import { APP_ROUTES } from '@/constants/app-routes';
 export async function getUserById(id: string) {
 	try {
 		return await UserService.getUserById(id);
-	} catch(e){
+	} catch (e) {
 		const apiError = e as APIError;
 		throw new Error(apiError.message);
 	}
@@ -26,11 +26,12 @@ export async function createUser(user: CreateUserSchema) {
 		await UserService.createUser(user);
 
 		revalidateTag(httpTags.users);
-		redirect(APP_ROUTES.private.users);
-	} catch(e){
+	} catch (e) {
 		const apiError = e as APIError;
 		throw new Error(apiError.message);
 	}
+
+	redirect(APP_ROUTES.private.users);
 }
 
 export async function updateUser(id: string, user: UpdateUserSchema) {
@@ -38,11 +39,12 @@ export async function updateUser(id: string, user: UpdateUserSchema) {
 		await UserService.updateUser(id, user);
 
 		revalidateTag(httpTags.users);
-		redirect(APP_ROUTES.private.users);
-	} catch(e){
+	} catch (e) {
 		const apiError = e as APIError;
 		throw new Error(apiError.message);
 	}
+
+	redirect(APP_ROUTES.private.users);
 }
 
 export async function removeUser(id: string) {
@@ -50,9 +52,10 @@ export async function removeUser(id: string) {
 		await UserService.removeUser(id);
 
 		revalidateTag(httpTags.users);
-		redirect(APP_ROUTES.private.users);
-	} catch(e){
+	} catch (e) {
 		const apiError = e as APIError;
 		throw new Error(apiError.message);
 	}
+
+	redirect(APP_ROUTES.private.users);
 }
