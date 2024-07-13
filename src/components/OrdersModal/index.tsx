@@ -13,18 +13,19 @@ type OrdersModalProps = {
 }
 
 export function OrdersModal({ isOpen }: OrdersModalProps) {
-	if(!isOpen) return;
-
 	const {
 		order,
 		isUpdatingOrder,
 		handleChangeOrderStatus,
 		handleRemoveOrder
-	} = useOrdersModal();
+	} = useOrdersModal(isOpen);
+	
+	if(!isOpen) return;
 
 	if(!order) {
 		return <LoadScreen hasOpacityInBackground />;
 	}
+
 
 	return (
 		<Modal open={isOpen} hrefModalClose='/home'>

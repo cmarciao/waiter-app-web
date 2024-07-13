@@ -1,10 +1,11 @@
+import { Order } from '@/types/Order';
 import { useSearchParams } from 'next/navigation';
 
-export function useOrdersBoard() {
+export function useOrdersBoard(orders: Order[]) {
 	const searchParams = useSearchParams();
-	const openedModal = searchParams.get('openedModal') || '';
+	const orderId = searchParams.get('orderId') || '';
 
 	return {
-		hasSomeModalOpened: openedModal === 'order-details'
+		hasSomeModalOpened: orders.some((order) => order.id === orderId)
 	};
 }

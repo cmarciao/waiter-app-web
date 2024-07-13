@@ -5,21 +5,23 @@ import toast from 'react-hot-toast';
 import { Order } from '@/types/Order';
 import { ORDER_STATES } from '@/constants/order-states';
 import { getOrderById, removeOrder, updateOrderStatus } from '@/app/(auth)/home/actions';
+// import { useWebsocket } from '@/hooks/useWebsocket';
 
-export function useOrdersModal() {
+export function useOrdersModal(isOpen: boolean) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const orderId = searchParams.get('orderId') || '';
 
+	// const { publish } = useWebsocket();
 	const [order, setOrder] = useState<null | Order>(null);
 	const [isUpdatingOrder, setIsUpdatingOrder] = useState(false);
 
 	useEffect(() => {
-		async function loadOrders() {
+		async function loadOrder() {
 			try {
-				const response = await getOrderById(orderId);
+				const orders = await getOrderById(orderId);
 
-				setOrder(response);
+				setOrder(orders);
 			} catch(e) {
 				const error = e as Error;
 				toast.error(error.message);
@@ -28,8 +30,10 @@ export function useOrdersModal() {
 			}
 		}
 
-		loadOrders();
-	}, []);
+		if(isOpen) {
+			loadOrder();
+		}
+	}, [isOpen]);
 
 	async function handleChangeOrderStatus() {
 		const newState = order?.orderState === ORDER_STATES.WAITING
@@ -40,6 +44,11 @@ export function useOrdersModal() {
 			setIsUpdatingOrder(true);
 
 			await updateOrderStatus(orderId, newState);
+
+			// publish('orders@update', {
+			// 	orderId,
+			// 	newState
+			// });
 
 			toast.success('Order updated successfulluy. ✔', {
 				duration: 1000 * 3

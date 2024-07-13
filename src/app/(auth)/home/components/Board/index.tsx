@@ -1,22 +1,17 @@
 'use client';
 
-import { Order } from '@/types/Order';
 import { RefreshDayModal } from '../RefreshDayModal';
 import { OrdersBoard } from '@/components/OrdersBoard';
 
 import { useBoard } from './useBoard';
 
-type BoardProps = {
-	orders: Order[];
-};
-
-export function Board({ orders }: BoardProps) {
+export function Board() {
 	const {
 		waitingOrders,
 		preparingOrders,
 		finishedOrders,
 		isRefreshDayModalOpen
-	} = useBoard(orders);
+	} = useBoard();
 
 	return (
 		<>

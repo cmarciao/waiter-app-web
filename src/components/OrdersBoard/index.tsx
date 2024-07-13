@@ -15,7 +15,7 @@ type OrdersBoardProps = {
 export function OrdersBoard({ icon, title, quantity, orders }: OrdersBoardProps) {
 	const {
 		hasSomeModalOpened
-	} = useOrdersBoard();
+	} = useOrdersBoard(orders);
 
 	return (
 		<section className="p-4 rounded-md border border-gray-200">

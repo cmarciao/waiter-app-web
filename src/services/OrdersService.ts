@@ -8,9 +8,7 @@ class OrdersService {
 
 	async getOrders() {
 		return api.get('/orders', {
-			next: {
-				tags: ['orders']
-			}
+			cache: 'no-store'
 		});
 	}
 
