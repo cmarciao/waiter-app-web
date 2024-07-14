@@ -41,9 +41,10 @@ export default function Home() {
 					<span className='block font-semibold mt-4 text-gray-400'>Acompanhe os pedidos dos clientes.</span>
 				</header>
 
-				<main className='mt-[4.5rem] grid grid-cols-3 gap-8'>
+				
+				<div className='mt-[4.5rem]'>
 					<Board />
-				</main>
+				</div>
 			</div>
 		</WebSocketProvider>
 	);

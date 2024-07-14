@@ -8,6 +8,7 @@ import { Table } from '@/components/Table';
 import { HistoricModals } from '../HistoricModals';
 
 import HistoricService from '@/services/HistoricService';
+import { EmptyInformation } from '@/components/EmptyInformation';
 
 type HistoricTableProps = {
 	orderBy: string;
@@ -15,6 +16,16 @@ type HistoricTableProps = {
 
 export async function HistoricTable({orderBy}: HistoricTableProps) {
 	const historic = await HistoricService.getHistoric(orderBy);
+
+	if(historic.length === 0) {
+		return (
+			<div className='absolute inset-0 flex items-center justify-center'>
+				<EmptyInformation
+					description='Não há pedidos em registro no momento.'
+				/>
+			</div>
+		);
+	}
 
 	return (
 		<Table.Root className='mt-2'>

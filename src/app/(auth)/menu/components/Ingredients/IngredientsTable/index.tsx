@@ -5,9 +5,20 @@ import { Ingredient } from '@/types/Ingredient';
 
 import { IngredientsModals } from '../IngredientsModals';
 import IngredientsService from '@/services/IngredientsService';
+import { EmptyInformation } from '@/components/EmptyInformation';
 
 export async function IngredientsTable() {
 	const ingredients: Ingredient[] = await IngredientsService.getIngredients();
+
+	if(ingredients.length === 0) {
+		return (
+			<div className='absolute inset-0 flex items-center justify-center'>
+				<EmptyInformation
+					description='Não há ingredientes cadastrados no momento.'
+				/>
+			</div>
+		);
+	}
 
 	return (
 		<>

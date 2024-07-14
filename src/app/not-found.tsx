@@ -1,8 +1,5 @@
-import Link from 'next/link';
-
-import { twMerge } from 'tailwind-merge';
-import { ShieldAlertIcon } from 'lucide-react';
 import { getAccessToken } from '@/utils/user-credentials';
+import { EmptyInformation } from '@/components/EmptyInformation';
 
 export default async function NotFound() {
 	const accessToken = await getAccessToken();
@@ -10,25 +7,13 @@ export default async function NotFound() {
 
 	return (
 		<div className='h-screen flex items-center justify-center'>
-			<div className='flex items-center flex-col gap-8'>
-				<div className='flex flex-col items-center'>
-					<ShieldAlertIcon size={134} />
+			<div className='flex flex-col items-center justify-center gap-8'>
+				<h1 className='text-[8rem] font-semibold text-gray-400' >404</h1>
 
-					<h1 className='mt-4'>404</h1>
-					<h2>Page not found</h2>
-				</div>
-
-				<Link
-					href={isLogged ? '/home' : '/signin'}
-					className={twMerge(
-						'px-7 py-3 text-white bg-brand-red',
-						'hover:brightness-90 transition-all',
-						'h-full font-semibold rounded-md',
-					)}
-				>
-					{isLogged && 'Go to home'}
-					{!isLogged && 'Go to login'}
-				</Link>
+				<EmptyInformation
+					redirect={isLogged ? '/home' : '/signin'}
+					description='Ops, esta página não existe...'
+				/>
 			</div>
 		</div>
 	);

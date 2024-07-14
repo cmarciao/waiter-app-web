@@ -5,9 +5,20 @@ import { Category } from '@/types/Category';
 
 import { CategoriesModals } from '../CategoriesModals';
 import CategoriesService from '@/services/CategoriesService';
+import { EmptyInformation } from '@/components/EmptyInformation';
 
 export async function CategoriesTable() {
 	const categories: Category[] = await CategoriesService.getCategories();
+
+	if(categories.length > 0) {
+		return (
+			<div className='absolute inset-0 flex items-center justify-center'>
+				<EmptyInformation
+					description='Não há produtos categorias no momento.'
+				/>
+			</div>
+		);
+	}
 
 	return (
 		<>

@@ -6,9 +6,20 @@ import { ProductsModals } from '../ProductsModals';
 
 import { formatPrice } from '@/utils/format-utils';
 import ProductsService from '@/services/ProductsService';
+import { EmptyInformation } from '@/components/EmptyInformation';
 
 export async function ProductsTable() {
 	const products = await ProductsService.getProducts();
+
+	if(products.length === 0) {
+		return (
+			<div className='absolute inset-0 flex items-center justify-center'>
+				<EmptyInformation
+					description='Não há produtos cadastrados no momento.'
+				/>
+			</div>
+		);
+	}
 
 	return (
 		<Table.Root>

@@ -1,4 +1,4 @@
-import { IErrorResponse, IUserRequest, IUserResponse } from '@/types/Users';
+import { IUserRequest, IUserResponse } from '@/types/Users';
 import { api } from './utils/api';
 
 class UsersService {
@@ -8,7 +8,7 @@ class UsersService {
 		});
 	}
 
-	async listUsers(): Promise<IUserResponse[] | IErrorResponse> {
+	async listUsers(): Promise<IUserResponse[]> {
 		return api.get('/users', {
 			next: {
 				tags: ['users']

@@ -4,8 +4,8 @@ import { Table } from '@/components/Table';
 import { UserModals } from '../UserModals';
 
 import UserService from '@/services/UserService';
-import { redirect } from 'next/navigation';
 import { UserType } from '@/types/Users';
+import { EmptyInformation } from '@/components/EmptyInformation';
 
 function formatUserTypeToPortugues(userType: UserType) {
 	switch(userType) {
@@ -22,8 +22,14 @@ function formatUserTypeToPortugues(userType: UserType) {
 export async function UsersTable() {
 	const users = await UserService.listUsers();
 
-	if('error' in users) {
-		redirect('/home');
+	if(users.length === 0) {
+		return (
+			<div className='absolute inset-0 flex items-center justify-center'>
+				<EmptyInformation
+					description='Não há usuários cadastrados no momento.'
+				/>
+			</div>
+		);
 	}
 
 	return (

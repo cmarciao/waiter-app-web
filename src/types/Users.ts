@@ -13,9 +13,3 @@ export type User = {
 export type IUserRequest = Omit<User, 'id'>;
 
 export type IUserResponse = Omit<User, 'password'>;
-
-export type IErrorResponse = {
-	message: string;
-	error: string;
-	statusCode: number;
-};
