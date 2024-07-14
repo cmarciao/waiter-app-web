@@ -21,26 +21,26 @@ export function CreateUserModal({ isOpen }: CreateUserModalProps) {
 
 	return (
 		<Modal open={isOpen} hrefModalClose='/users'>
-			<ModalTitle>New user</ModalTitle>
+			<ModalTitle>Novo usuário</ModalTitle>
 
 			<form className='mt-6' action={handleCreateUser} >
 				<div className='flex flex-col gap-6'>
 					<Input
-						label='Name'
+						label='Nome'
 						type='text'
 						{...register('name')}
 						errorMessage={errors?.name?.message}
 					/>
 
 					<Input
-						label='Email'
+						label='E-mail'
 						type='email'
 						{...register('email')}
 						errorMessage={errors?.email?.message}
 					/>
 
 					<Input
-						label='Password'
+						label='Senha'
 						type='password'
 						{...register('password')}
 						errorMessage={errors?.password?.message}
@@ -49,12 +49,12 @@ export function CreateUserModal({ isOpen }: CreateUserModalProps) {
 					<InputGroup errorMessage={errors?.type?.message}>
 						<InputRadio
 							value="ADMIN"
-							label='Admin'
+							label='Administrador'
 							{...register('type')}
 						/>
 						<InputRadio
 							value="WAITER"
-							label='Waiter'
+							label='Garçom'
 							{...register('type')}
 						/>
 					</InputGroup>
@@ -67,7 +67,7 @@ export function CreateUserModal({ isOpen }: CreateUserModalProps) {
 						disabled={!isFormValid}
 						isLoading={isFormSubmitting}
 					>
-						Register new user
+						Criar usuário
 					</Button>
 				</footer>
 			</form>

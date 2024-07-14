@@ -11,10 +11,10 @@ export default function Users() {
 						height={32}
 					/>
 
-					<h1>Users</h1>
+					<h1>Usuários</h1>
 				</div>
 
-				<span className='block font-semibold mt-4 text-gray-400'>Register and manager your users</span>
+				<span className='block font-semibold mt-4 text-gray-400'>Cadastre e gerencie seus usuários.</span>
 			</header>
 
 			<main className='mt-[4.5rem]'>

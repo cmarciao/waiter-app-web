@@ -11,12 +11,12 @@ import { APP_ROUTES } from '@/constants/app-routes';
 import { signIn } from './actions';
 import { ApiException } from '@/errors/ApiException';
 
-const loginSchema = z.object({
-	email: z.string().email('Invalid email.'),
-	password: z.string().min(8, { message: 'Min 8 characters.' })
+const signInSchema = z.object({
+	email: z.string().email('E-mail inválido.'),
+	password: z.string().min(8, { message: 'Mínimo de 8 caracteres.' })
 });
 
-type LoginSchema = {
+type SignInSchema = {
 	email: string;
 	password: string;
 }
@@ -24,15 +24,15 @@ type LoginSchema = {
 export function useLogin() {
 	const router = useRouter();
 
-	const {register,  handleSubmit, formState: { errors, isValid, isSubmitting: isLoading}} = useForm<LoginSchema>({
-		resolver: zodResolver(loginSchema)
+	const {register,  handleSubmit, formState: { errors, isValid, isSubmitting: isLoading}} = useForm<SignInSchema>({
+		resolver: zodResolver(signInSchema)
 	});
 
-	const handleLogin = handleSubmit(async ({ email, password }: LoginSchema) => {
+	const handleLogin = handleSubmit(async ({ email, password }: SignInSchema) => {
 		try {
 			await signIn({ email, password });
 	
-			toast.success('Welcome, let\'s get to work! 🍕');
+			toast.success('Bem-vindo(a), tenha um bom trabalho!');
 			router.replace(APP_ROUTES.private.home);
 		} catch(e) {
 			const error = e as ApiException;

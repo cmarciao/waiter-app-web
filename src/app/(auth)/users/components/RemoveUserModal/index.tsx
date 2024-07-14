@@ -21,7 +21,7 @@ function ActionsButtons() {
 				isLoading={pending}
 			>
 				<Link href='/users'>
-					Keep user
+					Cancelar
 				</Link>
 			</Button>
 
@@ -29,7 +29,7 @@ function ActionsButtons() {
 				type='submit'
 				isLoading={pending}
 			>
-				Remove user
+				Excluir usuário
 			</Button>
 		</footer>
 	);
@@ -49,21 +49,19 @@ export function RemoveUserModal({ isOpen }: RemoveUserModalProps) {
 
 	return (
 		<Modal open={isOpen} hrefModalClose='/users'>
-			<ModalTitle>Remove user</ModalTitle>
+			<ModalTitle>Excluir usuário</ModalTitle>
 			<ModalDescription>Tem certeza que deseja excluir o usuário?</ModalDescription>
 
 			<form className='mt-6 flex flex-col gap-6' action={formAction}>
 				<Input
-					name='Name'
-					label='Name'
+					label='Nome'
 					type='text'
 					value={user.name}
 					disabled
 				/>
 
 				<Input
-					name='email'
-					label='Email'
+					label='E-mail'
 					type='email'
 					value={user.email}
 					disabled

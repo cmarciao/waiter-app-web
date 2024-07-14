@@ -27,12 +27,12 @@ export function UpdateUserModal({ isOpen }: UpdateUserModalProps) {
 
 	return (
 		<Modal open={isOpen} hrefModalClose='/users'>
-			<ModalTitle>Update user</ModalTitle>
+			<ModalTitle>Editar usuário</ModalTitle>
 
 			<form className='mt-6' action={handlUpdateUser}>
 				<div className='flex flex-col gap-6'>
 					<Input
-						label='Name'
+						label='Nome'
 						type='text'
 						defaultValue={user.name}
 						errorMessage={errors?.name?.message}
@@ -40,7 +40,7 @@ export function UpdateUserModal({ isOpen }: UpdateUserModalProps) {
 					/>
 
 					<Input
-						label='Email'
+						label='E-mail'
 						type='email'
 						defaultValue={user.email}
 						errorMessage={errors?.email?.message}
@@ -57,13 +57,13 @@ export function UpdateUserModal({ isOpen }: UpdateUserModalProps) {
 					<InputGroup>
 						<InputRadio
 							value="ADMIN"
-							label='Admin'
+							label='Administrador'
 							defaultChecked={user.type === 'ADMIN'}
 							{...register('type')}
 						/>
 						<InputRadio
 							value="WAITER"
-							label='Waiter'
+							label='Garçom'
 							defaultChecked={user.type === 'WAITER'}
 							{...register('type')}
 						/>
@@ -77,7 +77,7 @@ export function UpdateUserModal({ isOpen }: UpdateUserModalProps) {
 						isLoading={isRemovingUser}
 						onClick={handleRemoveUser}
 					>
-						Remove user
+						Excluir usuário
 					</Button>
 
 					<Button
@@ -85,7 +85,7 @@ export function UpdateUserModal({ isOpen }: UpdateUserModalProps) {
 						disabled={!isFormValid}
 						isLoading={isFormSubmitting || isRemovingUser}
 					>
-						Save changes
+						Salvar
 					</Button>
 				</footer>
 			</form>

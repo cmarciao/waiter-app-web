@@ -43,7 +43,7 @@ export function UpdateCategoryModal({ isOpen }: UpdateCategoryModalProps) {
 
 					<Input
 						id='name'
-						label='Name'
+						label='Nome'
 						type='text'
 						errorMessage={errors?.name?.message}
 						{...register('name')}
@@ -58,7 +58,7 @@ export function UpdateCategoryModal({ isOpen }: UpdateCategoryModalProps) {
 						isLoading={isUpdatingCategory || isRemovingCategory}
 						onClick={handleRemoveCategory}
 					>
-						Remove category
+						Excluir categoria
 					</Button>
 
 					<Button
@@ -66,7 +66,7 @@ export function UpdateCategoryModal({ isOpen }: UpdateCategoryModalProps) {
 						isLoading={isUpdatingCategory || isRemovingCategory}
 						disabled={!isValid}
 					>
-						Save changes
+						Salvar alterações
 					</Button>
 				</footer>
 			</form>

@@ -5,6 +5,19 @@ import { UserModals } from '../UserModals';
 
 import UserService from '@/services/UserService';
 import { redirect } from 'next/navigation';
+import { UserType } from '@/types/Users';
+
+function formatUserTypeToPortugues(userType: UserType) {
+	switch(userType) {
+	case 'ADMIN': {
+		return 'Administrador';
+	}
+			
+	default: {
+		return 'Garçom';
+	}
+	}
+}
 
 export async function UsersTable() {
 	const users = await UserService.listUsers();
@@ -15,19 +28,19 @@ export async function UsersTable() {
 
 	return (
 		<Table.Root className='mt-2'>
-			<Table.Header title='Users' amount={users.length}>
+			<Table.Header title='Usuários' amount={users.length}>
 				<Table.HeaderAction href='/users?openedModal=creation'>
-					New user
+					Novo usuário
 				</Table.HeaderAction>
 			</Table.Header>
 
 			<Table.Content className='mt-4'>
 				<Table.Head>
 					<Table.Row>
-						<Table.Th>Name</Table.Th>
-						<Table.Th>Email</Table.Th>
-						<Table.Th>Role</Table.Th>
-						<Table.Th>Action</Table.Th>
+						<Table.Th>Nome</Table.Th>
+						<Table.Th>E-mail</Table.Th>
+						<Table.Th>Cargo</Table.Th>
+						<Table.Th>Ações</Table.Th>
 					</Table.Row>
 				</Table.Head>
 
@@ -36,11 +49,11 @@ export async function UsersTable() {
 						<Table.Row key={user.id}>
 							<Table.Td>{user.name}</Table.Td>
 							<Table.Td>{user.email}</Table.Td>
-							<Table.Td>{user.type}</Table.Td>
+							<Table.Td>{formatUserTypeToPortugues(user.type)}</Table.Td>
 							<Table.Td>
 								<Table.Actions>
 									<Table.Action
-										icon={<PencilIcon />}
+										icon={<PencilIcon color='#666' />}
 										hrefAction={`/users?openedModal=update&userId=${user.id}`}
 									/>
 									<Table.Action

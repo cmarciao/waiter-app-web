@@ -11,21 +11,21 @@ export function TabNavigation({ tab }: NavigationProps) {
 				href='products'
 				isActive={tab === 'products'}
 			>
-				Products
+				Produtos
 			</ItemTabNavigation>
 
 			<ItemTabNavigation
 				href='categories'
 				isActive={tab === 'categories'}
 			>
-				Categories
+				Categorias
 			</ItemTabNavigation>
 
 			<ItemTabNavigation
 				href='ingredients'
 				isActive={tab === 'ingredients'}
 			>
-				Ingredients
+				Ingredientes
 			</ItemTabNavigation>
 		</nav>
 	);

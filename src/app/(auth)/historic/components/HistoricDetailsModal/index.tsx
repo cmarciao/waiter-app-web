@@ -21,15 +21,15 @@ export function HistoricDetailsModal({ isOpen }: OrderDetailsModalProps) {
 
 	return (
 		<Modal open={isOpen} hrefModalClose='/historic' className='pb-12'>
-			<ModalTitle>Table {historic.table}</ModalTitle>
+			<ModalTitle>Mesa {historic.table}</ModalTitle>
 
 			<section className='flex flex-col gap-2 mt-8'>
-				<span className='text-small' >historic date</span>
+				<span className='text-small'>Data do pedido</span>
 				<strong>{formatDate(new Date(historic.createdAt))}</strong>
 			</section>
 
 			<section className='mt-8'>
-				<span className='text-small'>Items</span>
+				<span className='text-small'>Itens</span>
 				<section className='flex flex-col gap-4 mt-4'>
 					{historic.products.map((product) => (
 						<div key={product.id} className='flex gap-3'>

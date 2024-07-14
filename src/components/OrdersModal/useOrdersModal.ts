@@ -12,7 +12,6 @@ export function useOrdersModal(isOpen: boolean) {
 	const searchParams = useSearchParams();
 	const orderId = searchParams.get('orderId') || '';
 
-	// const { publish } = useWebsocket();
 	const [order, setOrder] = useState<null | Order>(null);
 	const [isUpdatingOrder, setIsUpdatingOrder] = useState(false);
 
@@ -45,7 +44,7 @@ export function useOrdersModal(isOpen: boolean) {
 
 			await updateOrderStatus(orderId, newState);
 
-			toast.success('Order updated successfulluy. ✔', {
+			toast.success('Pedido atualizado. ✔', {
 				duration: 1000 * 3
 			});
 		} catch(e) {
@@ -62,7 +61,7 @@ export function useOrdersModal(isOpen: boolean) {
 
 			await removeOrder(orderId);
 
-			toast.success('Order updated successfulluy. ✔', {
+			toast.success('Pedido atualizado. ✔', {
 				duration: 1000 * 3
 			});
 		} catch(e) {

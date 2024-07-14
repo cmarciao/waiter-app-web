@@ -18,10 +18,10 @@ export default function Menu({ searchParams }: MenuProps) {
 				<div className='flex items-center gap-4'>
 					<MenuIcon width={32} height={32}/>
 
-					<h1>Menu</h1>
+					<h1>Cardápio</h1>
 				</div>
 
-				<span className='block font-semibold mt-4 text-gray-400'>Manage your establishment&apos;s products</span>
+				<span className='block font-semibold mt-4 text-gray-400'>Gerencie os produtos do seu estabelecimento.</span>
 			</header>
 
 			<main className='mt-[4.5rem]'>

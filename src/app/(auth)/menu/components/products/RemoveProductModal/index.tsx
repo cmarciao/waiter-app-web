@@ -23,7 +23,7 @@ function ActionsButtons() {
 					type='button'
 					variant='secondary'
 				>
-					Keep product
+					Cancelar
 				</Button>
 			</Link>
 
@@ -31,7 +31,7 @@ function ActionsButtons() {
 				type='submit'
 				isLoading={pending}
 			>
-					Remove product
+				Excluir produto
 			</Button>
 		</footer>
 	);
@@ -52,8 +52,8 @@ export function RemoveProductModal({ isOpen }: RemoveUserModalProps) {
 	return (
 		<Modal open={isOpen} hrefModalClose='/menu?tab=products'>
 			<form action={formAction}>
-				<ModalTitle>Remove product</ModalTitle>
-				<ModalDescription>Are you sure you want to delete this product?</ModalDescription>
+				<ModalTitle>Excluir produto</ModalTitle>
+				<ModalDescription>Tem certeza que deseja excluir o produto?</ModalDescription>
 
 				<section className='mt-6 flex justify-center h-[123px]'>
 					<Image

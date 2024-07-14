@@ -12,20 +12,20 @@ export async function ProductsTable() {
 
 	return (
 		<Table.Root>
-			<Table.Header title='Products' amount={products.length}>
+			<Table.Header title='Produtos' amount={products.length}>
 				<Table.HeaderAction href='/menu?openedModal=creation'>
-					New product
+					Novo produto
 				</Table.HeaderAction>
 			</Table.Header>
 
 			<Table.Content className='mt-4'>
 				<Table.Head>
 					<Table.Row>
-						<Table.Th>Image</Table.Th>
-						<Table.Th>Name</Table.Th>
-						<Table.Th>Category</Table.Th>
-						<Table.Th>Price</Table.Th>
-						<Table.Th>Action</Table.Th>
+						<Table.Th>Imagem</Table.Th>
+						<Table.Th>Nome</Table.Th>
+						<Table.Th>Categoria</Table.Th>
+						<Table.Th>Preço</Table.Th>
+						<Table.Th>Ações</Table.Th>
 					</Table.Row>
 				</Table.Head>
 				<Table.Body>
@@ -50,7 +50,7 @@ export async function ProductsTable() {
 							<Table.Td>
 								<Table.Actions>
 									<Table.Action
-										icon={<PencilIcon />}
+										icon={<PencilIcon color='#666' />}
 										hrefAction={`/menu?openedModal=update&productId=${product.id}`}
 									/>
 									<Table.Action

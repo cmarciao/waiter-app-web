@@ -33,8 +33,8 @@ export function OrdersBoard({ icon, title, quantity, orders }: OrdersBoardProps)
 						className='text-center py-10 bg-white rounded-md border border-gray-200'
 
 					>
-						<strong className='font-semibold'>Table {order.table}</strong>
-						<span className='block mt-1'>{order.totalProducts} items</span>
+						<strong className='font-semibold'>Mesa {order.table}</strong>
+						<span className='block mt-1 text-gray-400'>{order.totalProducts} itens</span>
 					</Link>
 				))}
 			</section>

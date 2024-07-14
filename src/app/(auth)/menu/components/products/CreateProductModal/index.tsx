@@ -43,14 +43,14 @@ export function CreateProductModal({ isOpen }: AddProductModalProps) {
 
 	return (
 		<Modal open={isOpen} hrefModalClose='/menu?tab=products' className='max-w-[928px]'>
-			<ModalTitle>New product</ModalTitle>
+			<ModalTitle>Novo produto</ModalTitle>
 
 			<section>
 				<form action={handleCreateProduct}>
 					<div className='mt-12 flex gap-8'>
 						<div className='flex-1'>
 							<div className='flex items-center justify-between'>
-								<h3>Image</h3>
+								<h3>Imagem</h3>
 
 								{errors?.imageUrl?.message && (
 									<div className='text-brand-red flex items-center gap-2'>
@@ -98,14 +98,14 @@ export function CreateProductModal({ isOpen }: AddProductModalProps) {
 								<div className='h-[60px] flex items-center text-brand-red cursor-pointer'>
 									<ImageIcon color='#D73035'/>
 
-									<strong className='ml-1'>Change Image</strong>
+									<strong className='ml-1'>Alterar imagem</strong>
 								</div>
 							</label>
 
 							<Input
 								className='mt-8'
-								label='Product name'
-								placeholder='Pepperoni Pizza'
+								label='Nome do produto'
+								placeholder='Quatro Queijos'
 								{...register('name')}
 								errorMessage={errors?.name?.message}
 							/>
@@ -113,15 +113,15 @@ export function CreateProductModal({ isOpen }: AddProductModalProps) {
 							<Input
 								id='description'
 								className='mt-8'
-								label='Description'
-								placeholder='Pepperoni Pizza with tradicional borders'
+								label='Descrição do produto'
+								placeholder='Pizza de Quatro Queijos com borda tradicional'
 								{...register('description')}
 								errorMessage={errors?.description?.message}
 							/>
 
 							<section className='mt-8'>
 								<div className='flex items-center justify-between'>
-									<span>Category</span>
+									<span>Categoria</span>
 
 									{errors?.category?.message && (
 										<div className='text-brand-red flex items-center gap-2'>
@@ -162,13 +162,13 @@ export function CreateProductModal({ isOpen }: AddProductModalProps) {
 						<div className='flex-1'>
 							<header>
 								<div className='flex items-center justify-between'>
-									<h3>Ingredients</h3>
+									<h3>Ingredientes</h3>
 									<Button
 										type='button'
 										variant='secondary'
 									>
 										<Link href='/menu?openedModal=creation&ingredient=true'>
-											New ingredient
+											Novo ingrediente
 										</Link>
 									</Button>
 								</div>
@@ -183,8 +183,8 @@ export function CreateProductModal({ isOpen }: AddProductModalProps) {
 
 							<Input
 								className='mt-6'
-								label='Search the ingredient'
-								placeholder='Ex: Pepporoni'
+								label='Busque o ingrediente'
+								placeholder='Ex: Quatro Queijos'
 							/>
 
 							<div
@@ -217,7 +217,7 @@ export function CreateProductModal({ isOpen }: AddProductModalProps) {
 
 							<Input
 								className='mt-4'
-								label='Price'
+								label='Preço'
 								type='number'
 								min={1}
 								placeholder='Ex: R$ 10.00'
@@ -235,7 +235,7 @@ export function CreateProductModal({ isOpen }: AddProductModalProps) {
 							disabled={!isFormValid}
 							isLoading={isCreatingProduct}
 						>
-							Save product
+							Criar produto
 						</Button>
 					</footer>
 				</form>

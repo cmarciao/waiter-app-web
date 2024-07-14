@@ -23,7 +23,7 @@ export function SignOutButton() {
 				>
 					<PowerIcon />
 					<span className='text-gray-400'>
-						Exit
+						Sair
 					</span>
 				</button>
 			</Link>

@@ -23,26 +23,26 @@ export function RefreshDayModal({ isOpen }: RefreshDayModalProps) {
 		>
 			<ModalTitle className='flex items-center gap-4'>
 				<RefreshCcw />
-				Refresh the day
+				Reiniciar o dia
 			</ModalTitle>
 
 			<section className='text-center mt-12'>
-				<p>
-					When you restart the day, all requests will be archived in the current status.
+				<p className='max-w-sm text-center m-auto'>
+					Ao reiniciar o dia, todos os pedidos serão arquivados no status atual.
 				</p>
 
-				<span className='mt-4'>Do you want to refresh the day?</span>
+				<span className='block mt-4'>Deseja reiniciar o dia?</span>
 			</section>
 
 			<footer className='flex items-center justify-between mt-12'>
 				<Link href='/home'>
 					<Button variant='secondary'>
-						No, we can continue
+						Não, continuar pedidos
 					</Button>
 				</Link>
 
 				<Button onClick={handleRefreshDay}>
-					Yes, refresh the day
+					Sim, reiniciar o dia
 				</Button>
 			</footer>
 		</Modal>

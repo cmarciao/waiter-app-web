@@ -17,7 +17,7 @@ export function NavLink({ to, icon: Icon, label }: NavLinkProps) {
 	const colorIcon = isActiveLink ? '#D73035' : '#666666';
 
 	return (
-		<Link href={to} className='flex flex-col items-center pt-6 pb-8'>
+		<Link href={to} className='flex flex-col items-center pt-6 pb-8 gap-2'>
 			<Icon color={colorIcon} />
 
 			<span

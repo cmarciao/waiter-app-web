@@ -8,7 +8,7 @@ export function useRefreshDayModal() {
 		try {
 			await createHistoric();
 
-			toast.success('Your day was refreshed! 🔃');
+			toast.success('Os pedidos estão no histórico!');
 		} catch(e) {
 			const error = e as ApiException;
 			toast.error(error.message);

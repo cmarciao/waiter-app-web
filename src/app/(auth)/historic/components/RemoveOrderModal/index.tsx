@@ -22,7 +22,7 @@ function ActionsButtons() {
 			variant='secondary'
 			isLoading={pending}
 		>
-			Delete order
+			Excluir pedido
 		</Button>
 	);
 }
@@ -41,22 +41,22 @@ export function RemoveOrderModalModal({ isOpen }: RemoveOrderModalProps) {
 
 	return (
 		<Modal open={isOpen} hrefModalClose='/historic'>
-			<ModalTitle>Remove order</ModalTitle>
-			<ModalDescription>Are you sure you want to remove this order?</ModalDescription>
+			<ModalTitle>Excluir pedido</ModalTitle>
+			<ModalDescription>Tem certeza que deseja excluir o pedido?</ModalDescription>
 
 			<form action={handleRemoveHistoricOrder}>
 				<section className='flex flex-col gap-2 mt-8'>
-					<span className='text-small' >Table</span>
+					<span className='text-small'>Mesa</span>
 					<strong>{historic.table}</strong>
 				</section>
 
 				<section className='flex flex-col gap-2 mt-8'>
-					<span className='text-small' >Order date</span>
+					<span className='text-small' >Data do pedido</span>
 					<strong>{formatDate(new Date(historic.createdAt))}</strong>
 				</section>
 
 				<section className='mt-8'>
-					<span className='text-small'>Items</span>
+					<span className='text-small'>Itens</span>
 					<section className='flex flex-col gap-4 mt-4'>
 						{historic.products.map((product) => (
 							<div key={product.id} className='flex gap-3'>

@@ -29,19 +29,19 @@ export function OrdersModal({ isOpen }: OrdersModalProps) {
 
 	return (
 		<Modal open={isOpen} hrefModalClose='/home'>
-			<ModalTitle>Table {order.table}</ModalTitle>
+			<ModalTitle>Mesa {order.table}</ModalTitle>
 
 			<section className='flex flex-col gap-2 mt-8'>
-				<span className='text-small' >Order status</span>
+				<span className='text-small'>Status do pedido</span>
 				<strong>
-					{order.orderState === ORDER_STATES.WAITING && '🕒 Waiting'}
-					{order.orderState === ORDER_STATES.PREPARING && '👨‍🍳 Preparing'}
-					{order.orderState === ORDER_STATES.FINISHED && '✅ Finished'}
+					{order.orderState === ORDER_STATES.WAITING && '🕒 Fila de espera'}
+					{order.orderState === ORDER_STATES.PREPARING && '👨‍🍳 Em produção'}
+					{order.orderState === ORDER_STATES.FINISHED && '✅ Pronto'}
 				</strong>
 			</section>
 
 			<section className='mt-8'>
-				<span className='text-small'>Items</span>
+				<span className='text-small'>Itens</span>
 				<section className='flex flex-col gap-4 mt-4'>
 					{order.products.map((product) => (
 						<div key={product.id} className='flex gap-3'>
@@ -79,19 +79,19 @@ export function OrdersModal({ isOpen }: OrdersModalProps) {
 							onClick={handleRemoveOrder}
 							isLoading={isUpdatingOrder}
 						>
-							Cancel order
+							Cancelar o pedido
 						</Button>
 					)}
 
 					{order.orderState === ORDER_STATES.WAITING && (
 						<Button isLoading={isUpdatingOrder} onClick={handleChangeOrderStatus}>
-							👨‍🍳 Start order
+							👨‍🍳 Iniciar
 						</Button>
 					)}
 
 					{order.orderState === ORDER_STATES.PREPARING && (
 						<Button isLoading={isUpdatingOrder} onClick={handleChangeOrderStatus}>
-							✅ Finish order
+							✅ Concluir
 						</Button>
 					)}
 				</footer>

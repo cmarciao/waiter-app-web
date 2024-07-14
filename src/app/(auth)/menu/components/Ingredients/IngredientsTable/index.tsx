@@ -12,9 +12,9 @@ export async function IngredientsTable() {
 	return (
 		<>
 			<Table.Root>
-				<Table.Header title='Categories' amount={ingredients.length}>
+				<Table.Header title='Ingredientes' amount={ingredients.length}>
 					<Table.HeaderAction href='/menu?tab=ingredients&openedModal=creation'>
-						New ingredient
+						Novo ingrediente
 					</Table.HeaderAction>
 				</Table.Header>
 
@@ -22,8 +22,8 @@ export async function IngredientsTable() {
 					<Table.Head>
 						<Table.Row>
 							<Table.Th>Emoji</Table.Th>
-							<Table.Th className='w-full px-10'>Name</Table.Th>
-							<Table.Th>Action</Table.Th>
+							<Table.Th className='w-full px-10'>Nome</Table.Th>
+							<Table.Th>Ações</Table.Th>
 						</Table.Row>
 					</Table.Head>
 					<Table.Body>
@@ -34,7 +34,7 @@ export async function IngredientsTable() {
 								<Table.Td className='pr-4'>
 									<Table.Actions>
 										<Table.Action
-											icon={<PencilIcon />}
+											icon={<PencilIcon color='#666' />}
 											hrefAction={`/menu?tab=ingredients&openedModal=update&ingredientId=${ingredient.id}`}
 										/>
 

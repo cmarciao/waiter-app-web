@@ -27,7 +27,7 @@ export function UpdateIngredientModal({ isOpen }: UpdateIngredientModalProps) {
 
 	return (
 		<Modal open={isOpen} hrefModalClose='/menu?tab=ingredients'>
-			<ModalTitle>Edit ingredient</ModalTitle>
+			<ModalTitle>Editar ingrediente</ModalTitle>
 
 			<form className='mt-6' action={handleUpdateIngredient}>
 				<div className='flex flex-col gap-6'>
@@ -42,7 +42,7 @@ export function UpdateIngredientModal({ isOpen }: UpdateIngredientModalProps) {
 
 					<Input
 						id='name'
-						label='Name'
+						label='Nome'
 						type='text'
 						errorMessage={errors?.name?.message}
 						{...register('name')}
@@ -57,7 +57,7 @@ export function UpdateIngredientModal({ isOpen }: UpdateIngredientModalProps) {
 						isLoading={isUpdatingIngredient || isRemovingIngredient}
 						onClick={handleRemoveIngredient}
 					>
-						Remove ingredient
+						Excluir ingrediente
 					</Button>
 
 					<Button
@@ -65,7 +65,7 @@ export function UpdateIngredientModal({ isOpen }: UpdateIngredientModalProps) {
 						isLoading={isUpdatingIngredient || isRemovingIngredient}
 						disabled={!isValid}
 					>
-						Save changes
+						Salvar
 					</Button>
 				</footer>
 			</form>

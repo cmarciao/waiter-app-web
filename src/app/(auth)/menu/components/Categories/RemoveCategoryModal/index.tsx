@@ -24,8 +24,8 @@ export function RemoveCategoryModal({ isOpen }: RemoveUserModalProps) {
 
 	return (
 		<Modal open={isOpen} hrefModalClose='/menu?tab=categories'>
-			<ModalTitle>Remove category</ModalTitle>
-			<ModalDescription>Are you sure you want to remove this category?</ModalDescription>
+			<ModalTitle>Excluir categoria</ModalTitle>
+			<ModalDescription>Tem certeza que deseja excluir a categoria?</ModalDescription>
 
 			<form action={formAction}>
 				<section className='mt-6 flex flex-col gap-6'>
@@ -37,7 +37,7 @@ export function RemoveCategoryModal({ isOpen }: RemoveUserModalProps) {
 					/>
 
 					<Input
-						label='Name'
+						label='Nome'
 						type='text'
 						value={category.name}
 						disabled
@@ -51,7 +51,7 @@ export function RemoveCategoryModal({ isOpen }: RemoveUserModalProps) {
 							variant='secondary'
 							isLoading={isRemovingCategory}
 						>
-							Keep category
+							Cancelar
 						</Button>
 					</Link>
 
@@ -59,7 +59,7 @@ export function RemoveCategoryModal({ isOpen }: RemoveUserModalProps) {
 						type='submit'
 						isLoading={isRemovingCategory}
 					>
-						Remove category
+						Excluir categoria
 					</Button>
 				</footer>
 			</form>

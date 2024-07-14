@@ -18,15 +18,15 @@ export async function HistoricTable({orderBy}: HistoricTableProps) {
 
 	return (
 		<Table.Root className='mt-2'>
-			<Table.Header title='Orders' amount={historic.length} />
+			<Table.Header title='Pedidos' amount={historic.length} />
 
 			<Table.Content className='mt-4'>
 				<Table.Head>
 					<Table.Row>
-						<Table.Th>Table</Table.Th>
+						<Table.Th>Mesa</Table.Th>
 						<Table.Th>
 							<button className='flex items-center gap-2'>
-								<span>Date</span>
+								<span>Data</span>
 
 								{orderBy === 'asc' && (
 									<Link href='/historic?orderBy=desc'>
@@ -41,10 +41,10 @@ export async function HistoricTable({orderBy}: HistoricTableProps) {
 								)}
 							</button>
 						</Table.Th>
-						<Table.Th>Name</Table.Th>
-						<Table.Th>Category</Table.Th>
+						<Table.Th>Nome</Table.Th>
+						<Table.Th>Categoria</Table.Th>
 						<Table.Th>Total</Table.Th>
-						<Table.Th>Actions</Table.Th>
+						<Table.Th>Ações</Table.Th>
 					</Table.Row>
 				</Table.Head>
 				<Table.Body>

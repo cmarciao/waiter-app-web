@@ -22,7 +22,7 @@ export function CreateCategoryModal({
 
 	return (
 		<Modal open={isOpen} hrefModalClose='/menu?tab=categories'>
-			<ModalTitle>Create category</ModalTitle>
+			<ModalTitle>Criar categoria</ModalTitle>
 
 			<form action={handleCreateCategory} className='mt-6'>
 				<section className='flex flex-col gap-6'>
@@ -35,7 +35,7 @@ export function CreateCategoryModal({
 					/>
 
 					<Input
-						label='Name'
+						label='Nome'
 						type='text'
 						placeholder='Ex: Pizza'
 						{...register('name')}
@@ -49,7 +49,7 @@ export function CreateCategoryModal({
 						disabled={!isFormValid}
 						isLoading={isCreatingCategory}
 					>
-						Create ingredient
+						Criar categoria
 					</Button>
 				</footer>
 			</form>

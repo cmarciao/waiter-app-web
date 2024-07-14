@@ -25,8 +25,8 @@ export function RemoveIngredientModal({ isOpen }: RemoveIngredientModalProps) {
 
 	return (
 		<Modal open={isOpen} hrefModalClose='/menu?tab=ingredients'>
-			<ModalTitle>Remove ingredient</ModalTitle>
-			<ModalDescription>Are you sure you want to remove this ingredient?</ModalDescription>
+			<ModalTitle>Excluir ingrediente</ModalTitle>
+			<ModalDescription>Tem certeza que deseja excluir o ingrediente?</ModalDescription>
 
 			<form action={formAction} className='mt-6'>
 				<section className='flex flex-col gap-6'>
@@ -38,7 +38,7 @@ export function RemoveIngredientModal({ isOpen }: RemoveIngredientModalProps) {
 					/>
 
 					<Input
-						label='Name'
+						label='Nome'
 						type='text'
 						value={ingredient.name}
 						disabled
@@ -52,7 +52,7 @@ export function RemoveIngredientModal({ isOpen }: RemoveIngredientModalProps) {
 							variant='secondary'
 							isLoading={isRemovingIngredient}
 						>
-							Keep ingredient
+							Cancelar
 						</Button>
 					</Link>
 
@@ -60,7 +60,7 @@ export function RemoveIngredientModal({ isOpen }: RemoveIngredientModalProps) {
 						type='submit'
 						isLoading={isRemovingIngredient}
 					>
-						Remove ingredient
+						Excluir ingrediente
 					</Button>
 				</footer>
 			</form>

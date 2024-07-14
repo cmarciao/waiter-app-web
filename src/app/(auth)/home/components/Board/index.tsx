@@ -17,21 +17,21 @@ export function Board() {
 		<>
 			<OrdersBoard
 				icon='🕒'
-				title='Waiting'
+				title='Fila de espera'
 				quantity={waitingOrders.length}
 				orders={waitingOrders}
 			/>
 
 			<OrdersBoard
 				icon='👨‍🍳'
-				title='Preparing'
+				title='Em produção'
 				quantity={preparingOrders.length}
 				orders={preparingOrders}
 			/>
 
 			<OrdersBoard
 				icon='✅'
-				title='Finished'
+				title='Pronto'
 				quantity={finishedOrders.length}
 				orders={finishedOrders}
 			/>

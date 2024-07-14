@@ -41,14 +41,14 @@ export function UpdateProductModal({ isOpen }: UpdateProductModalProps) {
 
 	return (
 		<Modal open={isOpen} hrefModalClose={'/menu?tab=products'} className='max-w-[928px]'>
-			<ModalTitle>Update product</ModalTitle>
+			<ModalTitle>Atualizar produto</ModalTitle>
 
 			<section>
 				<form action={handleUpdateProduct}>
 					<div className='mt-12 flex gap-8'>
 						<div className='flex-1'>
 							<div className='flex items-center justify-between'>
-								<h3>Image</h3>
+								<h3>Imagem</h3>
 
 								{errors?.imageUrl?.message && (
 									<div className='text-brand-red flex items-center gap-2'>
@@ -93,15 +93,15 @@ export function UpdateProductModal({ isOpen }: UpdateProductModalProps) {
 								<div className='h-[60px] flex items-center text-brand-red cursor-pointer'>
 									<ImageIcon color='#D73035'/>
 
-									<strong className='ml-1'>Change Image</strong>
+									<strong className='ml-1'>Alterar imagem</strong>
 								</div>
 							</label>
 
 
 							<Input
 								className='mt-8'
-								label='Product name'
-								placeholder='Pepperoni Pizza'
+								label='Nome do produto'
+								placeholder='Quatro Queijos'
 								errorMessage={errors?.name?.message}
 								defaultValue={product!.name}
 								{...register('name')}
@@ -110,8 +110,8 @@ export function UpdateProductModal({ isOpen }: UpdateProductModalProps) {
 							<Input
 								id='description'
 								className='mt-8'
-								label='Description'
-								placeholder='Pepperoni Pizza with tradicional borders'
+								label='Descrição do produto'
+								placeholder='Pizza de Quatro Queijos com borda tradicional'
 								{...register('description')}
 								errorMessage={errors?.description?.message}
 								defaultValue={product!.description}
@@ -119,7 +119,7 @@ export function UpdateProductModal({ isOpen }: UpdateProductModalProps) {
 
 							<section className='mt-8'>
 								<div className='flex items-center justify-between'>
-									<span>Category</span>
+									<span>Categoria</span>
 
 									{errors?.category?.message && (
 										<div className='text-brand-red flex items-center gap-2'>
@@ -161,7 +161,7 @@ export function UpdateProductModal({ isOpen }: UpdateProductModalProps) {
 						<div className='flex-1'>
 							<header>
 								<div className='flex items-center justify-between'>
-									<h3>Ingredients</h3>
+									<h3>Ingredientes</h3>
 								</div>
 
 								{errors?.ingredients?.message && (
@@ -174,8 +174,8 @@ export function UpdateProductModal({ isOpen }: UpdateProductModalProps) {
 
 							<Input
 								className='mt-6'
-								label='Search the ingredient'
-								placeholder='Ex: Pepporoni'
+								label='Busque o ingrediente'
+								placeholder='Ex: Quatro Queijos'
 							/>
 
 							<div
@@ -209,7 +209,7 @@ export function UpdateProductModal({ isOpen }: UpdateProductModalProps) {
 
 							<Input
 								className='mt-4'
-								label='Price'
+								label='Preço'
 								type='number'
 								min={1}
 								placeholder='Ex: R$ 10.00'
@@ -229,7 +229,7 @@ export function UpdateProductModal({ isOpen }: UpdateProductModalProps) {
 							isLoading={isUpdatingProduct || isRemovingProduct}
 							onClick={handleRemoveProduct}
 						>
-							Remove product
+							Excluir produto
 						</Button>
 
 						<Button
@@ -237,7 +237,7 @@ export function UpdateProductModal({ isOpen }: UpdateProductModalProps) {
 							disabled={!isFormValid}
 							isLoading={isUpdatingProduct || isRemovingProduct}
 						>
-							Save product
+							Salvar alterações
 						</Button>
 					</footer>
 				</form>

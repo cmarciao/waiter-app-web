@@ -12,9 +12,9 @@ export async function CategoriesTable() {
 	return (
 		<>
 			<Table.Root>
-				<Table.Header title='Categories' amount={categories.length}>
+				<Table.Header title='Categorias' amount={categories.length}>
 					<Table.HeaderAction href='/menu?tab=categories&openedModal=creation'>
-						New category
+						Nova categoria
 					</Table.HeaderAction>
 				</Table.Header>
 
@@ -22,8 +22,8 @@ export async function CategoriesTable() {
 					<Table.Head>
 						<Table.Row>
 							<Table.Th>Emoji</Table.Th>
-							<Table.Th className='w-full px-10'>Name</Table.Th>
-							<Table.Th>Action</Table.Th>
+							<Table.Th className='w-full px-10'>Nome</Table.Th>
+							<Table.Th>Ações</Table.Th>
 						</Table.Row>
 					</Table.Head>
 					<Table.Body>
@@ -34,7 +34,7 @@ export async function CategoriesTable() {
 								<Table.Td className='pr-4'>
 									<Table.Actions>
 										<Table.Action
-											icon={<PencilIcon />}
+											icon={<PencilIcon color='#666' />}
 											hrefAction={`/menu?tab=categories&openedModal=update&categoryId=${categroy.id}`}
 										/>
 										<Table.Action

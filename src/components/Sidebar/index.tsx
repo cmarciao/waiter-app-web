@@ -29,19 +29,19 @@ export function Sidebar() {
 					/>
 
 					<NavLink
-						label='Historic'
+						label='Histórico'
 						to={`${APP_ROUTES.private.historic}?orderBy=desc`}
 						icon={HistoryIcon}
 					/>
 
 					<NavLink
-						label='Menu'
+						label='Cardápio'
 						to={`${APP_ROUTES.private.menu}?tab=products`}
 						icon={MenuIcon}
 					/>
 
 					<NavLink
-						label='Users'
+						label='Usuários'
 						to={APP_ROUTES.private.users}
 						icon={UserCircle2}
 					/>
@@ -49,7 +49,7 @@ export function Sidebar() {
 
 				<div>
 					<NavLink
-						label='My Profile'
+						label='Meu Perfil'
 						to='/my-profile'
 						icon={Users2Icon}
 					/>

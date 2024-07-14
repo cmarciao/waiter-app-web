@@ -9,9 +9,10 @@ type TableHeaderProps = {
 export function TableHeader({ title, amount, children }: TableHeaderProps) {
 	return (
 		<header className='flex items-center justify-between'>
-			<span className='font-semibold text-large'>
-				{title} <span className='font-normal text-medium'>{amount}</span>
-			</span>
+			<div>
+				<span className='font-semibold text-large'>{title}</span>
+				<span className='text-medium ml-2 inline-block'>{amount}</span>
+			</div>
 
 			{children}
 		</header>

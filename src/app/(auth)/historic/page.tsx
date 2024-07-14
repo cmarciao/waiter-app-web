@@ -17,10 +17,10 @@ export default function Historic({ searchParams }: MenuProps) {
 						height={32}
 					/>
 
-					<h1>Historic</h1>
+					<h1>Histórico</h1>
 				</div>
 
-				<span className='block font-semibold mt-4 text-gray-400'>View your old orders.</span>
+				<span className='block font-semibold mt-4 text-gray-400'>Visualize pedidos anteriores.</span>
 			</header>
 
 			<main className='mt-[4.5rem]'>

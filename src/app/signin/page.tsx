@@ -17,7 +17,7 @@ export default function Login() {
 		<section className="h-screen flex-center p-4">
 			<main className='max-w-sm w-full'>
 				<header className="text-center">
-					<span className='font-semibold'>Welcome to</span>
+					<span className='font-semibold'>Bem-vindo(a) ao</span>
 					<h1 className="font-black mt-1">
 						WAITER
 						<span className="font-thin">APP</span>
@@ -30,16 +30,16 @@ export default function Login() {
 							id="email"
 							label="E-mail"
 							type="email"
-							placeholder="Your access email"
+							placeholder="Seu e-mail de acesso"
 							errorMessage={errors.email?.message}
 							{...register('email')}
 						/>
 
 						<Input
 							id="password"
-							label="Password"
+							label="Senha"
 							type="password"
-							placeholder="Your access password"
+							placeholder="Sua senha de acesso"
 							errorMessage={errors.password?.message}
 							{...register('password')}
 						/>
@@ -51,7 +51,7 @@ export default function Login() {
 						disabled={!isValid}
 						isLoading={isLoading}
 					>
-						Login
+						Fazer login
 					</Button>
 				</form>
 			</main>

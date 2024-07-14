@@ -22,7 +22,7 @@ export function CreateIngredientModal({ isOpen = true }: CreateIngredientModalPr
 
 	return (
 		<Modal open={true} hrefModalClose={redirectUrl} >
-			<ModalTitle>Create Ingredient</ModalTitle>
+			<ModalTitle>Criar ingrediente</ModalTitle>
 
 			<section className='mt-6 flex flex-col gap-6'>
 				<Input
@@ -34,7 +34,7 @@ export function CreateIngredientModal({ isOpen = true }: CreateIngredientModalPr
 				/>
 
 				<Input
-					label='Name'
+					label='Nome'
 					type='text'
 					placeholder='Ex: Tomato'
 					{...register('name')}
@@ -48,7 +48,7 @@ export function CreateIngredientModal({ isOpen = true }: CreateIngredientModalPr
 					isLoading={isCreatingIngredient}
 					onClick={handleCreateIngredient}
 				>
-					Create ingredient
+					Criar ingrediente
 				</Button>
 			</footer>
 		</Modal>
