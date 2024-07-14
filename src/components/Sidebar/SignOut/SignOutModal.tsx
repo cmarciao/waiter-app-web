@@ -20,11 +20,11 @@ export function SignOutModal({
 	return (
 		<Modal open={isOpen} hrefModalClose={pathname}>
 			<ModalTitle>
-				<h1>Are you sure?</h1>
+				<h1>Sair da conta</h1>
 			</ModalTitle>
 
 			<ModalDescription>
-				Are you sure you want to signout?
+				Tem certeza que deseja sair da conta?
 			</ModalDescription>
 
 			<footer className='mt-12 flex items-center justify-between gap-8'>
@@ -34,7 +34,7 @@ export function SignOutModal({
 					onClick={onClose}
 					isLoading={isLoggingOut}
 				>
-					Cancel
+					Cancelar
 				</Button>
 
 				<Button
@@ -43,7 +43,7 @@ export function SignOutModal({
 					onClick={onLogout}
 					isLoading={isLoggingOut}
 				>
-					Confirm
+					Sair
 				</Button>
 			</footer>
 		</Modal>
