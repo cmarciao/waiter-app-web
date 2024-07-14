@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Category } from '@/types/Category';
 import { useRemoveCategoryModal } from '../RemoveCategoryModal/useRemoveCategoryModal';
 import { getCategoryById, updateCategory } from './../actions';
+import { ApiException } from '@/errors/ApiException';
 
 const updateProductSchema = z.object({
 	emoji: z.string().min(1, { message: 'Emoji is required.' }),
@@ -39,7 +40,7 @@ export function useUpdateCategoryModal() {
 				const response = await getCategoryById(categoryId);
 				setCategory(response);
 			} catch(e) {
-				const error  = e as Error;
+				const error = e as ApiException;
 				toast.error(error.message);
 
 				router.push('/menu?tab=categories');
@@ -55,7 +56,7 @@ export function useUpdateCategoryModal() {
 
 			toast.success('Category updated successfulluy. ✔');
 		} catch(e) {
-			const error = e as Error;
+			const error = e as ApiException;
 			toast.error(error.message);
 
 			router.push('/menu?tab=categories');

@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { Order } from '@/types/Order';
 import { ORDER_STATES } from '@/constants/order-states';
 import { getOrderById, removeOrder, updateOrderStatus } from '@/app/(auth)/home/actions';
-// import { useWebsocket } from '@/hooks/useWebsocket';
+import { ApiException } from '@/errors/ApiException';
 
 export function useOrdersModal(isOpen: boolean) {
 	const router = useRouter();
@@ -23,7 +23,7 @@ export function useOrdersModal(isOpen: boolean) {
 
 				setOrder(orders);
 			} catch(e) {
-				const error = e as Error;
+				const error = e as ApiException;
 				toast.error(error.message);
 
 				router.push('/home');
@@ -45,16 +45,11 @@ export function useOrdersModal(isOpen: boolean) {
 
 			await updateOrderStatus(orderId, newState);
 
-			// publish('orders@update', {
-			// 	orderId,
-			// 	newState
-			// });
-
 			toast.success('Order updated successfulluy. ✔', {
 				duration: 1000 * 3
 			});
 		} catch(e) {
-			const error = e as Error;
+			const error = e as ApiException;
 			toast.error(error.message);
 		} finally {
 			setIsUpdatingOrder(false);
@@ -71,7 +66,7 @@ export function useOrdersModal(isOpen: boolean) {
 				duration: 1000 * 3
 			});
 		} catch(e) {
-			const error = e as Error;
+			const error = e as ApiException;
 			toast.error(error.message);
 		} finally {
 			setIsUpdatingOrder(false);

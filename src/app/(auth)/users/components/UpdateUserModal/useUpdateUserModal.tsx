@@ -8,6 +8,7 @@ import { User } from '@/types/Users';
 import { getUserById, updateUser } from '../../action';
 import { useRemoveUserModal } from '../RemoveUserModal/useRemoveUserModal';
 import { useForm } from 'react-hook-form';
+import { ApiException } from '@/errors/ApiException';
 
 const updateUserSchema = z.object({
 	name: z.string().trim().min(1, {
@@ -43,7 +44,7 @@ export function useUpdateUserModal() {
 				const response = await getUserById(userId);
 				setUser(response);
 			} catch(e) {
-				const error = e as Error;
+				const error = e as ApiException;
 				toast.error(error.message);
 
 				router.push('/users');
@@ -58,8 +59,9 @@ export function useUpdateUserModal() {
 			await updateUser(userId, data);
 
 			toast.success('User updated successfully. ✔');
-		} catch(err) {
-			toast.error('Error when creating user.');
+		} catch(e) {
+			const error = e as ApiException;
+			toast.error(error.message);
 		}
 	});
 

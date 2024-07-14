@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 
 import { Product } from '@/types/Product';
 import { getProductById, removeProduct } from '../actions';
+import { ApiException } from '@/errors/ApiException';
 
 export function useRemoveProductModal() {
 	const router = useRouter();
@@ -23,7 +24,7 @@ export function useRemoveProductModal() {
 
 				setProduct(response);
 			} catch(e) {
-				const error = e as Error;
+				const error = e as ApiException;
 				toast.error(error.message);
 
 				router.push('/menu?tab=products');
@@ -40,8 +41,9 @@ export function useRemoveProductModal() {
 			await removeProduct(productId);
 
 			toast.success('User deleted successfulluy. ✔');
-		} catch(err) {
-			toast.error('Error when deleting product.');
+		} catch(e) {
+			const error = e as ApiException;
+			toast.error(error.message);
 		} finally {
 			setIsRemovingProduct(false);
 		}

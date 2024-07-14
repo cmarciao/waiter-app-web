@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { Category } from '@/types/Category';
 import { getCategoryById, removeCategory } from './../actions';
 import { useFormState } from 'react-dom';
+import { ApiException } from '@/errors/ApiException';
 
 export function useRemoveCategoryModal() {
 	const router = useRouter();
@@ -21,7 +22,7 @@ export function useRemoveCategoryModal() {
 				const response = await getCategoryById(categoryId);
 				setCategory(response);
 			} catch(e) {
-				const error  = e as Error;
+				const error = e as ApiException;
 				toast.error(error.message);
 
 				router.push('/menu?tab=categories');
@@ -39,7 +40,7 @@ export function useRemoveCategoryModal() {
 
 			toast.success('Category deleted successfulluy. ✔');
 		} catch(e) {
-			const error = e as Error;
+			const error = e as ApiException;
 			toast.error(error.message);
 		} finally {
 			setIsRemovingCategory(false);

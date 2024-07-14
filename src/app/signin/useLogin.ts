@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { APP_ROUTES } from '@/constants/app-routes';
 import { signIn } from './actions';
+import { ApiException } from '@/errors/ApiException';
 
 const loginSchema = z.object({
 	email: z.string().email('Invalid email.'),
@@ -30,11 +31,11 @@ export function useLogin() {
 	const handleLogin = handleSubmit(async ({ email, password }: LoginSchema) => {
 		try {
 			await signIn({ email, password });
-
+	
 			toast.success('Welcome, let\'s get to work! 🍕');
 			router.replace(APP_ROUTES.private.home);
 		} catch(e) {
-			const error = e as Error;
+			const error = e as ApiException;
 			toast.error(error.message);
 		}
 	});

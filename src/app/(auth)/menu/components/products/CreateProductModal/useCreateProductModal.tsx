@@ -1,4 +1,4 @@
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
@@ -11,6 +11,7 @@ import { Ingredient } from '@/types/Ingredient';
 import { createProduct } from '../actions';
 import { getCategories } from '../../Categories/actions';
 import { getIngredients } from '../../Ingredients/actions';
+import { ApiException } from '@/errors/ApiException';
 
 const createProductSchema = z.object({
 	imageUrl: z.any().refine((files) => files?.length == 1, 'File is required.'),
@@ -26,6 +27,7 @@ const createProductSchema = z.object({
 export type CreateProductSchema = z.infer<typeof createProductSchema>;
 
 export function useCreateProductModal() {
+	const router = useRouter();
 	const searchParams = useSearchParams();
 	const isCreateIngredienModalOpen = searchParams.get('ingredient');
 
@@ -42,13 +44,18 @@ export function useCreateProductModal() {
 
 	useEffect(() => {
 		async function loadData() {
-			const [
-				categoriesResponse,
-				ingredientsResponse,
-			] = await Promise.all([getCategories(), getIngredients()]);
-
-			setCategories(categoriesResponse);
-			setIngredients(ingredientsResponse);
+			try {
+				const [
+					categoriesResponse,
+					ingredientsResponse,
+				] = await Promise.all([getCategories(), getIngredients()]);
+	
+				setCategories(categoriesResponse);
+				setIngredients(ingredientsResponse);
+			} catch {
+				toast.error('Ocorreu algum erro ao tentar criar o produto.');
+				router.push('/menu?tab=products');
+			}
 		}
 
 		loadData();
@@ -86,7 +93,7 @@ export function useCreateProductModal() {
 
 			toast.success('Product created successfulluy. ✔');
 		} catch (e) {
-			const error = e as Error;
+			const error = e as ApiException;
 			toast.error(error.message);
 		}
 	});

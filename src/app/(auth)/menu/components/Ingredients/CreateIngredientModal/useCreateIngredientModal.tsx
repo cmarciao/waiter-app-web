@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { createIngredient } from './../actions';
+import { ApiException } from '@/errors/ApiException';
 
 const createIngredientSchema = z.object({
 	emoji: z.string().min(1, { message: 'Emoji is required.' }),
@@ -28,7 +29,7 @@ export function useCreateIngredientModal() {
 
 			toast.success('Ingredient created successfulluy. ✔');
 		} catch(e) {
-			const error = e as Error;
+			const error = e as ApiException;
 			toast.error(error.message);
 		}
 	});

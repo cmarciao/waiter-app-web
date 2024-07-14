@@ -1,6 +1,5 @@
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { z } from 'zod';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,7 +12,6 @@ import { getIngredients } from '../../Ingredients/actions';
 import { Product } from '@/types/Product';
 import { Category } from '@/types/Category';
 import { Ingredient } from '@/types/Ingredient';
-
 import { useRemoveProductModal } from '../RemoveProductModal/useRemoveProductModal';
 
 const addProductSchema = z.object({
@@ -70,8 +68,7 @@ export function useUpdateProductModal() {
 				setValue('ingredients', ingredientIds);
 				setValue('category', productResponse.category.id);
 			} catch(e) {
-				const error = e as Error;
-				toast.error(error.message);
+				toast.error('Ocorreu algum erro ao tentar editar o produto.');
 
 				router.push('/menu?tab=products');
 			} finally {

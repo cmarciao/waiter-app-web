@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { ApiException } from '@/errors/ApiException';
+
 type HttpClientInit = Omit<RequestInit, 'method'>;
 
 type ConfigRequestInterpector = RequestInit & {
@@ -64,6 +66,10 @@ export class HttpClient {
 
 		if(contentType?.includes('application/json')) {
 			responseBody = await response.json();
+		}
+
+		if(!response.ok) {
+			throw new ApiException(responseBody);
 		}
 
 		return responseBody;

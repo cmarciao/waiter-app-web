@@ -8,62 +8,35 @@ import { UpdateIngredientSchema } from './UpdateIngredientModal/useUpdateIngredi
 
 import { Ingredient } from '@/types/Ingredient';
 import IngredientsService from '@/services/IngredientsService';
-import { APIError } from '@/errors/APIError';
 import { httpTags } from '@/constants/http-tags';
 
 export async function getIngredientById(id: string): Promise<Ingredient> {
-	try {
-		return IngredientsService.getIngredientById(id);
-	} catch(e){
-		const apiError = e as APIError;
-		throw new Error(apiError.message);
-	}
+	return IngredientsService.getIngredientById(id);
 }
 
 export async function getIngredients(): Promise<Ingredient[]> {
-	try {
-		return IngredientsService.getIngredients();
-	} catch(e){
-		const apiError = e as APIError;
-		throw new Error(apiError.message);
-	}
+	return IngredientsService.getIngredients();
 }
 
 export async function createIngredient(ingredient: CreateIngredientSchema, redirectUrl: string) {
-	try {
-		await IngredientsService.createIngredient(ingredient);
+	await IngredientsService.createIngredient(ingredient);
 
-		revalidateTag(httpTags.ingredients);
-	} catch(e){
-		const apiError = e as APIError;
-		throw new Error(apiError.message);
-	} finally {
-		redirect(redirectUrl, RedirectType.replace);
-	}
+	revalidateTag(httpTags.ingredients);
+	redirect(redirectUrl, RedirectType.replace);
 }
 
 export async function updateIngredient(id: string, ingredient: UpdateIngredientSchema) {
-	try {
-		await IngredientsService.updateIngredient(id, ingredient);
+	await IngredientsService.updateIngredient(id, ingredient);
 
-		revalidateTag(httpTags.ingredients);
-	} catch(e){
-		const apiError = e as APIError;
-		throw new Error(apiError.message);
-	} finally {
-		redirect('/menu?tab=ingredients', RedirectType.replace);
-	}
+	revalidateTag(httpTags.ingredients);
+	redirect('/menu?tab=ingredients', RedirectType.replace);
+	
 }
 
 export async function removeIngredient(id: string) {
-	try {
-		await IngredientsService.removeIngredient(id);
+	await IngredientsService.removeIngredient(id);
 
-		revalidateTag(httpTags.ingredients);
-	} catch(e){
-		const apiError = e as APIError;
-		throw new Error(apiError.message);
-	} finally {
-		redirect('/menu?tab=ingredients', RedirectType.replace);
-	}
+	revalidateTag(httpTags.ingredients);
+	redirect('/menu?tab=ingredients', RedirectType.replace);
+	
 }

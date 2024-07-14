@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { createCategory } from './../actions';
+import { ApiException } from '@/errors/ApiException';
 
 const createCategorySchema = z.object({
 	emoji: z.string().min(1, { message: 'Emoji is required.' }),
@@ -23,7 +24,7 @@ export function useCreateCategoryModal() {
 
 			toast.success('Category created successfulluy. ✔');
 		} catch(e) {
-			const error = e as Error;
+			const error = e as ApiException;
 			toast.error(error.message);
 		}
 	});

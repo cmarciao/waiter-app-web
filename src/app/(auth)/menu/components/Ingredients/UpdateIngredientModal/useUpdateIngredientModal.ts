@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Ingredient } from '@/types/Ingredient';
 import { useRemoveIngredientModal } from '../RemoveIngredientModal/useRemoveIngredientModal';
 import { getIngredientById, updateIngredient } from './../actions';
+import { ApiException } from '@/errors/ApiException';
 
 const updateIngredientSchema = z.object({
 	emoji: z.string().min(1, { message: 'Emoji is required.' }),
@@ -39,7 +40,7 @@ export function useUpdateIngredientModal() {
 
 				setIngredient(response);
 			} catch(e) {
-				const error = e as Error;
+				const error = e as ApiException;
 				toast.error(error.message);
 
 				router.push('/menu?tab=ingredients');
@@ -55,7 +56,7 @@ export function useUpdateIngredientModal() {
 
 			toast.success('Ingredient updated successfulluy. ✔');
 		} catch(e) {
-			const error = e as Error;
+			const error = e as ApiException;
 			toast.error(error.message);
 		}
 	});

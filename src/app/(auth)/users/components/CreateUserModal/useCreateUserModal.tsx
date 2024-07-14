@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 
 import { createUser } from '../../action';
 import { useForm } from 'react-hook-form';
+import { ApiException } from '@/errors/ApiException';
 
 const createUserSchema = z.object({
 	name: z.string().trim().min(1, {
@@ -27,7 +28,7 @@ export function useCreateUserModal() {
 
 			toast.success('User created successfully. ✔');
 		} catch(e) {
-			const error = e as Error;
+			const error = e as ApiException;
 			toast.error(error.message);
 		}
 	});

@@ -1,10 +1,11 @@
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
-import { useRouter, useSearchParams } from 'next/navigation';
-
 import toast from 'react-hot-toast';
 
 import { Order } from '@/types/Order';
+import { ApiException } from '@/errors/ApiException';
+
 import { getHistoricById, removeHistoric } from '../actions';
 
 export function useRemoveOrderModal() {
@@ -21,7 +22,9 @@ export function useRemoveOrderModal() {
 				const response = await getHistoricById(historicId);
 				setHistoric(response);
 			} catch(e) {
-				toast.error('Historic not found');
+				const error = e as ApiException;
+				toast.error(error.message);
+
 				router.push('/historic');
 			}
 		}
@@ -35,7 +38,7 @@ export function useRemoveOrderModal() {
 
 			toast.success('Historic deleted successfulluy. ✔');
 		} catch(e) {
-			const error = e as Error;
+			const error = e as ApiException;
 			toast.error(error.message);
 		}
 	}

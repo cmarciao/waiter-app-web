@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-
 import toast from 'react-hot-toast';
 
 import { Order } from '@/types/Order';
+import { ApiException } from '@/errors/ApiException';
+
 import { getHistoricById } from '../actions';
 
 export function useHistoricDetailsModal() {
@@ -19,7 +20,9 @@ export function useHistoricDetailsModal() {
 				const response = await getHistoricById(historicId);
 				setHistoric(response);
 			} catch(e) {
-				toast.error('Historic not found');
+				const error = e as ApiException;
+				toast.error(error.message);
+				
 				router.push('/historic');
 			}
 		}

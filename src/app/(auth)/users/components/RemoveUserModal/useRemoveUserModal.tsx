@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 
 import { User } from '@/types/Users';
 import { getUserById, removeUser } from '../../action';
+import { ApiException } from '@/errors/ApiException';
 
 export function useRemoveUserModal() {
 	const router = useRouter();
@@ -22,7 +23,7 @@ export function useRemoveUserModal() {
 				const response = await getUserById(userId);
 				setUser(response);
 			} catch(e) {
-				const error = e as Error;
+				const error = e as ApiException;
 				toast.error(error.message);
 
 				router.push('/users');
@@ -40,7 +41,7 @@ export function useRemoveUserModal() {
 
 			toast.success('User removed successfulluy. ✔');
 		} catch(e) {
-			const error = e as Error;
+			const error = e as ApiException;
 			toast.error(error.message);
 		} finally {
 			setIsRemovingUser(false);
