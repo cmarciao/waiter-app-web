@@ -17,7 +17,7 @@ export default function MyProfile() {
 
 	if(isLoadProfile) {
 		return (
-			<div className='absolute inset-0 flex items-center justify-center'>
+			<div className='absolute -z-1 inset-0 flex items-center justify-center'>
 				<LoadScreen />;
 			</div>
 		);
@@ -25,7 +25,7 @@ export default function MyProfile() {
 	
 	if(isLoadProfileError) {
 		return (
-			<div className='absolute inset-0 flex items-center justify-center'>
+			<div className='absolute -z-1 inset-0 flex items-center justify-center'>
 				<EmptyInformation
 					description='Ocorreu algum erro ao carregar o perfil, por favor, tente novamente.'
 					onTryAgain={handleReload}

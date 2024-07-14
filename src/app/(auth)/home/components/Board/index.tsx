@@ -25,7 +25,7 @@ export function Board() {
 
 	if(isLoadingOrders) {
 		return (
-			<div className='absolute inset-0 flex items-center justify-center'>
+			<div className='absolute -z-1 inset-0 flex items-center justify-center'>
 				<LoadScreen />;
 			</div>
 		);
@@ -33,10 +33,10 @@ export function Board() {
 	
 	if(isLoadOrdersError) {
 		return (
-			<div className='absolute inset-0 flex items-center justify-center'>
+			<div className='absolute -z-1 inset-0 flex items-center justify-center'>
 				<EmptyInformation
 					description='Ocorreu algum erro ao carregar os produtos, por favor, tente novamente.'
-					onTryAgain={handleReload}
+					onTryAgain={() => window.location.reload()}
 				/>
 			</div>
 		);
@@ -44,7 +44,7 @@ export function Board() {
 	
 	if(isOrdersEmpty && !isLoadingOrders) {
 		return (
-			<div className='absolute inset-0 flex items-center justify-center'>
+			<div className='absolute -z-1 inset-0 flex items-center justify-center'>
 				<EmptyInformation
 					description='Não há pedidos cadastrados no momento.'
 				/>

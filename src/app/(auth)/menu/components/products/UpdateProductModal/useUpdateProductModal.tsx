@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { z } from 'zod';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,7 +13,10 @@ import { getIngredients } from '../../Ingredients/actions';
 import { Product } from '@/types/Product';
 import { Category } from '@/types/Category';
 import { Ingredient } from '@/types/Ingredient';
+
 import { useRemoveProductModal } from '../RemoveProductModal/useRemoveProductModal';
+import { ApiException } from '@/errors/ApiException';
+import { debounce } from '@/utils/debounce';
 
 const addProductSchema = z.object({
 	imageUrl: z.any(),
@@ -36,6 +40,8 @@ export function useUpdateProductModal() {
 	const [isLoadingData, setIsLoadingData] = useState(true);
 	const [categories, setCategories] = useState<Category[]>();
 	const [ingredients, setIngredients] = useState<Ingredient[]>();
+	
+	const [filterIngredients, setFilterIngredients] = useState('');
 	const [imageUrlPreview, setImageUrlPreview] = useState<string | ArrayBuffer | null | undefined>(null);
 
 	const { isRemovingProduct, handleRemoveProduct: onRemoveProduct } = useRemoveProductModal();
@@ -50,25 +56,40 @@ export function useUpdateProductModal() {
 	const watchCategory = useWatch({ control, name: 'category' });
 	const watchIngredients = useWatch({ control, name: 'ingredients', defaultValue: []});
 
+	const loadIngredients = useCallback(async () => {
+		try {
+			const ingredients = await getIngredients(filterIngredients);
+			setIngredients(ingredients);
+		} catch(e) {
+			const error = e as ApiException;
+			toast.error(error.message);
+		}
+	}, [filterIngredients]);
+
+	useEffect(() => {
+		debounce(() => {
+			loadIngredients();
+		});
+	}, [filterIngredients]);
+
 	useEffect(() => {
 		async function loadData() {
 			try {
 				const [
 					productResponse,
 					categoriesResponse,
-					ingredientsResponse,
-				] = await Promise.all([getProductById(productId), getCategories(), getIngredients()]);
+				] = await Promise.all([getProductById(productId), getCategories()]);
 
 				setProduct(productResponse);
 				setCategories(categoriesResponse);
-				setIngredients(ingredientsResponse);
 
 				const ingredientIds = productResponse.ingredients.map(ingredient => ingredient.id);
 
 				setValue('ingredients', ingredientIds);
 				setValue('category', productResponse.category.id);
 			} catch(e) {
-				toast.error('Ocorreu algum erro ao tentar editar o produto.');
+				const error = e as Error;
+				toast.error(error.message);
 
 				router.push('/menu?tab=products');
 			} finally {
@@ -122,9 +143,14 @@ export function useUpdateProductModal() {
 		await onRemoveProduct();
 	}
 
+	function handleFilterIngredients(filter: string) {
+		setFilterIngredients(filter);
+	}
+
 	return {
 		isLoadingData,
 		product,
+		handleFilterIngredients,
 		categories,
 		ingredients,
 		errors,

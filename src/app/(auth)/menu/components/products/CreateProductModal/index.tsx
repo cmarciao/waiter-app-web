@@ -20,6 +20,8 @@ export function CreateProductModal({ isOpen }: AddProductModalProps) {
 	if(!isOpen) return;
 
 	const {
+		filterIngredients,
+		handleFilterIngredients,
 		register,
 		errors,
 		isCreateIngredienModalOpen,
@@ -185,6 +187,8 @@ export function CreateProductModal({ isOpen }: AddProductModalProps) {
 								className='mt-6'
 								label='Busque o ingrediente'
 								placeholder='Ex: Quatro Queijos'
+								value={filterIngredients}
+								onChange={(e) => handleFilterIngredients(e.target.value)}
 							/>
 
 							<div

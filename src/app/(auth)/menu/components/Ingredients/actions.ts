@@ -14,8 +14,10 @@ export async function getIngredientById(id: string): Promise<Ingredient> {
 	return IngredientsService.getIngredientById(id);
 }
 
-export async function getIngredients(): Promise<Ingredient[]> {
-	return IngredientsService.getIngredients();
+export async function getIngredients(name: string = ''): Promise<Ingredient[]> {
+	const ingredients = await IngredientsService.getIngredients(name);
+
+	return ingredients;
 }
 
 export async function createIngredient(ingredient: CreateIngredientSchema, redirectUrl: string) {

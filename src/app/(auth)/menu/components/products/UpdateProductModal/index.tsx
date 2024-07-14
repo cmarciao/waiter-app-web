@@ -16,6 +16,7 @@ export function UpdateProductModal({ isOpen }: UpdateProductModalProps) {
 	if(!isOpen) return;
 
 	const {
+		handleFilterIngredients,
 		isLoadingData,
 		product,
 		register,
@@ -32,7 +33,7 @@ export function UpdateProductModal({ isOpen }: UpdateProductModalProps) {
 		isRemovingProduct
 	} = useUpdateProductModal();
 
-	if(isLoadingData) {
+	if(isLoadingData || !ingredients || !product || !categories) {
 		return <LoadScreen hasOpacityInBackground />;
 	}
 
@@ -176,6 +177,7 @@ export function UpdateProductModal({ isOpen }: UpdateProductModalProps) {
 								className='mt-6'
 								label='Busque o ingrediente'
 								placeholder='Ex: Quatro Queijos'
+								onChange={(e) => handleFilterIngredients(e.target.value)}
 							/>
 
 							<div

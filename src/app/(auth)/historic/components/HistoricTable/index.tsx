@@ -19,7 +19,7 @@ export async function HistoricTable({orderBy}: HistoricTableProps) {
 
 	if(historic.length === 0) {
 		return (
-			<div className='absolute inset-0 flex items-center justify-center'>
+			<div className='absolute -z-1 inset-0 flex items-center justify-center'>
 				<EmptyInformation
 					description='Não há pedidos em registro no momento.'
 				/>

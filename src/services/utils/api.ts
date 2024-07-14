@@ -6,6 +6,8 @@ export const basePath = 'http://localhost:3333';
 export const api = new HttpClient(basePath);
 
 api.addInterceptorRequest(async (config) => {
+	config.headers.append('user-agent', 'web');
+
 	if(config?.body && !(config?.body instanceof FormData)) {
 		config.headers.append('Content-Type', 'application/json');
 	}

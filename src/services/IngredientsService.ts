@@ -16,8 +16,8 @@ class CategoriesService {
 		return api.get(`/ingredients/${id}`);
 	}
 
-	async getIngredients() {
-		return api.get('/ingredients', {
+	async getIngredients(name: string = '') {
+		return api.get(`/ingredients?name=${name}`, {
 			next: {
 				tags: [httpTags.ingredients]
 			}

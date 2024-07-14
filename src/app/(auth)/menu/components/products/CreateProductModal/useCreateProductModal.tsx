@@ -1,5 +1,5 @@
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
 import { useForm, useWatch } from 'react-hook-form';
@@ -12,6 +12,7 @@ import { createProduct } from '../actions';
 import { getCategories } from '../../Categories/actions';
 import { getIngredients } from '../../Ingredients/actions';
 import { ApiException } from '@/errors/ApiException';
+import { debounce } from '@/utils/debounce';
 
 const createProductSchema = z.object({
 	imageUrl: z.any().refine((files) => files?.length == 1, 'File is required.'),
@@ -33,6 +34,7 @@ export function useCreateProductModal() {
 
 	const [categories, setCategories] = useState<Category[]>();
 	const [ingredients, setIngredients] = useState<Ingredient[]>();
+	const [filterIngredients, setFilterIngredients] = useState('');
 	const [imageUrlPreview, setImageUrlPreview] = useState<string | ArrayBuffer | null | undefined>(null);
 
 	const { control, register, handleSubmit, formState: { errors, isValid, isSubmitting } } = useForm<CreateProductSchema>({
@@ -42,16 +44,28 @@ export function useCreateProductModal() {
 	const watchCategory = useWatch({ control, name: 'category' });
 	const watchIngredients = useWatch({ control, name: 'ingredients' });
 
+	const loadIngredients = useCallback(async () => {
+		try {
+			const ingredients = await getIngredients(filterIngredients);
+			setIngredients(ingredients);
+		} catch(e) {
+			const error = e as ApiException;
+			toast.error(error.message);
+		}
+	}, [filterIngredients]);
+
+	useEffect(() => {
+		debounce(() => {
+			loadIngredients();
+		});
+	}, [filterIngredients]);
+
 	useEffect(() => {
 		async function loadData() {
 			try {
-				const [
-					categoriesResponse,
-					ingredientsResponse,
-				] = await Promise.all([getCategories(), getIngredients()]);
+				const categoriesResponse = await getCategories();
 	
 				setCategories(categoriesResponse);
-				setIngredients(ingredientsResponse);
 			} catch {
 				toast.error('Ocorreu algum erro ao tentar criar o produto.');
 				router.push('/menu?tab=products');
@@ -98,8 +112,14 @@ export function useCreateProductModal() {
 		}
 	});
 
+	function handleFilterIngredients(filter: string) {
+		setFilterIngredients(filter);
+	}
+
 	return {
 		errors,
+		filterIngredients,
+		handleFilterIngredients,
 		isCreateIngredienModalOpen,
 		categories,
 		ingredients,

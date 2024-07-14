@@ -12,7 +12,7 @@ export async function CategoriesTable() {
 
 	if(categories.length > 0) {
 		return (
-			<div className='absolute inset-0 flex items-center justify-center'>
+			<div className='absolute -z-1 inset-0 flex items-center justify-center'>
 				<EmptyInformation
 					description='Não há produtos categorias no momento.'
 				/>

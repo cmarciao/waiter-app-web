@@ -14,7 +14,7 @@ import {
 
 export function Sidebar() {
 	return (
-		<aside className='flex'>
+		<aside className='flex z-50 relative'>
 			<nav className='max-w-[108px] w-full h-screen flex flex-col items-center justify-between fixed'>
 				<div className='flex mt-10'>
 					<h2 className='font-bold'>W</h2>
