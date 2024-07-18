@@ -9,16 +9,7 @@ import { EmptyInformation } from '@/components/EmptyInformation';
 
 export async function IngredientsTable() {
 	const ingredients: Ingredient[] = await IngredientsService.getIngredients();
-
-	if(ingredients.length === 0) {
-		return (
-			<div className='absolute inset-0 flex items-center justify-center'>
-				<EmptyInformation
-					description='Não há ingredientes cadastrados no momento.'
-				/>
-			</div>
-		);
-	}
+	const hasIngredients = ingredients.length > 0;
 
 	return (
 		<>
@@ -29,36 +20,46 @@ export async function IngredientsTable() {
 					</Table.HeaderAction>
 				</Table.Header>
 
-				<Table.Content className='mt-4'>
-					<Table.Head>
-						<Table.Row>
-							<Table.Th>Emoji</Table.Th>
-							<Table.Th className='w-full px-10'>Nome</Table.Th>
-							<Table.Th>Ações</Table.Th>
-						</Table.Row>
-					</Table.Head>
-					<Table.Body>
-						{ingredients.map((ingredient) => (
-							<Table.Row key={ingredient.id}>
-								<Table.Td className='text-center'>{ingredient.emoji}</Table.Td>
-								<Table.Td className='w-full px-10'>{ingredient.name}</Table.Td>
-								<Table.Td className='pr-4'>
-									<Table.Actions>
-										<Table.Action
-											icon={<PencilIcon color='#666' />}
-											hrefAction={`/menu?tab=ingredients&openedModal=update&ingredientId=${ingredient.id}`}
-										/>
+				{!hasIngredients && (
+					<div className='flex items-center justify-center mt-[22vh]'>
+						<EmptyInformation
+							description='Não há ingredientes cadastrados no momento.'
+						/>
+					</div>
+				)}
 
-										<Table.Action
-											icon={<Trash2Icon color='#D73035'/>}
-											hrefAction={`/menu?tab=ingredients&openedModal=removal&ingredientId=${ingredient.id}`}
-										/>
-									</Table.Actions>
-								</Table.Td>
+				{hasIngredients && (
+					<Table.Content className='mt-4'>
+						<Table.Head>
+							<Table.Row>
+								<Table.Th>Emoji</Table.Th>
+								<Table.Th className='w-full px-10'>Nome</Table.Th>
+								<Table.Th>Ações</Table.Th>
 							</Table.Row>
-						))}
-					</Table.Body>
-				</Table.Content>
+						</Table.Head>
+						<Table.Body>
+							{ingredients.map((ingredient) => (
+								<Table.Row key={ingredient.id}>
+									<Table.Td className='text-center'>{ingredient.emoji}</Table.Td>
+									<Table.Td className='w-full px-10'>{ingredient.name}</Table.Td>
+									<Table.Td className='pr-4'>
+										<Table.Actions>
+											<Table.Action
+												icon={<PencilIcon color='#666' />}
+												hrefAction={`/menu?tab=ingredients&openedModal=update&ingredientId=${ingredient.id}`}
+											/>
+
+											<Table.Action
+												icon={<Trash2Icon color='#D73035'/>}
+												hrefAction={`/menu?tab=ingredients&openedModal=removal&ingredientId=${ingredient.id}`}
+											/>
+										</Table.Actions>
+									</Table.Td>
+								</Table.Row>
+							))}
+						</Table.Body>
+					</Table.Content>
+				)}
 			</Table.Root>
 
 			<IngredientsModals />

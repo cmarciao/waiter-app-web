@@ -59,6 +59,7 @@ export function useUpdateUserModal() {
 			await updateUser(userId, data);
 
 			toast.success('User updated successfully. ✔');
+			router.back();
 		} catch(e) {
 			const error = e as ApiException;
 			toast.error(error.message);

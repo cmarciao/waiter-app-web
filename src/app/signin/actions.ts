@@ -12,6 +12,13 @@ type SignInParams = {
 	password: string;
 }
 
+export type SignUpParams = {
+	businessName: string;
+	name: string;
+	email: string;
+	password: string;
+}
+
 export type SignInResponse = {
 	accessToken: string;
 	refreshToken: string;
@@ -19,6 +26,15 @@ export type SignInResponse = {
 
 export async function signIn({ email, password }: SignInParams): Promise<SignInResponse> {
 	const response = await AuthService.signInService({ email, password }) as SignInResponse;
+
+	updateAccessToken(response.accessToken);
+	updateRefreshToken(response.refreshToken);
+
+	return response;
+}
+
+export async function signUp(data: SignUpParams): Promise<SignInResponse> {
+	const response = await AuthService.signUpService(data) as SignInResponse;
 
 	updateAccessToken(response.accessToken);
 	updateRefreshToken(response.refreshToken);

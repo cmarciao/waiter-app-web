@@ -1,6 +1,13 @@
 import { Profile } from '@/types/Profile';
 import { api } from './utils/api';
 
+export type SignUpParams = {
+	businessName: string;
+	name: string;
+	email: string;
+	password: string;
+}
+
 export type SignInParams = {
 	email: string;
 	password: string;
@@ -28,6 +35,12 @@ class AuthService {
 
 	async signInService(params: SignInParams){
 		return api.post('/auth/signin', {
+			body: JSON.stringify(params),
+		});
+	}
+
+	async signUpService(params: SignUpParams){
+		return api.post('/auth/signup', {
 			body: JSON.stringify(params),
 		});
 	}

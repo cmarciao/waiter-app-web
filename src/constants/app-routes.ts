@@ -7,7 +7,8 @@ export const APP_ROUTES = {
 	},
 	public: {
 		splash: '/',
-		signIn: '/signin'
+		signIn: '/signin',
+		signUp: '/signup',
 	},
 	default: {
 		next: '/_next',

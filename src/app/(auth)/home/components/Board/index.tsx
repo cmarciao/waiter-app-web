@@ -36,48 +36,49 @@ export function Board() {
 			<div className='absolute -z-1 inset-0 flex items-center justify-center'>
 				<EmptyInformation
 					description='Ocorreu algum erro ao carregar os produtos, por favor, tente novamente.'
-					onTryAgain={() => window.location.reload()}
-				/>
-			</div>
-		);
-	}
-	
-	if(isOrdersEmpty && !isLoadingOrders) {
-		return (
-			<div className='absolute -z-1 inset-0 flex items-center justify-center'>
-				<EmptyInformation
-					description='Não há pedidos cadastrados no momento.'
+					onTryAgain={handleReload}
 				/>
 			</div>
 		);
 	}
 
 	return (
-		<main className='grid grid-cols-3 gap-8'>
-			<OrdersBoard
-				icon='🕒'
-				title='Fila de espera'
-				quantity={waitingOrders.length}
-				orders={waitingOrders}
-			/>
+		<>
+			{isOrdersEmpty && !isLoadOrdersError ? (
+				<div className='flex items-center justify-center mt-[22vh]'>
+					<EmptyInformation
+						description='Não há pedidos cadastrados no momento.'
+					/>
+				</div>
+			) : (
+				<main className='grid grid-cols-3 gap-8'>
+					<OrdersBoard
+						icon='🕒'
+						title='Fila de espera'
+						quantity={waitingOrders.length}
+						orders={waitingOrders}
+					/>
 
-			<OrdersBoard
-				icon='👨‍🍳'
-				title='Em produção'
-				quantity={preparingOrders.length}
-				orders={preparingOrders}
-			/>
+					<OrdersBoard
+						icon='👨‍🍳'
+						title='Em produção'
+						quantity={preparingOrders.length}
+						orders={preparingOrders}
+					/>
 
-			<OrdersBoard
-				icon='✅'
-				title='Pronto'
-				quantity={finishedOrders.length}
-				orders={finishedOrders}
-			/>
+					<OrdersBoard
+						icon='✅'
+						title='Pronto'
+						quantity={finishedOrders.length}
+						orders={finishedOrders}
+					/>
 
+				</main>
+			)}
+			
 			<RefreshDayModal
 				isOpen={isRefreshDayModalOpen}
 			/>
-		</main>
+		</>
 	);
 }

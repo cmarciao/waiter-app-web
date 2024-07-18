@@ -21,16 +21,7 @@ function formatUserTypeToPortugues(userType: UserType) {
 
 export async function UsersTable() {
 	const users = await UserService.listUsers();
-
-	if(users.length === 0) {
-		return (
-			<div className='absolute -z-1 inset-0 flex items-center justify-center'>
-				<EmptyInformation
-					description='Não há usuários cadastrados no momento.'
-				/>
-			</div>
-		);
-	}
+	const hasUsers = users.length > 0;
 
 	return (
 		<Table.Root className='mt-2'>
@@ -40,40 +31,55 @@ export async function UsersTable() {
 				</Table.HeaderAction>
 			</Table.Header>
 
-			<Table.Content className='mt-4'>
-				<Table.Head>
-					<Table.Row>
-						<Table.Th>Nome</Table.Th>
-						<Table.Th>E-mail</Table.Th>
-						<Table.Th>Cargo</Table.Th>
-						<Table.Th>Ações</Table.Th>
-					</Table.Row>
-				</Table.Head>
+			<div>
+				{!hasUsers && (
+					<div className='flex items-center justify-center mt-[22vh]'>
+						<EmptyInformation
+							description='Não há usuários cadastrados no momento.'
+						/>
+					</div>
+				)}
 
-				<Table.Body>
-					{users.map((user) => (
-						<Table.Row key={user.id}>
-							<Table.Td>{user.name}</Table.Td>
-							<Table.Td>{user.email}</Table.Td>
-							<Table.Td>{formatUserTypeToPortugues(user.type)}</Table.Td>
-							<Table.Td>
-								<Table.Actions>
-									<Table.Action
-										icon={<PencilIcon color='#666' />}
-										hrefAction={`/users?openedModal=update&userId=${user.id}`}
-									/>
-									<Table.Action
-										icon={<Trash2Icon color='#D73035'/>}
-										hrefAction={`/users?openedModal=removal&userId=${user.id}`}
-									/>
-								</Table.Actions>
-							</Table.Td>
-						</Table.Row>
-					))}
-				</Table.Body>
-			</Table.Content>
+				{hasUsers && (
+					<>
+						<Table.Content className='mt-4'>
+							<Table.Head>
+								<Table.Row>
+									<Table.Th>Nome</Table.Th>
+									<Table.Th>E-mail</Table.Th>
+									<Table.Th>Cargo</Table.Th>
+									<Table.Th>Ações</Table.Th>
+								</Table.Row>
+							</Table.Head>
 
-			<UserModals />
+							<Table.Body>
+								{users.map((user) => (
+									<Table.Row key={user.id}>
+										<Table.Td>{user.name}</Table.Td>
+										<Table.Td>{user.email}</Table.Td>
+										<Table.Td>{formatUserTypeToPortugues(user.type)}</Table.Td>
+										<Table.Td>
+											<Table.Actions>
+												<Table.Action
+													icon={<PencilIcon color='#666' />}
+													hrefAction={`/users?openedModal=update&userId=${user.id}`}
+												/>
+												<Table.Action
+													icon={<Trash2Icon color='#D73035'/>}
+													hrefAction={`/users?openedModal=removal&userId=${user.id}`}
+												/>
+											</Table.Actions>
+										</Table.Td>
+									</Table.Row>
+								))}
+							</Table.Body>
+						</Table.Content>
+
+					</>
+				)}
+
+				<UserModals />
+			</div>
 
 		</Table.Root>
 	);
