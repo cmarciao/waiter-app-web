@@ -3,8 +3,6 @@
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
 import { useLogin } from './useLogin';
-import Link from 'next/link';
-import { APP_ROUTES } from '@/constants/app-routes';
 
 export default function Login() {
 	const {
@@ -56,13 +54,6 @@ export default function Login() {
 						Fazer login
 					</Button>
 				</form>
-
-				<span className='text-center mt-8 block'>
-					Ainda não tem conta? 
-					<Link className='ml-2 font-semibold text-brand-red' href={APP_ROUTES.public.signUp}>
-						Crie aqui.
-					</Link>
-				</span>
 			</main>
 		</section>
 	);
