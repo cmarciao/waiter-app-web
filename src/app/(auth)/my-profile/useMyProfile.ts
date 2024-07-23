@@ -45,7 +45,7 @@ export function useMyProfile() {
 	useEffect(() => {
 		async function loadData() {
 			try {
-                
+
 				const profile = await getMyProfile();
 				setMyProfile(profile);
 
@@ -62,7 +62,10 @@ export function useMyProfile() {
 
 	const handleSaveProfile = handleSubmit(async (data: MyProfileSchema) => {
 		try {
-			const parsedData = JSON.parse(JSON.stringify(data));
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			const { confirmPassword, ...body } = data;
+
+			const parsedData = JSON.parse(JSON.stringify(body));
 			await updateMyProfile(parsedData);
 
 			toast.success('Perfil editado com sucesso.');
